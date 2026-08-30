@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Week 1: Foundations of Motor Control — ELE 146</title>
+<link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+<header class="site-header">
+  <nav class="nav">
+    <div class="brand">ELE 146 <span>Study Hub</span></div>
+    <div class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="index.html" class="active">Study Materials</a>
+      <a href="../quiz/index.html">Quiz</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <div class="breadcrumb"><a href="../index.html">Home</a> / <a href="index.html">Study Materials</a> / Week 1</div>
+  <h1>Week 1 — Foundations of Electric Motor Control</h1>
+  <p><strong>Class date:</strong> August 27, 2026 &nbsp;·&nbsp; <strong>Sources:</strong> class slides, personal notes, at-home examples</p>
+
+  <section class="content-block">
+    <h2>Key takeaways</h2>
+    <ol>
+      <li>A motor-control system has two related circuits: the <strong>power circuit</strong> and the <strong>control circuit</strong>.</li>
+      <li>Before touching trainer wiring: <strong>turn power off, then verify the circuit state with a meter</strong>.</li>
+      <li>Every trainer panel and motor base needs its own dedicated connection to the ground bus; do not daisy-chain these connections.</li>
+      <li>In a 208/120 V three-phase wye system, expect about <strong>208 V line-to-line</strong> and <strong>120 V line-to-neutral</strong>.</li>
+      <li>Most troubleshooting begins in the control circuit because that's where the operating logic lives.</li>
+    </ol>
+  </section>
+
+  <section class="content-block">
+    <h2>1. Power circuit vs. control circuit</h2>
+    <h3>Power circuit</h3>
+    <p>Carries the electrical energy that operates the motor. Commonly three-phase AC. Major components: L1/L2/L3 supply conductors, contactor power contacts, overload protection, motor conductors and the motor.</p>
+    <p>When the contactor coil is energized, its magnetic field closes the main contacts, connecting the three-phase supply to the motor.</p>
+    <p><strong>Protection distinction:</strong> an overload relay protects the motor against sustained overcurrent/overheating. Fuses/breakers provide short-circuit and ground-fault protection &mdash; related but different jobs.</p>
+
+    <h3>Control circuit</h3>
+    <p>Decides <em>when</em> the motor should start, stop, or change state. Can include stop/start pushbuttons, relay and contactor coils, auxiliary contacts, selector switches and sensors, timers, limit switches, float switches, and pressure switches.</p>
+    <p>Often operates at a lower voltage than the motor power circuit, supplied by a control transformer.</p>
+
+    <h3>Basic control path</h3>
+    <pre>L1 &rarr; STOP (normally closed) &rarr; START (normally open) &rarr; M coil &rarr; N</pre>
+    <p>The coil energizes only with a continuous path from L1 through every required device, through the M coil, back to the supply. In a real three-wire starter, an <strong>M auxiliary "seal-in" contact</strong> is wired in parallel with START so the coil stays energized after START is released.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>2. Safety workflow</h2>
+    <p>Before connecting, moving, or removing leads:</p>
+    <ol>
+      <li>Turn the trainer power off.</li>
+      <li>Set the meter correctly and verify the circuit state before touching conductors.</li>
+      <li>Confirm every required equipment-grounding connection is installed.</li>
+      <li>Check the circuit against the diagram before energizing.</li>
+    </ol>
+    <p>When an authorized measurement must be made on an energized circuit: use the correct meter function/range, use one hand when practical, move slowly and deliberately, keep the area dry, and turn power off immediately if anything looks or behaves unexpectedly.</p>
+    <p>De-energizing and verifying circuit state remain the primary protections &mdash; the "one-hand" technique alone does not make energized work safe.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>3. Grounding</h2>
+    <ul>
+      <li>The equipment-grounding conductor is a low-impedance safety path for fault current back to the source.</li>
+      <li>Ground is <strong>not</strong> meant to carry normal operating current.</li>
+      <li><strong>Ground and neutral are not interchangeable.</strong> Neutral carries normal load current; equipment ground bonds exposed metal parts to the fault-current return path.</li>
+      <li>Current divides among all available paths &mdash; it does not travel only through the path of least resistance.</li>
+      <li>The earth itself is not the effective fault-current return path; the metallic equipment-grounding path back to the source clears the fault.</li>
+    </ul>
+  </section>
+
+  <section class="content-block">
+    <h2>4. Voltage, current, resistance, power</h2>
+    <table>
+      <tr><th>Quantity</th><th>Symbol</th><th>Unit</th></tr>
+      <tr><td>Voltage</td><td>V</td><td>volts</td></tr>
+      <tr><td>Current</td><td>I</td><td>amperes</td></tr>
+      <tr><td>Resistance</td><td>R</td><td>ohms</td></tr>
+      <tr><td>Power</td><td>P</td><td>watts</td></tr>
+    </table>
+    <p><strong>Ohm's law:</strong> <code>V = I &times; R</code> &rarr; <code>I = V &divide; R</code>, <code>R = V &divide; I</code></p>
+    <p><strong>Example:</strong> 48 &Omega; coil, 24 V across it &rarr; <code>I = 24 &divide; 48 = 0.50 A</code></p>
+    <p><strong>Power:</strong> <code>P = V &times; I</code>. For resistive loads: <code>P = I&sup2;R = V&sup2;/R</code>.</p>
+    <p>Doubling current at fixed resistance &rarr; <strong>4&times;</strong> the heating (current is squared).</p>
+  </section>
+
+  <section class="content-block">
+    <h2>5. AC, DC, and meter setup</h2>
+    <ul>
+      <li><strong>DC</strong> &mdash; one polarity, one direction. Batteries, many electronic controls. Set meter to DC volts.</li>
+      <li><strong>AC</strong> &mdash; periodically reverses. North America: 60 Hz. UK: 50 Hz. Motors &amp; control transformers use AC. Set meter to AC volts.</li>
+      <li>Always check the diagram/label for AC vs. DC before setting the meter.</li>
+    </ul>
+  </section>
+
+  <section class="content-block">
+    <h2>6. Why three-phase power for motors</h2>
+    <p>Three-phase = three AC voltages, same frequency/magnitude, 120&deg; apart. In a motor, the phase currents create a <strong>rotating magnetic field</strong> &rarr; smoother torque, efficient operation. In a balanced system, total instantaneous power is nearly constant &mdash; that's the real reason for smooth torque (not just "three waves adding up").</p>
+    <p>Visualize: a point rotating uniformly around a circle &mdash; its vertical projection traces a sine wave. Three-phase = three such points, 120&deg; apart.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>7. L1, L2, L3, neutral, and 208/120 V</h2>
+    <p><strong>Three-wire system:</strong> L1, L2, L3 only &mdash; line-to-line measurements. A balanced three-phase load doesn't need a neutral (currents sum to zero).</p>
+    <p><strong>Four-wire wye system:</strong> L1, L2, L3 + neutral &mdash; both line-to-line and line-to-neutral. Supports 208 V three-phase loads and 120 V single-phase loads.</p>
+    <p><code>V(line-to-line) = &radic;3 &times; V(line-to-neutral)</code> &rarr; <code>120 &times; &radic;3 &asymp; 208 V</code></p>
+    <p>Both are nominal <strong>RMS</strong> values (not peaks). Peak of 120 V RMS &asymp; 170 V; peak of 208 V RMS &asymp; 294 V.</p>
+    <table>
+      <tr><th>Measurement</th><th>Expected nominal voltage</th></tr>
+      <tr><td>L1&ndash;L2</td><td>208 V AC</td></tr>
+      <tr><td>L1&ndash;L3</td><td>208 V AC</td></tr>
+      <tr><td>L2&ndash;L3</td><td>208 V AC</td></tr>
+      <tr><td>L1&ndash;N</td><td>120 V AC</td></tr>
+      <tr><td>L2&ndash;N</td><td>120 V AC</td></tr>
+      <tr><td>L3&ndash;N</td><td>120 V AC</td></tr>
+    </table>
+    <p>Always record both reference points &mdash; a voltage number alone is incomplete.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>8. Trainer components introduced</h2>
+    <p>The 85-MT5 trainer includes: safety switch &amp; supply terminals, ground bus, operator station &amp; indicator lamps, control relay &amp; control transformer, overload relay, manual starter &amp; reversing contactor, motor connection station &amp; motor. Later labs add timers, limit switches, float/pressure switches, and inserted faults for troubleshooting.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>9. Real-world / at-home examples</h2>
+    <p>Connecting the concepts above to devices already in a typical home:</p>
+    <table>
+      <tr><th>Home device</th><th>Motor-control concept it demonstrates</th></tr>
+      <tr><td>HVAC blower / furnace fan</td><td>Contactor + control relay switching; fan relay is a control circuit turning a power circuit on/off</td></tr>
+      <tr><td>Central AC compressor/condenser unit</td><td>Contactor for power circuit, overload/thermal protection, single- or three-phase power depending on system size</td></tr>
+      <tr><td>Sump pump</td><td><strong>Float switch</strong> directly controls a pump motor &mdash; classic control-circuit sensor</td></tr>
+      <tr><td>Washing machine</td><td>Timer and selector switch sequencing (control circuit) driving a motor (power circuit); lid switch acts like a safety interlock</td></tr>
+      <tr><td>Garage door opener</td><td><strong>Limit switches</strong> stop the motor at open/closed travel limits; a control circuit (remote/wall button) starts a DC or AC gearmotor</td></tr>
+      <tr><td>Refrigerator compressor</td><td>Overload relay/thermal protection prevents motor burnout from a stalled or overheated compressor</td></tr>
+      <tr><td>Water well pump</td><td>Pressure switch (control circuit) starts/stops the pump motor (power circuit) based on system pressure</td></tr>
+      <tr><td>Home electrical panel</td><td>Practical example of L1/L2, neutral, and the equipment-grounding bus; breakers = short-circuit/ground-fault protection</td></tr>
+      <tr><td>Phone/laptop chargers</td><td>DC output after AC-to-DC conversion &mdash; a simple everyday AC vs. DC contrast</td></tr>
+    </table>
+    <p><strong>Why this matters:</strong> almost every home appliance with a motor is a small-scale version of the trainer: a <strong>power circuit</strong> (line voltage &rarr; motor) supervised by a <strong>control circuit</strong> (switches/sensors/timers &rarr; relay or contactor coil), with <strong>overload/overcurrent protection</strong> somewhere in the power path.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>Retrieval practice</h2>
+    <p>Try answering without looking, then reveal. For an interactive version, use the <a href="../quiz/index.html">Quiz page</a>.</p>
+    <details>
+      <summary>1. What is the job of the power circuit? What is the job of the control circuit?</summary>
+      <p>The power circuit supplies motor energy; the control circuit decides when/how the motor operates.</p>
+    </details>
+    <details>
+      <summary>2. What two actions must occur before touching trainer wiring?</summary>
+      <p>Turn power off and verify the circuit state with the correctly configured meter.</p>
+    </details>
+    <details>
+      <summary>3. Why must each trainer panel have a dedicated equipment-grounding connection?</summary>
+      <p>It gives a reliable low-impedance fault-current path so the protective device opens; daisy-chaining lets one loose connection disconnect several components.</p>
+    </details>
+    <details>
+      <summary>4. Why are neutral and equipment ground not interchangeable?</summary>
+      <p>Neutral carries normal load current; equipment ground is a safety path and should not carry normal operating current.</p>
+    </details>
+    <details>
+      <summary>5. A 24 V coil has 48 &Omega; resistance. What current should it draw?</summary>
+      <p><code>I = 24/48 = 0.50 A</code>.</p>
+    </details>
+    <details>
+      <summary>6. If current through a fixed resistance doubles, how does heating change?</summary>
+      <p>Four times as great (<code>P = I&sup2;R</code>).</p>
+    </details>
+    <details>
+      <summary>7. Why does a three-phase motor produce smoother torque than a single-phase motor?</summary>
+      <p>Three currents 120&deg; apart create a rotating magnetic field and nearly constant total power.</p>
+    </details>
+    <details>
+      <summary>8. Why is a neutral not required for a balanced three-phase load?</summary>
+      <p>In a balanced load, the three phase currents sum to zero at the common point.</p>
+    </details>
+    <details>
+      <summary>9. In a 208/120 V wye system, what should be measured from L1 to L2? From L1 to neutral?</summary>
+      <p>About 208 V AC line-to-line; about 120 V AC line-to-neutral.</p>
+    </details>
+    <details>
+      <summary>10. Why must the two meter probe locations be recorded with every voltage reading?</summary>
+      <p>Voltage is a difference between two points &mdash; the number is ambiguous without both references.</p>
+    </details>
+    <details>
+      <summary>11. Which home device uses a float switch as its control-circuit sensor?</summary>
+      <p>Sump pump.</p>
+    </details>
+    <details>
+      <summary>12. Which home device uses limit switches to stop motor travel at open/closed positions?</summary>
+      <p>Garage door opener.</p>
+    </details>
+  </section>
+
+  <section class="content-block">
+    <h2>Before the next class</h2>
+    <ul>
+      <li>Memorize the safety workflow in the correct order.</li>
+      <li>Be able to identify whether a measurement is line-to-line or line-to-neutral.</li>
+      <li>Practice converting among <code>V = IR</code>, <code>P = VI</code>, and <code>P = I&sup2;R</code>.</li>
+      <li>Redraw the simplified STOP&ndash;START&ndash;M control path and explain what happens when either pushbutton is pressed.</li>
+      <li>Learn the functional difference among a contactor, overload relay, fuse/circuit breaker, control relay, and control transformer.</li>
+    </ul>
+  </section>
+</main>
+
+<footer class="site-footer">
+  ELE 146 — Electric Motor Control · Personal study site
+</footer>
+</body>
+</html>
