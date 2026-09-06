@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Week 2: Motors, Manual Control & Overload Protection — ELE 146</title>
+<link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+<header class="site-header">
+  <nav class="nav">
+    <div class="brand">ELE 146 <span>Study Hub</span></div>
+    <div class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="index.html" class="active">Study Materials</a>
+      <a href="../quiz/index.html">Quiz</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <div class="breadcrumb"><a href="../index.html">Home</a> / <a href="index.html">Study Materials</a> / Week 2</div>
+  <h1>Week 2 — Motors, Manual Control &amp; Overload Protection</h1>
+  <p><strong>Sources:</strong> class slides, Lab 2 (Amatrol 85-MT5SL manual motor starter), at-home examples</p>
+  <p><em>Rule for today: do not say "protection" without saying what is being protected and from what fault.</em></p>
+
+  <section class="content-block">
+    <h2>Key takeaways</h2>
+    <ol>
+      <li>The motor power path carries the energy that makes the shaft turn.</li>
+      <li>Manual control means the operator directly opens and closes that path locally.</li>
+      <li>A manual <strong>starter</strong> is more than a switch because it includes overload protection; a plain <strong>controller</strong> may not.</li>
+      <li>Short-circuit protection and overload protection solve different problems (fast fault current vs. sustained heating).</li>
+      <li>Overload settings are not guesses &mdash; they come from the motor's full-load current (FLA) rating.</li>
+    </ol>
+  </section>
+
+  <section class="content-block">
+    <h2>1. What a motor does</h2>
+    <p>A motor converts electrical energy into mechanical rotation. The motor current produces magnetic fields inside the motor; those fields create torque on the rotor. The shaft turns the load: fan, pump, conveyor, or compressor.</p>
+    <p><strong>The control circuit does not create the rotation &mdash; it decides when the power circuit is allowed to feed the motor.</strong></p>
+  </section>
+
+  <section class="content-block">
+    <h2>2. AC motors vs. DC motors</h2>
+    <table>
+      <tr><th></th><th>AC motors</th><th>DC motors</th></tr>
+      <tr><td>Supply</td><td>Alternating current supply</td><td>Direct current supply</td></tr>
+      <tr><td>Common use</td><td>Industrial/commercial; 3-phase AC runs smoothly and efficiently</td><td>Useful when direct speed control or battery power matters</td></tr>
+      <tr><td>Course focus</td><td><strong>Main focus of this course</strong></td><td>Appears in industry, not the main lab focus</td></tr>
+    </table>
+  </section>
+
+  <section class="content-block">
+    <h2>3. Three-phase motor basics</h2>
+    <ul>
+      <li>The three supply lines are <strong>L1, L2, and L3</strong>.</li>
+      <li>Each phase reaches its peak at a different time; the shifting magnetic field produces smooth rotation.</li>
+      <li>If one phase is missing, the motor may <strong>hum, overheat, or fail to start</strong> &mdash; the rotating magnetic field is incomplete.</li>
+    </ul>
+    <pre>L1 &rarr; OL &rarr;&#9;&#9;&#9;
+L2 &rarr; OL &rarr;&#9;&#125; M (3-phase motor)
+L3 &rarr; OL &rarr;&#9;&#9;&#9;</pre>
+  </section>
+
+  <section class="content-block">
+    <h2>4. Motor nameplate &amp; full-load current (FLA)</h2>
+    <ul>
+      <li>Read only the values the nameplate actually provides &mdash; do not assume missing information.</li>
+      <li>Voltage tells you which supply and motor connection are allowed.</li>
+      <li><strong>Full-load current (FLA)</strong> is the expected current at rated load; overload protection uses it as the baseline for motor heating protection.</li>
+      <li>For a dual-voltage motor, use the current rating that matches the actual voltage connection used.</li>
+    </ul>
+    <p><strong>Sample nameplate:</strong> HP 1/2 &middot; Phase 3 &middot; Volts 230/460 &middot; FLA 1.8/0.9 A &middot; Hz 60 &middot; RPM 1725</p>
+    <p><strong>FLA is <em>not</em> the same as:</strong> starting current, or short-circuit current. Overloads protect against sustained heating over time, based on FLA &mdash; not instantaneous fault current.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>5. Manual control vs. magnetic control</h2>
+    <h3>Manual motor control</h3>
+    <ul>
+      <li>A person directly operates the device that opens or closes the motor power path.</li>
+      <li>The manual starter switch stays ON until moved OFF or tripped.</li>
+      <li>Simple and practical for local control of smaller equipment.</li>
+      <li>Does <strong>not</strong> provide remote control, interlocks, sensors, or timers.</li>
+    </ul>
+    <h3>Magnetic motor control</h3>
+    <ul>
+      <li>A control circuit energizes a coil.</li>
+      <li>The energized coil closes the contactor's power contacts.</li>
+      <li>The operator handles a control signal, not the full motor current.</li>
+      <li>Supports remote stations, seal-in logic, interlocks, sensors, timers, and troubleshooting logic.</li>
+    </ul>
+  </section>
+
+  <section class="content-block">
+    <h2>6. Controller vs. starter</h2>
+    <table>
+      <tr><th>Motor controller</th><th>Motor starter</th></tr>
+      <tr><td>Starts and stops the motor</td><td>Starts and stops the motor</td></tr>
+      <tr><td>May be manual or magnetic</td><td>Includes overload protection for the motor</td></tr>
+      <tr><td>By itself, may not provide motor overload protection</td><td>The safer, more complete device for motor branch control</td></tr>
+    </table>
+  </section>
+
+  <section class="content-block">
+    <h2>7. Short-circuit protection vs. overload protection</h2>
+    <h3>Short-circuit protection</h3>
+    <p>A short circuit is an unintended low-resistance path. Current rises extremely fast and can create fire or arc energy. <strong>Fuses and circuit breakers</strong> interrupt high fault current quickly &mdash; mainly protecting conductors, equipment, and fault energy.</p>
+    <h3>Overload protection</h3>
+    <p>An overload is <strong>sustained current above what the motor should carry</strong>. The danger is heat building in the motor windings over time. An overload relay responds <strong>more slowly</strong> than a fuse or breaker (thermal response, not instantaneous), opening the motor circuit before it overheats.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>8. Manual starter power path &amp; contact states</h2>
+    <table>
+      <tr><th>Position</th><th>Contact state</th><th>Continuity test (L to T)</th></tr>
+      <tr><td>OFF</td><td>Contacts open</td><td>Should show open circuit</td></tr>
+      <tr><td>ON</td><td>Contacts closed, motor fed</td><td>Should show near-zero resistance / tone</td></tr>
+    </table>
+    <p>If the overload trips, the motor power path opens even though the manual starter itself is still in the ON position.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>9. Low-voltage protection &amp; automatic restart</h2>
+    <ul>
+      <li><strong>Low-voltage protection</strong> prevents automatic restart after power is lost and then restored.</li>
+      <li>A <strong>basic manual starter may restart automatically</strong> if it was left ON before power was removed &mdash; this is exactly what Lab 2, Part 4 demonstrates.</li>
+      <li>That restart behavior matters because equipment can move unexpectedly when power returns &mdash; a real safety hazard around real machinery.</li>
+      <li>Magnetic starters can be designed so the coil drops out and must be intentionally restarted (low-voltage/loss-of-voltage protection).</li>
+    </ul>
+  </section>
+
+  <section class="content-block">
+    <h2>10. Setting an overload from the nameplate</h2>
+    <ol>
+      <li>Start with the motor's full-load current (from the nameplate or trainer data).</li>
+      <li>Set the overload to the required trip level for that motor/application.</li>
+      <li>A setting <strong>too low</strong> can nuisance-trip (opens even during normal operation).</li>
+      <li>A setting <strong>too high</strong> may fail to protect the motor from overheating.</li>
+    </ol>
+    <p><strong>Lab 2 example</strong> (85-MT5SL trainer motor, low-voltage connection): rated FLA = 1.4 A, service factor = 1.35. Because the service factor is 1.15 or greater, the trip current is set equal to the rated FLA: <strong>1.4 A</strong>.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>11. Lab 2 — what it proved (Amatrol 85-MT5SL)</h2>
+    <p><strong>Part 1 &mdash; Prove the starter contacts:</strong> with power OFF, continuity test across L1&ndash;T1, L2&ndash;T2, L3&ndash;T3. OFF = open circuit on all three poles; ON = continuity (near-zero resistance) on all three poles.</p>
+    <p><strong>Part 2 &mdash; Wire the motor through the starter:</strong> follow the Amatrol pictorial/schematic exactly &mdash; never reconstruct a power circuit from memory. L1/L2/L3 = line side, T1/T2/T3 = load side, "O.L." = overload element inside the starter.</p>
+    <p><strong>Part 3 &mdash; Start/stop manually:</strong> with the safety switch ON but the manual starter OFF, the motor stays stopped (starter contacts open). Moving the starter to ON closes all three poles and feeds the motor; moving it OFF lets the motor coast to a stop.</p>
+    <p><strong>Part 4 &mdash; Restart behavior after a power loss:</strong> with the starter left ON, removing and restoring supply power caused the motor to <strong>restart automatically</strong> &mdash; proving this manual starter has <strong>no low-voltage protection</strong>.</p>
+    <p><strong>Part 5 &mdash; Set overload from the nameplate:</strong> located FLA (1.4 A) and service factor (1.35) on the nameplate, then applied the &ge;1.15-service-factor rule to set the trip current to 1.4 A.</p>
+    <p><strong>Safety rules used throughout:</strong> power OFF before connecting/moving/removing leads; dedicated ground-bus connection for every equipment ground (no daisy-chaining); circuit must be de-energized for continuity/resistance tests; compare every connection against the pictorial/schematic before energizing.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>12. Real-world / at-home examples</h2>
+    <table>
+      <tr><th>Home / everyday example</th><th>Week 2 concept it demonstrates</th></tr>
+      <tr><td>Basic wall light switch</td><td>Pure <strong>manual control</strong> &mdash; no overload protection built in</td></tr>
+      <tr><td>Shop vacuum / air compressor with a thermal-overload reset button</td><td>A <strong>starter</strong>-like device: manual ON/OFF plus built-in overload protection that trips and must be reset</td></tr>
+      <tr><td>Home breaker panel (thermal-magnetic breakers)</td><td>One device, two jobs: magnetic trip = fast short-circuit protection, thermal trip = slower overload protection</td></tr>
+      <tr><td>Space heater or hair dryer thermal cutoff</td><td>Overload-style thermal protection &mdash; trips on sustained overheating, not a short-circuit-level fault</td></tr>
+      <tr><td>Garage door opener / appliance that restarts after a power blink</td><td>Demonstrates <strong>lack of low-voltage protection</strong>, just like Lab 2 Part 4</td></tr>
+      <tr><td>Modern elevator or dishwasher control system</td><td>Closer to <strong>magnetic control</strong> &mdash; a control signal energizes a relay/contactor instead of a person switching the full load</td></tr>
+      <tr><td>Refrigerator/AC compressor nameplate</td><td>Real nameplate with voltage, FLA, and phase info &mdash; same fields used to size an overload setting</td></tr>
+    </table>
+    <p><strong>Why this matters:</strong> almost every powered home device is either a simple manual controller (light switch) or a more complete starter-like device (thermal-protected power tool, breaker panel) &mdash; the same controller-vs-starter and short-circuit-vs-overload distinctions taught this week.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>Retrieval practice</h2>
+    <p>Try answering without looking, then reveal. For an interactive version, use the <a href="../quiz/index.html">Quiz page</a>.</p>
+    <details><summary>1. Why should the safety switch be OFF before connecting or moving leads?</summary><p>To prevent contact with an energized conductor while connecting/moving leads &mdash; the de-energize-first safety workflow.</p></details>
+    <details><summary>2. Why is one-hand meter practice recommended when measuring live voltage?</summary><p>It may reduce the chance of current crossing the chest, though de-energizing/verifying remains the primary protection.</p></details>
+    <details><summary>3. What does a three-phase motor convert electrical energy into?</summary><p>Mechanical rotation (torque on the shaft).</p></details>
+    <details><summary>4. Name the three power lines used for a three-phase motor.</summary><p>L1, L2, and L3.</p></details>
+    <details><summary>5. What may happen if a three-phase motor loses one phase?</summary><p>It may hum, overheat, or fail to start because the rotating magnetic field is incomplete.</p></details>
+    <details><summary>6. Define manual motor control in one sentence.</summary><p>A person directly operates the device that opens or closes the motor power path.</p></details>
+    <details><summary>7. Define magnetic motor control in one sentence.</summary><p>A control circuit energizes a coil that closes the contactor's power contacts based on a control signal.</p></details>
+    <details><summary>8. What is the difference between a controller and a starter?</summary><p>A starter is a controller that also includes overload protection for the motor; a controller alone may not.</p></details>
+    <details><summary>9. In the manual starter OFF position, should L1 to T1 show continuity?</summary><p>No &mdash; contacts are open, so it should show an open circuit.</p></details>
+    <details><summary>10. In the manual starter ON position, should L1 to T1 show continuity?</summary><p>Yes &mdash; contacts are closed, so it should show near-zero resistance/continuity.</p></details>
+    <details><summary>11. What is a short circuit?</summary><p>An unintended low-resistance path where current rises extremely fast, risking fire or arc energy.</p></details>
+    <details><summary>12. Name two devices used for short-circuit protection.</summary><p>Fuses and circuit breakers.</p></details>
+    <details><summary>13. What is an overload?</summary><p>Sustained current above what the motor should carry, which builds heat over time.</p></details>
+    <details><summary>14. What does overload protection mainly protect?</summary><p>The motor (its windings) from heat damage due to sustained excess current.</p></details>
+    <details><summary>15. Why does an overload relay usually trip slower than a fuse?</summary><p>It responds to sustained thermal heating over time rather than reacting instantly like a fuse does to fault current.</p></details>
+    <details><summary>16. A motor has FLA of 1.4 A. If the overload is set to 100% of FLA, what is the setting?</summary><p>1.4 A.</p></details>
+    <details><summary>17. A motor has FLA of 1.4 A. If the overload is set to 115% of FLA, what is the setting?</summary><p>1.4 &times; 1.15 = 1.61 A.</p></details>
+    <details><summary>18. A motor draws 2.0 A against a 1.4 A FLA. Is this below or above full-load current?</summary><p>Above full-load current (2.0 A vs. a 1.4 A FLA).</p></details>
+    <details><summary>19. If current doubles through the same resistance, what happens to resistive heating?</summary><p>It becomes four times as great (P = I&sup2;R).</p></details>
+    <details><summary>20. A control device draws 0.25 A at 120 V. How much power does it use?</summary><p>P = V &times; I = 120 &times; 0.25 = 30 W.</p></details>
+    <details><summary>21. What is low-voltage protection?</summary><p>A feature that prevents a motor from automatically restarting after power is lost and then restored.</p></details>
+    <details><summary>22. If a manual starter is left ON and power returns after an outage, what may happen?</summary><p>The motor may restart automatically and unexpectedly, since a basic manual starter has no low-voltage protection.</p></details>
+    <details><summary>23. Why is automatic restart a safety concern?</summary><p>Equipment can move unexpectedly when power returns, which is hazardous to anyone near it.</p></details>
+    <details><summary>24. Why must overload setting be tied to the motor full-load current?</summary><p>So the setting is neither too low (nuisance tripping) nor too high (failing to protect the motor from overheating).</p></details>
+    <details><summary>25. What is the most important lab habit before using the meter?</summary><p>Verify the circuit is de-energized and set the meter correctly before touching any leads.</p></details>
+  </section>
+
+  <section class="content-block">
+    <h2>Before the next class</h2>
+    <ul>
+      <li>Be able to explain the difference between a controller and a starter without hesitating.</li>
+      <li>Practice the FLA &times; (percentage) overload-setting calculation both ways (find the setting, and check whether a reading is above/below FLA).</li>
+      <li>Be ready to explain, in your own words, why the Lab 2 motor restarted automatically and why that matters on real equipment.</li>
+      <li>Review the short-circuit-protection vs. overload-protection distinction &mdash; a common exam trap is treating them as the same thing.</li>
+    </ul>
+  </section>
+</main>
+
+<footer class="site-footer">
+  ELE 146 — Electric Motor Control · Personal study site
+</footer>
+</body>
+</html>

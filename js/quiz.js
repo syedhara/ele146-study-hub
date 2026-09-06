@@ -130,6 +130,155 @@ const quizData = {
       { front: "Peak vs RMS (120 V circuit)", back: "120 V is the RMS value; the peak is about 120 × √2 ≈ 170 V." },
       { front: "Basic control path", back: "L1 → STOP (N.C.) → START (N.O.) → M coil → N" }
     ]
+  },
+  week2: {
+    label: "Week 2 — Motors, Manual Control & Overload Protection",
+    mc: [
+      {
+        q: "What does a three-phase motor convert electrical energy into?",
+        options: ["Heat only", "Mechanical rotation", "Static magnetic field only", "Radio-frequency energy"],
+        correct: 1,
+        explanation: "Motor current creates magnetic fields that produce torque on the rotor, turning the shaft."
+      },
+      {
+        q: "What happens if a three-phase motor loses one phase while running?",
+        options: [
+          "Nothing changes",
+          "It runs faster",
+          "It may hum, overheat, or fail to start — the rotating field is incomplete",
+          "It automatically switches to DC"
+        ],
+        correct: 2,
+        explanation: "All three phases are needed to produce a complete rotating magnetic field."
+      },
+      {
+        q: "What is full-load current (FLA) on a motor nameplate?",
+        options: [
+          "The current when starting the motor",
+          "The short-circuit current rating",
+          "The expected current at rated load, used as the baseline for overload protection",
+          "The voltage rating of the motor"
+        ],
+        correct: 2,
+        explanation: "FLA is the expected current at rated load — overload protection is set from this value, not starting or short-circuit current."
+      },
+      {
+        q: "What is the key difference between a motor controller and a motor starter?",
+        options: [
+          "There is no difference",
+          "A starter includes overload protection for the motor; a controller alone may not",
+          "A controller is always magnetic, a starter is always manual",
+          "A starter cannot be manually operated"
+        ],
+        correct: 1,
+        explanation: "Both start/stop the motor, but a starter adds overload protection — making it the safer, more complete device."
+      },
+      {
+        q: "In manual motor control, who/what directly opens and closes the motor power path?",
+        options: [
+          "A control relay coil",
+          "A person, operating the device directly",
+          "A timer",
+          "A pressure switch"
+        ],
+        correct: 1,
+        explanation: "Manual control means a person directly operates the switching device — no coil or control circuit in between."
+      },
+      {
+        q: "In magnetic motor control, what does the operator actually handle?",
+        options: [
+          "The full motor current",
+          "A control signal that energizes a coil, which closes the contactor's power contacts",
+          "Only the overload dial",
+          "Nothing — magnetic control is fully automatic"
+        ],
+        correct: 1,
+        explanation: "The operator handles a low-power control signal; the coil/contactor handles the actual motor current."
+      },
+      {
+        q: "What is a short circuit?",
+        options: [
+          "Sustained current above the motor's rating",
+          "An unintended low-resistance path causing extremely fast current rise",
+          "A motor running below full-load current",
+          "A normal overload relay trip"
+        ],
+        correct: 1,
+        explanation: "Short circuits create very fast current rise and possible fire/arc energy — fuses/breakers clear this quickly."
+      },
+      {
+        q: "Why does an overload relay usually trip slower than a fuse or breaker?",
+        options: [
+          "It's a design flaw",
+          "It responds to sustained thermal heating over time, not an instantaneous fault",
+          "Overload relays are always faster than fuses",
+          "It only works on DC circuits"
+        ],
+        correct: 1,
+        explanation: "Overload protection is thermal-based and reacts to sustained heating; short-circuit protection reacts almost instantly."
+      },
+      {
+        q: "A motor has FLA of 1.4 A. If the overload is set to 115% of FLA, what is the setting?",
+        options: ["1.4 A", "1.61 A", "1.15 A", "2.0 A"],
+        correct: 1,
+        explanation: "1.4 × 1.15 = 1.61 A."
+      },
+      {
+        q: "A motor draws 2.0 A against a 1.4 A FLA. What does this indicate?",
+        options: [
+          "The motor is below full-load current",
+          "The motor is above full-load current (overloaded)",
+          "The motor has a short circuit",
+          "The reading is meaningless without voltage"
+        ],
+        correct: 1,
+        explanation: "2.0 A is greater than the 1.4 A FLA rating — the motor is drawing more than its rated full-load current."
+      },
+      {
+        q: "In the manual starter OFF position, what should a continuity test from L1 to T1 show?",
+        options: ["Near-zero resistance", "Open circuit", "Exactly 120 V", "It depends on the overload setting"],
+        correct: 1,
+        explanation: "OFF means the contacts are open, so there should be no continuity between line and load terminals."
+      },
+      {
+        q: "What does low-voltage protection prevent?",
+        options: [
+          "Short circuits",
+          "Automatic restart of a motor after power is lost and then restored",
+          "Overheating during normal operation",
+          "Voltage drop across long conductors"
+        ],
+        correct: 1,
+        explanation: "Low-voltage protection requires an intentional restart instead of letting the motor resume automatically when power returns."
+      },
+      {
+        q: "In Lab 2, what did leaving the manual starter ON through a power interruption prove?",
+        options: [
+          "The starter has low-voltage protection",
+          "The motor will never restart",
+          "The motor restarted automatically, proving the manual starter has no low-voltage protection",
+          "The overload relay had failed"
+        ],
+        correct: 2,
+        explanation: "Lab 2 Part 4 demonstrated that this manual starter lacks low-voltage protection — it restarted automatically when power returned."
+      }
+    ],
+    flashcards: [
+      { front: "What a motor does", back: "Converts electrical energy into mechanical rotation via magnetic fields acting on the rotor." },
+      { front: "Manual motor control", back: "A person directly operates the device that opens/closes the motor power path. No remote control, interlocks, sensors, or timers." },
+      { front: "Magnetic motor control", back: "A control circuit energizes a coil that closes the contactor's power contacts; the operator only handles a control signal." },
+      { front: "Controller vs. starter", back: "Both start/stop the motor, but a starter also includes overload protection — the safer, more complete device." },
+      { front: "Full-load current (FLA)", back: "The expected current at rated load — the baseline for setting overload protection. Not starting or short-circuit current." },
+      { front: "Short-circuit protection", back: "Fuses/breakers clear an unintended low-resistance fault path with extremely fast-rising current." },
+      { front: "Overload protection", back: "Protects against sustained current above rating that builds heat over time; trips slower than a fuse (thermal response)." },
+      { front: "Overload setting rule (SF ≥ 1.15)", back: "Set trip current equal to the motor's rated full-load current (FLA)." },
+      { front: "Manual starter OFF/ON continuity", back: "OFF → open circuit L to T. ON → near-zero resistance / continuity L to T." },
+      { front: "Low-voltage protection", back: "Prevents a motor from automatically restarting after power is lost and restored — must be manually restarted." },
+      { front: "Lab 2, Part 4 finding", back: "Leaving the manual starter ON through a power loss caused the motor to restart automatically — proving no low-voltage protection." },
+      { front: "Missing phase on a 3-phase motor", back: "May hum, overheat, or fail to start — the rotating magnetic field is incomplete." },
+      { front: "Home example: light switch", back: "Pure manual control — no overload protection built in." },
+      { front: "Home example: thermal-magnetic breaker panel", back: "One device, two jobs: magnetic trip = short-circuit protection, thermal trip = overload protection." }
+    ]
   }
 };
 
