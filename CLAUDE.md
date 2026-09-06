@@ -10,7 +10,7 @@
 **Goal:** Personal pre-study, review, and quiz site for ELE 146 (Electric Motor Control) — study materials from class slides + personal notes + real-world/at-home examples, plus a self-quiz
 **Owner:** Sri
 **GitHub:** https://github.com/syedhara/ele146-study-hub
-**Vercel:** (add after first deploy)
+**Vercel:** https://vercel.com/sri-y/ele146-study-hub (live: https://ele146-study-hub.vercel.app)
 **Local path:** /Users/sriyedhara/Documents/ELE 146/Quiz/
 
 ---
