@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Week 3: Control Transformers — ELE 146</title>
+<link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="site-header">
+  <nav class="nav">
+    <div class="brand">ELE 146 <span>Study Hub</span></div>
+    <div class="nav-links">
+      <a href="/index.html">Home</a>
+      <a href="/study/index.html" class="active">Study Materials</a>
+      <a href="/quiz/index.html">Quiz</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <div class="breadcrumb"><a href="/index.html">Home</a> / <a href="/study/index.html">Study Materials</a> / Week 3</div>
+  <h1>Week 3 — Control Transformers</h1>
+  <p><strong>Sources:</strong> Class 3 PRE-slides, Amatrol Module 3 control-transformer lab</p>
+  <p><em>Lab target: wire the trainer control transformer and measure about 120 VAC across secondary terminals 2 and 5.</em></p>
+
+  <section class="content-block">
+    <h2>Key takeaways</h2>
+    <ol>
+      <li>A control transformer steps voltage to a useful level, isolates the control circuit from the source, and creates a predictable measurement point for troubleshooting.</li>
+      <li>Turns ratio (TR) = primary turns &divide; secondary turns; secondary voltage = primary voltage &divide; TR.</li>
+      <li>The trainer's primary tap must match the supply voltage (208, 277, or 380 VAC); the lab uses the 208 VAC tap.</li>
+      <li>Secondary windings connected in parallel give 120 VAC; connected in series they give 240 VAC. This lab needs parallel.</li>
+      <li>Terminal 5 on the secondary is grounded, giving the control circuit a stable reference &mdash; expect ~120 VAC across 2&ndash;5, ~0 VAC from 5 to ground, and ~120 VAC from 2 to ground.</li>
+    </ol>
+  </section>
+
+  <section class="content-block">
+    <h2>1. Vocabulary</h2>
+    <ul>
+      <li><strong>Alternating current (AC):</strong> current that reverses direction periodically.</li>
+      <li><strong>Volts alternating current (VAC):</strong> an AC voltage reading, such as 120 VAC.</li>
+      <li><strong>Volt-amperes (VA):</strong> apparent power. VA = V &times; I.</li>
+      <li><strong>National Electrical Code (NEC):</strong> U.S. electrical safety code used by industry.</li>
+      <li><strong>Primary winding:</strong> transformer coil connected to the source.</li>
+      <li><strong>Secondary winding:</strong> transformer coil that supplies the load.</li>
+      <li><strong>Turns ratio (TR):</strong> primary coil turns &divide; secondary coil turns.</li>
+    </ul>
+  </section>
+
+  <section class="content-block">
+    <h2>2. Why this topic matters</h2>
+    <p>Most motor-control panels have a high-energy power circuit and a lower-energy control circuit. The transformer lets pushbuttons, selector switches, pilot lights, relays, and contactor coils use a standard control voltage.</p>
+    <p><strong>When a control circuit does nothing, the first question is: do we actually have control voltage?</strong> A control transformer is a troubleshooting landmark &mdash; prove control power exists before blaming switches, coils, or lamps.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>3. Power circuit vs. control circuit</h2>
+    <table>
+      <tr><th>Power circuit</th><th>Control circuit</th></tr>
+      <tr><td>Feeds the motor</td><td>Decides when the motor should start, stop, reverse, or signal status</td></tr>
+      <tr><td>Carries the current that produces mechanical motion</td><td>Does not usually carry motor current &mdash; controls the devices that switch motor current</td></tr>
+    </table>
+    <p>Lab example: the selector switch controls a yellow lamp using transformer secondary voltage.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>4. What a control transformer does</h2>
+    <p>A control transformer uses magnetic coupling to transfer energy from a primary winding to a secondary winding. Three jobs:</p>
+    <ol>
+      <li>Step voltage to a useful control level.</li>
+      <li>Provide isolation between source and control circuit.</li>
+      <li>Create a predictable measurement point for troubleshooting.</li>
+    </ol>
+    <p>Lab example: the Amatrol trainer steps 208 VAC line voltage down to about 120 VAC control voltage.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>5. Magnetic coupling, not a direct wire</h2>
+    <ul>
+      <li><strong>Primary winding</strong> &mdash; connected to the supply side.</li>
+      <li><strong>Iron core</strong> &mdash; carries changing magnetic flux.</li>
+      <li><strong>Secondary winding</strong> &mdash; supplies the control circuit.</li>
+    </ul>
+    <p>The primary and secondary are magnetically coupled &mdash; they are not meant to be one continuous conductor. That separation (isolation) is a key reason control transformers are useful in control panels.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>6. Step-down and step-up</h2>
+    <table>
+      <tr><th>Step-down transformer</th><th>Step-up transformer</th></tr>
+      <tr><td>Secondary voltage is lower than primary voltage</td><td>Secondary voltage is higher than primary voltage</td></tr>
+      <tr><td>Example: 208 VAC &rarr; 120 VAC</td><td>Example: 24 VAC &rarr; 96 VAC</td></tr>
+    </table>
+    <p><strong>Sanity check:</strong> fewer secondary turns &rarr; lower secondary voltage. More secondary turns &rarr; higher secondary voltage.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>7. Rating language: volts, amperes, volt-amperes</h2>
+    <ul>
+      <li><strong>Voltage rating:</strong> the voltage the winding is designed to use.</li>
+      <li><strong>Current rating:</strong> how much current the winding can safely carry.</li>
+      <li><strong>Volt-amperes (VA):</strong> the apparent power capacity, VA = V &times; I.</li>
+    </ul>
+    <p>If a transformer is too small, control voltage can sag, contactors may chatter, and components can overheat.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>8. Why not put every control device on line voltage?</h2>
+    <p>Line voltage may be higher than the voltage rating of pushbuttons, pilot lights, relays, or control devices. A standard control voltage makes wiring and troubleshooting more consistent across machines.</p>
+    <p>Lower control voltage can reduce risk, but it is <strong>not harmless</strong> &mdash; treat every powered control circuit as hazardous until proven otherwise.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>9. Turns ratio</h2>
+    <p>Turns ratio compares how many turns are on the primary winding to how many turns are on the secondary winding.</p>
+    <p><strong>TR = primary turns &divide; secondary turns</strong></p>
+    <p>Example: primary = 100 turns, secondary = 50 turns &rarr; TR = 100 &divide; 50 = 2, written <strong>2:1</strong>. A 2:1 turns ratio means the primary has twice as many turns as the secondary; in an ideal transformer, the secondary voltage will be half of the primary voltage.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>10. Secondary voltage formula</h2>
+    <p><strong>secondary voltage = primary voltage &divide; turns ratio</strong></p>
+    <p>Example: primary voltage = 120 VAC, turns ratio = 2 &rarr; secondary voltage = 120 &divide; 2 = <strong>60 VAC</strong>.</p>
+    <p><strong>Check the answer:</strong> because the turns ratio is greater than 1, this must be a step-down transformer &mdash; a 60 VAC answer makes sense. The voltmeter is on the secondary, so the calculated value is the voltage across the secondary terminals.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>11. Worked examples</h2>
+    <p><strong>Worked Example 1 &mdash; Step-down:</strong> primary turns = 180, secondary turns = 45, primary voltage = 240 VAC.</p>
+    <ul>
+      <li>Turns ratio = 180 &divide; 45 = <strong>4:1</strong></li>
+      <li>Secondary voltage = 240 &divide; 4 = <strong>60 VAC</strong></li>
+      <li><strong>Step-down</strong></li>
+    </ul>
+    <p><strong>Worked Example 2 &mdash; Step-up:</strong> primary turns = 50, secondary turns = 200, primary voltage = 24 VAC.</p>
+    <ul>
+      <li>Turns ratio = 50 &divide; 200 = <strong>0.25</strong></li>
+      <li>Secondary voltage = 24 &divide; 0.25 = <strong>96 VAC</strong></li>
+      <li><strong>Step-up</strong> &mdash; when the turns ratio is less than 1, the secondary has more turns than the primary, so the secondary voltage is higher.</li>
+    </ul>
+  </section>
+
+  <section class="content-block">
+    <h2>12. Trainer transformer wiring</h2>
+    <p>Primary taps: 208, 277, or 380 VAC. Secondary windings can be connected in series (240 VAC) or in parallel (120 VAC). H = high-side primary reference; X = low-side secondary reference.</p>
+    <h3>Primary tap selection</h3>
+    <table>
+      <tr><th>Supply voltage</th><th>Connect primary to terminals</th></tr>
+      <tr><td>208 VAC</td><td>2 and 3</td></tr>
+      <tr><td>277 VAC</td><td>2 and 4</td></tr>
+      <tr><td>380 VAC</td><td>2 and 6</td></tr>
+    </table>
+    <p>The primary tap must match the supply voltage &mdash; using the wrong tap can produce the wrong secondary voltage and can overheat or damage the transformer. <strong>Class 3 lab uses the 208 VAC primary tap.</strong></p>
+    <h3>Secondary connections: series vs. parallel</h3>
+    <table>
+      <tr><th>Connection</th><th>Links</th><th>Output across 2&ndash;5</th></tr>
+      <tr><td>Series</td><td>Link terminal 3 to terminal 4</td><td>240 VAC</td></tr>
+      <tr><td>Parallel</td><td>Link terminal 2 to 3, and terminal 4 to 5</td><td>120 VAC</td></tr>
+    </table>
+    <p>Lab needs about 120 VAC control power, so the secondary windings must be connected <strong>in parallel</strong>. The links decide whether the two secondary windings add voltage or share current &mdash; the wrong link pattern produces the wrong output voltage. Always confirm link placement before energizing; do not wire from memory.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>13. Primary and secondary protection</h2>
+    <ul>
+      <li><strong>Primary-side protection:</strong> protects the transformer primary winding and upstream wiring from fault current.</li>
+      <li><strong>Secondary-side protection:</strong> protects lower-voltage control conductors and devices from fault current.</li>
+    </ul>
+    <p>A fuse or breaker is not there to make a circuit work normally &mdash; it opens when current becomes unsafe. The Amatrol schematic shows primary fuses feeding the control transformer; overcurrent protection is tied to National Electrical Code requirements.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>14. Grounding one side of the secondary</h2>
+    <p>In this lab, terminal 5 on the transformer secondary is connected to earth ground, giving one side of the control circuit a stable reference to ground. A fault from the ungrounded side to grounded metal becomes a high-current fault path, so protection can open. A floating secondary can create confusing voltage-to-ground readings.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>15. Expected meter readings</h2>
+    <table>
+      <tr><th>Measurement</th><th>Expected reading</th><th>Why</th></tr>
+      <tr><td>Secondary terminals 2 to 5</td><td>~120 VAC</td><td>Full secondary output</td></tr>
+      <tr><td>Terminal 5 to ground</td><td>~0 VAC</td><td>Terminal 5 is grounded</td></tr>
+      <tr><td>Terminal 2 to ground</td><td>~120 VAC</td><td>Terminal 2 is the ungrounded side</td></tr>
+    </table>
+    <p>If 2-to-5 is not near 120 VAC, do not assume the transformer is bad. First check the primary tap, secondary links, fuse path, and meter setting.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>16. Measuring control voltage &amp; Live-Dead-Live</h2>
+    <p>Use the digital multimeter on AC voltage. Black lead goes to COM (common); red lead goes to volts/ohms. Measure across secondary terminals 2 and 5. Use one hand where practical and keep your body out of the current path &mdash; this reduces the chance that a shock path goes across your chest from one hand to the other.</p>
+    <p><strong>Proving de-energized &mdash; Live-Dead-Live:</strong></p>
+    <ol>
+      <li><strong>Live</strong> &mdash; prove the meter works on a known live source.</li>
+      <li><strong>Dead</strong> &mdash; measure the circuit you intend to touch; expect zero volts.</li>
+      <li><strong>Live</strong> &mdash; re-prove the meter on the known live source.</li>
+    </ol>
+    <p>Re-checking proves a meter lead or internal connection didn't fail during testing &mdash; do not treat a zero-volt reading as trustworthy until the meter has been proven before and after.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>17. Lab preview &amp; self-check</h2>
+    <p><strong>What you will wire:</strong> connect the primary for the 208 VAC tap; configure the secondary for 120 VAC (parallel); connect terminal 5 to earth ground; use the selector switch (SS1) to turn the yellow lamp on and off; measure the secondary output across terminals 2 and 5.</p>
+    <p><strong>Team self-check before energizing:</strong></p>
+    <ul>
+      <li>Every required green ground lead is connected to a dedicated ground bus point.</li>
+      <li>The primary tap matches the actual supply voltage.</li>
+      <li>The secondary links match the 120 VAC configuration.</li>
+      <li>Terminal 5 on the secondary is connected to earth ground.</li>
+      <li>The selector switch is in the center/off position before power is applied.</li>
+    </ul>
+  </section>
+
+  <section class="content-block">
+    <h2>18. What correct operation looks like</h2>
+    <table>
+      <tr><th>Switch position</th><th>Yellow lamp</th><th>Notes</th></tr>
+      <tr><td>Center/off</td><td>Off</td><td>Circuit path is open</td></tr>
+      <tr><td>Left</td><td>On</td><td>Selector switch contact closes</td></tr>
+      <tr><td>Back to center/off</td><td>Off</td><td>&mdash;</td></tr>
+    </table>
+    <p>Measuring 2 to 5 should read about 120 VAC. <strong>If the lamp works but the voltage is wrong, do not skip the measurement</strong> &mdash; the lamp proves circuit action, the meter proves transformer output.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>19. Real-world / at-home examples</h2>
+    <table>
+      <tr><th>Home / everyday example</th><th>Week 3 concept it demonstrates</th></tr>
+      <tr><td>Laptop or phone charger brick</td><td>Step-down transformer/converter &mdash; steps 120 VAC down to a low DC control-level voltage</td></tr>
+      <tr><td>Doorbell transformer</td><td>A small step-down control transformer supplying a low-voltage control circuit (the doorbell button/chime), isolated from the 120 VAC house wiring</td></tr>
+      <tr><td>Landscape lighting transformer</td><td>Step-down (120 VAC &rarr; 12 VAC) &mdash; same turns-ratio idea as the trainer</td></tr>
+      <tr><td>Microwave oven high-voltage transformer</td><td>Step-up transformer &mdash; boosts line voltage to the high voltage needed for the magnetron</td></tr>
+      <tr><td>Home breaker/GFCI outlet</td><td>Grounding + overcurrent protection concept, same as primary/secondary fusing and the grounded terminal 5</td></tr>
+    </table>
+    <p><strong>Why this matters:</strong> almost every low-voltage household control circuit (doorbells, thermostats, landscape lighting) uses the same step-down/isolation idea as the trainer's control transformer.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>Retrieval practice</h2>
+    <p>Try answering without looking, then reveal. For an interactive version, use the <a href="/quiz/index.html">Quiz page</a>.</p>
+    <details><summary>1. What are the three jobs of a control transformer?</summary><p>Step voltage to a useful control level, provide isolation between source and control circuit, and create a predictable measurement point for troubleshooting.</p></details>
+    <details><summary>2. What is the formula for turns ratio?</summary><p>TR = primary turns &divide; secondary turns.</p></details>
+    <details><summary>3. What is the formula for secondary voltage?</summary><p>Secondary voltage = primary voltage &divide; turns ratio.</p></details>
+    <details><summary>4. Primary turns = 180, secondary turns = 45. What is the turns ratio?</summary><p>180 &divide; 45 = 4:1.</p></details>
+    <details><summary>5. Primary voltage = 240 VAC, turns ratio = 4:1. What is the secondary voltage?</summary><p>240 &divide; 4 = 60 VAC.</p></details>
+    <details><summary>6. Primary turns = 50, secondary turns = 200. Is this step-up or step-down?</summary><p>Step-up &mdash; turns ratio = 0.25, which is less than 1, so the secondary has more turns and higher voltage.</p></details>
+    <details><summary>7. What supply voltage uses primary terminals 2 and 3?</summary><p>208 VAC.</p></details>
+    <details><summary>8. Which secondary link pattern gives 120 VAC?</summary><p>Parallel: link terminal 2 to 3, and terminal 4 to 5.</p></details>
+    <details><summary>9. Which secondary link pattern gives 240 VAC?</summary><p>Series: link terminal 3 to terminal 4.</p></details>
+    <details><summary>10. What is the expected reading across secondary terminals 2 and 5 in this lab?</summary><p>About 120 VAC.</p></details>
+    <details><summary>11. Why is terminal 5 grounded?</summary><p>It gives the control circuit a stable reference to ground and helps fault current clear protection.</p></details>
+    <details><summary>12. What should terminal 5 to ground read, and why?</summary><p>About 0 VAC, because terminal 5 is the grounded secondary terminal.</p></details>
+    <details><summary>13. What should terminal 2 to ground read, and why?</summary><p>About 120 VAC, because terminal 2 is the ungrounded side.</p></details>
+    <details><summary>14. If 2-to-5 doesn't read near 120 VAC, what should you check first?</summary><p>The primary tap, secondary links, fuse path, and meter setting &mdash; not assume the transformer is bad.</p></details>
+    <details><summary>15. What are the three steps of Live-Dead-Live?</summary><p>1) Prove the meter on a known live source. 2) Measure the circuit you intend to touch (expect zero volts). 3) Re-prove the meter on the known live source.</p></details>
+    <details><summary>16. Why is the last "Live" step in Live-Dead-Live important?</summary><p>A meter lead or internal connection can fail during testing; re-checking proves the zero-volt reading was real.</p></details>
+    <details><summary>17. What is VA and how is it calculated?</summary><p>Volt-amperes, apparent power. VA = V &times; I.</p></details>
+    <details><summary>18. What can happen if a control transformer is undersized for its load?</summary><p>Control voltage can sag, contactors may chatter, and components can overheat.</p></details>
+    <details><summary>19. Why don't we feed every control device directly from line voltage?</summary><p>Line voltage may exceed the voltage rating of control devices; a standard control voltage keeps wiring/troubleshooting consistent across machines.</p></details>
+    <details><summary>20. What is the difference between primary-side and secondary-side protection?</summary><p>Primary-side protects the transformer primary winding and upstream wiring; secondary-side protects the lower-voltage control conductors and devices.</p></details>
+    <details><summary>21. In the lab, what does the selector switch (SS1) control?</summary><p>The yellow lamp, powered by the transformer's secondary (control) voltage.</p></details>
+    <details><summary>22. If the lamp turns on/off correctly but the voltage reading is wrong, what should you conclude?</summary><p>Do not skip the measurement &mdash; the lamp only proves circuit action, not that the transformer output voltage is correct.</p></details>
+    <details><summary>23. Why should the selector switch be in center/off before power is applied?</summary><p>So the circuit starts in a known, safe state before energizing.</p></details>
+    <details><summary>24. Primary = 24 VAC, secondary turns = 200, primary turns = 50. What is the secondary voltage?</summary><p>Turns ratio = 50 &divide; 200 = 0.25; secondary voltage = 24 &divide; 0.25 = 96 VAC.</p></details>
+    <details><summary>25. What topic comes next after control transformers?</summary><p>Ladder logic &mdash; rails, rungs, normally open/closed contacts, coils, and device tags, powered by the control transformer studied this week.</p></details>
+  </section>
+
+  <section class="content-block">
+    <h2>Before the next class</h2>
+    <ul>
+      <li>Be able to calculate turns ratio and secondary voltage from either primary/secondary turns or a given ratio, without hesitating.</li>
+      <li>Know the primary tap table (208 &rarr; 2,3 &middot; 277 &rarr; 2,4 &middot; 380 &rarr; 2,6) and the series/parallel secondary link patterns.</li>
+      <li>Be able to state, without looking, the three expected meter readings (2&ndash;5, 5-to-ground, 2-to-ground) and why each value makes sense.</li>
+      <li>Practice explaining Live-Dead-Live out loud &mdash; a common exam trap is skipping the final "Live" re-check.</li>
+      <li>Review why isolation matters &mdash; a common trap is treating "lower voltage" as automatically "safe."</li>
+    </ul>
+  </section>
+</main>
+
+<footer class="site-footer">
+  ELE 146 — Electric Motor Control · Personal study site
+</footer>
+</body>
+</html>

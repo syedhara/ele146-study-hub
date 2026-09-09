@@ -279,6 +279,145 @@ const quizData = {
       { front: "Home example: light switch", back: "Pure manual control — no overload protection built in." },
       { front: "Home example: thermal-magnetic breaker panel", back: "One device, two jobs: magnetic trip = short-circuit protection, thermal trip = overload protection." }
     ]
+  },
+  week3: {
+    label: "Week 3 — Control Transformers",
+    mc: [
+      {
+        q: "What are the three jobs of a control transformer?",
+        options: [
+          "Filter noise, store energy, and boost frequency",
+          "Step voltage to a useful level, isolate source and control circuit, and create a predictable troubleshooting measurement point",
+          "Rectify AC to DC, filter ripple, and regulate current",
+          "Convert single-phase to three-phase power"
+        ],
+        correct: 1,
+        explanation: "A control transformer steps voltage, provides isolation via magnetic coupling, and gives a known point to measure control voltage."
+      },
+      {
+        q: "Primary turns = 100, secondary turns = 50. What is the turns ratio?",
+        options: ["0.5:1", "2:1", "1:1", "5:1"],
+        correct: 1,
+        explanation: "TR = primary turns ÷ secondary turns = 100 ÷ 50 = 2, written 2:1."
+      },
+      {
+        q: "Primary voltage = 120 VAC, turns ratio = 2. What is the secondary voltage?",
+        options: ["240 VAC", "60 VAC", "120 VAC", "20 VAC"],
+        correct: 1,
+        explanation: "Secondary voltage = primary voltage ÷ turns ratio = 120 ÷ 2 = 60 VAC."
+      },
+      {
+        q: "Primary turns = 180, secondary turns = 45, primary voltage = 240 VAC. What is the secondary voltage, and is it step-up or step-down?",
+        options: [
+          "60 VAC, step-down",
+          "960 VAC, step-up",
+          "45 VAC, step-down",
+          "180 VAC, step-up"
+        ],
+        correct: 0,
+        explanation: "TR = 180 ÷ 45 = 4:1; secondary voltage = 240 ÷ 4 = 60 VAC. TR > 1 means step-down."
+      },
+      {
+        q: "Primary turns = 50, secondary turns = 200, primary voltage = 24 VAC. What is the secondary voltage, and is it step-up or step-down?",
+        options: [
+          "6 VAC, step-down",
+          "96 VAC, step-up",
+          "24 VAC, neither",
+          "12 VAC, step-down"
+        ],
+        correct: 1,
+        explanation: "TR = 50 ÷ 200 = 0.25; secondary voltage = 24 ÷ 0.25 = 96 VAC. TR < 1 means step-up."
+      },
+      {
+        q: "On the trainer, which primary terminals are used for a 208 VAC supply?",
+        options: ["2 and 3", "2 and 4", "2 and 6", "3 and 4"],
+        correct: 0,
+        explanation: "208 VAC → terminals 2 and 3. (277 VAC → 2 and 4; 380 VAC → 2 and 6.)"
+      },
+      {
+        q: "Which secondary link pattern gives 120 VAC across terminals 2 and 5?",
+        options: [
+          "Link terminal 3 to terminal 4 (series)",
+          "Link terminal 2 to 3, and terminal 4 to 5 (parallel)",
+          "Link terminal 2 directly to terminal 5",
+          "No links are required"
+        ],
+        correct: 1,
+        explanation: "Parallel secondary connection (2-3 linked, 4-5 linked) gives 120 VAC; series (3-4 linked) gives 240 VAC."
+      },
+      {
+        q: "Why is terminal 5 on the secondary connected to earth ground in this lab?",
+        options: [
+          "To increase the secondary voltage",
+          "To give the control circuit a stable reference to ground and help fault current clear protection",
+          "It is required only for step-up transformers",
+          "To reduce the transformer's VA rating"
+        ],
+        correct: 1,
+        explanation: "Grounding one side of the secondary gives a stable reference; a fault to ground becomes a high-current path that can trip protection."
+      },
+      {
+        q: "What should you expect when measuring from terminal 5 to ground?",
+        options: ["About 120 VAC", "About 0 VAC", "About 60 VAC", "About 240 VAC"],
+        correct: 1,
+        explanation: "Terminal 5 is the grounded secondary terminal, so it should read about 0 VAC to ground."
+      },
+      {
+        q: "If the reading across secondary terminals 2 and 5 is not near 120 VAC, what should you do first?",
+        options: [
+          "Assume the transformer is bad and replace it",
+          "Check the primary tap, secondary links, fuse path, and meter setting",
+          "Increase the supply voltage",
+          "Skip the measurement and check the lamp instead"
+        ],
+        correct: 1,
+        explanation: "A wrong reading is usually a wiring, tap, fuse, or meter-setting issue — not necessarily a bad transformer."
+      },
+      {
+        q: "What are the three steps of Live-Dead-Live?",
+        options: [
+          "Dead, Live, Dead",
+          "Prove the meter live, measure the circuit (expect dead), re-prove the meter live",
+          "Live, measure, done",
+          "Turn off power, wire the circuit, turn on power"
+        ],
+        correct: 1,
+        explanation: "1) Prove meter on a known live source. 2) Measure the target circuit, expecting zero volts. 3) Re-prove the meter live to confirm it didn't fail during testing."
+      },
+      {
+        q: "Why is VA (volt-amperes) used to rate a control transformer instead of just voltage?",
+        options: [
+          "VA only matters for DC transformers",
+          "VA = V × I represents the apparent power capacity, so an undersized transformer can sag or overheat under load",
+          "VA measures frequency, not power",
+          "VA is only relevant to primary-side protection"
+        ],
+        correct: 1,
+        explanation: "VA is apparent power capacity (V × I). Undersizing it can cause control voltage sag, contactor chatter, or overheating."
+      }
+    ],
+    flashcards: [
+      { front: "Three jobs of a control transformer", back: "Step voltage to a useful level, isolate source from control circuit, create a predictable troubleshooting measurement point." },
+      { front: "Turns ratio (TR) formula", back: "TR = primary turns ÷ secondary turns." },
+      { front: "Secondary voltage formula", back: "Secondary voltage = primary voltage ÷ turns ratio." },
+      { front: "TR greater than 1", back: "Step-down transformer — secondary voltage is lower than primary voltage." },
+      { front: "TR less than 1", back: "Step-up transformer — secondary has more turns than primary, so secondary voltage is higher." },
+      { front: "Primary tap for 208 VAC supply", back: "Terminals 2 and 3." },
+      { front: "Primary tap for 277 VAC supply", back: "Terminals 2 and 4." },
+      { front: "Primary tap for 380 VAC supply", back: "Terminals 2 and 6." },
+      { front: "Secondary series connection", back: "Link terminal 3 to 4 → 240 VAC output across 2–5." },
+      { front: "Secondary parallel connection", back: "Link 2 to 3, and 4 to 5 → 120 VAC output across 2–5 (used in this lab)." },
+      { front: "Why ground terminal 5?", back: "Gives the control circuit a stable ground reference; a fault to ground becomes a high-current path that trips protection." },
+      { front: "Expected reading: 2 to 5", back: "About 120 VAC." },
+      { front: "Expected reading: 5 to ground", back: "About 0 VAC (terminal 5 is grounded)." },
+      { front: "Expected reading: 2 to ground", back: "About 120 VAC (terminal 2 is ungrounded)." },
+      { front: "Live-Dead-Live", back: "1) Prove meter live. 2) Measure target circuit — expect dead (zero volts). 3) Re-prove meter live." },
+      { front: "Why the final 'Live' check matters", back: "A meter lead or connection can fail during testing — re-checking proves the zero-volt reading was real." },
+      { front: "VA (volt-amperes)", back: "Apparent power capacity: VA = V × I. Undersizing causes voltage sag, contactor chatter, or overheating." },
+      { front: "Why not run all control devices on line voltage?", back: "Line voltage may exceed device ratings; a standard control voltage keeps wiring/troubleshooting consistent — but is not automatically 'safe.'" },
+      { front: "Primary-side vs. secondary-side protection", back: "Primary-side protects the transformer's primary winding and upstream wiring; secondary-side protects the lower-voltage control conductors/devices." },
+      { front: "If lamp works but voltage reading is wrong", back: "Don't skip the measurement — the lamp only proves circuit action, not correct transformer output." }
+    ]
   }
 };
 
