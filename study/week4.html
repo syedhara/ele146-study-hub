@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Week 4: Control Ladder Logic — ELE 146</title>
+<link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="site-header">
+  <nav class="nav">
+    <div class="brand">ELE 146 <span>Study Hub</span></div>
+    <div class="nav-links">
+      <a href="/index.html">Home</a>
+      <a href="/study/index.html" class="active">Study Materials</a>
+      <a href="/quiz/index.html">Quiz</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <div class="breadcrumb"><a href="/index.html">Home</a> / <a href="/study/index.html">Study Materials</a> / Week 4</div>
+  <h1>Week 4 — Control Ladder Logic</h1>
+  <p><strong>Sources:</strong> Class 4 POST-slides, Class 4 homework &amp; answer key, Lab 4 (Amatrol Module 4, Skills 1, 2, 5)</p>
+  <p><em>Teaching focus: use diagrams to predict circuit behavior before wiring. Explain every contact state and every output.</em></p>
+
+  <section class="content-block">
+    <h2>Key takeaways</h2>
+    <ol>
+      <li>A ladder diagram has two rails (power) and rungs (horizontal paths); a complete electrical path across a rung energizes its output.</li>
+      <li>Normally Open (NO) contacts are open at rest and close when actuated; Normally Closed (NC) contacts are closed at rest and open when actuated.</li>
+      <li>Series contacts implement AND logic; parallel contacts implement OR logic; an NC "stop" contact implements NOT/fail-safe logic.</li>
+      <li>A ladder rung converts directly into point-to-point wiring, read left to right.</li>
+      <li>Voltage tracing finds the first open point in a failed rung: measure left to right until the expected voltage disappears.</li>
+    </ol>
+  </section>
+
+  <section class="content-block">
+    <h2>1. What you must be able to do</h2>
+    <ul>
+      <li>Identify the power rails, rungs, input contacts, and output devices.</li>
+      <li>Interpret Normally Open (NO) and Normally Closed (NC) contacts from their normal state.</li>
+      <li>Predict output states for series (AND), parallel (OR), and stop (NOT) logic.</li>
+      <li>Convert a ladder rung into point-to-point wiring without changing the logic.</li>
+      <li>Use voltage measurements to locate the first open point in a failed rung.</li>
+    </ul>
+    <p><strong>Why it matters:</strong> a ladder diagram is both a design document and a troubleshooting map. If you can trace the rung, you can predict what the machine should do.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>2. Ladder anatomy: conditions first, output last</h2>
+    <ul>
+      <li>The left and right vertical lines are the <strong>control-power rails</strong> (commonly L1 and neutral/L2).</li>
+      <li>Each horizontal path is a <strong>rung</strong>.</li>
+      <li>Input contacts are placed before the output they control.</li>
+      <li>A complete electrical path across a rung energizes the output.</li>
+    </ul>
+    <p><strong>One output per rung:</strong> if two independent outputs need separate logic, give them separate rungs &mdash; this keeps the logic readable and testable.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>3. Contact symbols: "normal" means not actuated</h2>
+    <ul>
+      <li><strong>Normally Open (NO):</strong> the path is open when the device is not actuated. Pressing or actuating it closes the path.</li>
+      <li><strong>Normally Closed (NC):</strong> the path is closed when the device is not actuated. Pressing or actuating it opens the path.</li>
+      <li>The symbol describes the contact's <strong>normal state</strong> &mdash; not whether the machine is currently running.</li>
+    </ul>
+    <p><strong>Student check:</strong> before tracing any rung, state each contact as open or closed for the condition you are analyzing. "Normally Open" describes the contact's normal, unactuated design state; "currently open" describes its actual state at the moment being analyzed.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>4. Series contacts implement AND logic</h2>
+    <table>
+      <tr><th>PB1</th><th>PB2</th><th>Yellow lamp</th></tr>
+      <tr><td>Released</td><td>Released</td><td>OFF</td></tr>
+      <tr><td>Pressed</td><td>Released</td><td>OFF</td></tr>
+      <tr><td>Released</td><td>Pressed</td><td>OFF</td></tr>
+      <tr><td>Pressed</td><td>Pressed</td><td>ON</td></tr>
+    </table>
+    <p>Every series contact must provide continuity. One open contact anywhere in the series path breaks the rung.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>5. Parallel contacts implement OR logic</h2>
+    <table>
+      <tr><th>PB1</th><th>PB2</th><th>Yellow lamp</th></tr>
+      <tr><td>Released</td><td>Released</td><td>OFF</td></tr>
+      <tr><td>Pressed</td><td>Released</td><td>ON</td></tr>
+      <tr><td>Released</td><td>Pressed</td><td>ON</td></tr>
+      <tr><td>Pressed</td><td>Pressed</td><td>ON</td></tr>
+    </table>
+    <p>Only one parallel branch must be complete to provide a path to the output.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>6. Normally Closed contact as stop / NOT logic</h2>
+    <ul>
+      <li>With PB3 released, its Normally Closed contact completes the path and the lamp can be energized.</li>
+      <li>Press PB3 and the contact opens, so the output loses power.</li>
+      <li>This is why stop devices commonly use Normally Closed contacts: an open circuit removes the run command.</li>
+    </ul>
+    <p><strong>Fail-safe idea:</strong> a broken conductor in a series stop path also opens the circuit rather than creating a false run command.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>7. State tracing worked example (Amatrol Skill 5, two-rung circuit)</h2>
+    <p>Shared upstream NC contact <strong>PB3</strong> (stop) feeds two parallel branches: Branch A = NO contact <strong>PB1</strong> &rarr; yellow lamp (Y); Branch B = NC contact <strong>PB2</strong> &rarr; green lamp (G).</p>
+    <table>
+      <tr><th>Condition</th><th>PB3</th><th>PB1</th><th>PB2</th><th>Y</th><th>G</th></tr>
+      <tr><td>No buttons pressed</td><td>closed</td><td>open</td><td>closed</td><td>OFF</td><td>ON</td></tr>
+      <tr><td>PB1 pressed only</td><td>closed</td><td>closed</td><td>closed</td><td>ON</td><td>ON</td></tr>
+      <tr><td>PB2 pressed only</td><td>closed</td><td>open</td><td>open</td><td>OFF</td><td>OFF</td></tr>
+      <tr><td>PB3 held + PB1 pressed</td><td>open</td><td>closed</td><td>closed</td><td>OFF</td><td>OFF</td></tr>
+      <tr><td>PB3 held + PB2 pressed</td><td>open</td><td>open</td><td>open</td><td>OFF</td><td>OFF</td></tr>
+    </table>
+    <p>With all released: PB3 closed, PB1 open, PB2 closed &rarr; <strong>Y is OFF</strong> because PB1 breaks its branch; <strong>G is ON</strong> because PB3 and PB2 both provide continuity. Pressing PB3 (actuating its NC contact open) removes the shared upstream path, so <strong>neither rung can be complete</strong> &mdash; both Y and G go OFF regardless of PB1/PB2.</p>
+    <p><strong>Why this matters:</strong> a shared upstream contact affects every rung that depends on it &mdash; trace the full path, not just the branch closest to the output.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>8. From ladder to point-to-point wiring</h2>
+    <p>Read the rung from left to right:</p>
+    <ol>
+      <li>Wire 1: L1 to STOP input.</li>
+      <li>Wire 2: STOP output to START input.</li>
+      <li>Wire 3: START output to coil M.</li>
+      <li>Wire 4: coil M return to neutral.</li>
+    </ol>
+    <p>Parallel branches create additional wires between the same two nodes. <strong>Team check:</strong> point to every conductor on the ladder and identify its physical start and end terminals before energizing.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>9. Voltage tracing: the first open point stops the rung</h2>
+    <p>With START released, voltage is present up to the open START contact but not beyond it. When START closes, the node after START rises to about 120 volts and the output sees full control voltage.</p>
+    <p><strong>Troubleshooting rule:</strong> measure from left to right. The first point where the expected voltage disappears identifies the open contact, broken conductor, or failed connection that is blocking the rung.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>10. Common ladder mistakes &mdash; and what makes them wrong</h2>
+    <ul>
+      <li><strong>Correct:</strong> two input contacts in series, then one output &mdash; both conditions must be true (AND).</li>
+      <li><strong>Correct:</strong> parallel branches rejoin before the output &mdash; either branch can complete the path (OR).</li>
+      <li><strong>Do not confuse the symbol with the contact's present operating state.</strong> The symbol shows the contact's normal state &mdash; with a pushbutton released, a limit switch unactuated, or a relay/contactor coil de-energized. During operation, determine the contact's actual state from what is happening to its associated device.</li>
+      <li><strong>Drawing standard:</strong> every conductor must visibly terminate on the intended electrical symbol. A Normally Open contact must show a clear gap; a Normally Closed contact must use the proper diagonal contact mark.</li>
+    </ul>
+  </section>
+
+  <section class="content-block">
+    <h2>11. Lab 4 preview: ladder logic on the trainer</h2>
+    <ul>
+      <li><strong>Part A:</strong> guided wiring &mdash; pushbutton PB1 controls a yellow lamp through its NO contact and a green lamp through its NC contact (Amatrol Module 4, Skill 1).</li>
+      <li><strong>Part B:</strong> guided wiring &mdash; three-position selector switch (SS1) feeds yellow/green lamps depending on position (Amatrol Module 4, Skill 2). SS1 is <strong>maintained</strong> (stays in the selected position), unlike a pushbutton, which springs back.</li>
+      <li><strong>Part C:</strong> read a ladder diagram <strong>without wiring it</strong> (Amatrol Module 4, Skill 5) &mdash; analyze on paper only, to test reading skill after the guided wiring exercises.</li>
+      <li><strong>Part D:</strong> voltage tracing on the Part A pushbutton circuit &mdash; measure control source voltage, lamp-input voltage, and voltage across the PB1 NO contact, both released and pressed.</li>
+    </ul>
+    <p><strong>Before energizing:</strong> team members compare the physical wiring to the printed ladder, verify grounds, and explain the expected output state before power is applied.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>12. Apply it: predict before you measure</h2>
+    <ol>
+      <li>PB1 pressed, PB2 released (AND circuit). Is Y on or off? &rarr; <strong>Y is OFF</strong> &mdash; AND logic requires both PB1 and PB2 pressed; PB2 is still open.</li>
+      <li>PB1 released, PB2 pressed (OR circuit). Is Y on or off? &rarr; <strong>Y is ON</strong> &mdash; OR logic needs only one closed branch; PB2 provides that path.</li>
+      <li>START is open. Where should the first transition from 120 V to 0 V appear? &rarr; Across the open START contact. The node before START stays at ~120 VAC (fed through the closed STOP contact); the node after START is near neutral potential until START closes.</li>
+    </ol>
+  </section>
+
+  <section class="content-block">
+    <h2>13. Ready for the lab?</h2>
+    <p>You are ready if you can take an unfamiliar rung and do three things without guessing:</p>
+    <ol>
+      <li>Mark every contact open or closed for the stated condition.</li>
+      <li>Trace whether a complete path exists from L1 to neutral.</li>
+      <li>Predict the voltage at each node and the state of the output.</li>
+    </ol>
+  </section>
+
+  <section class="content-block">
+    <h2>14. What's next: Class 5</h2>
+    <p>Class 5 adds control relays, contactors, overload protection, and the <strong>seal-in circuit</strong> that lets a momentary START command keep a motor starter energized.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>15. Real-world / at-home examples</h2>
+    <table>
+      <tr><th>Home / everyday example</th><th>Week 4 concept it demonstrates</th></tr>
+      <tr><td>Two light switches wired to the same fixture (3-way switch)</td><td>Parallel-style OR logic &mdash; either switch can complete the path to turn the light on</td></tr>
+      <tr><td>String of old-style series holiday lights (one bulb burnout kills the string)</td><td>Series/AND-style failure mode &mdash; every element in the path must be intact</td></tr>
+      <tr><td>Garage door safety photo-eye sensors</td><td>Wired as a normally-closed series "stop" chain &mdash; a broken beam (or broken wire) opens the circuit and stops the door, a fail-safe design</td></tr>
+      <tr><td>Fire alarm pull stations / smoke detectors on a supervised loop</td><td>NC-style series stop logic &mdash; an open/broken conductor is treated as an alarm/fault condition rather than silently failing</td></tr>
+      <tr><td>Thermostat calling for heat/cooling</td><td>A single input contact (thermostat) energizing an output (furnace relay/coil) &mdash; same basic rung structure as a pushbutton energizing a lamp</td></tr>
+      <tr><td>Multi-position rotary fan switch (off/low/med/high)</td><td>Behaves like the maintained selector switch (SS1) &mdash; stays in the selected position, unlike a momentary pushbutton</td></tr>
+    </table>
+    <p><strong>Why this matters:</strong> the same series=AND, parallel=OR, NC=fail-safe-stop logic used on the trainer shows up throughout everyday wiring &mdash; recognizing the pattern makes both troubleshooting and ladder logic much less abstract.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>Retrieval practice</h2>
+    <p>Try answering without looking, then reveal. For an interactive version, use the <a href="/quiz/index.html">Quiz page</a>.</p>
+    <details><summary>1. What are the two vertical lines in a ladder diagram called?</summary><p>The power rails (control-power rails).</p></details>
+    <details><summary>2. What is a horizontal path across the rails called?</summary><p>A rung.</p></details>
+    <details><summary>3. Why should each independent output have its own rung?</summary><p>It keeps the logic readable and testable — mixing two outputs' logic on one rung makes it harder to trace.</p></details>
+    <details><summary>4. What is the normal state of a Normally Open (NO) contact?</summary><p>Open — it closes when actuated.</p></details>
+    <details><summary>5. What is the normal state of a Normally Closed (NC) contact?</summary><p>Closed — it opens when actuated.</p></details>
+    <details><summary>6. Two NO pushbuttons are wired in series to a lamp. What logic function is this?</summary><p>AND — both must be pressed (closed) for the lamp to energize.</p></details>
+    <details><summary>7. Two NO pushbuttons are wired in parallel to a lamp. What logic function is this?</summary><p>OR — either one being pressed energizes the lamp.</p></details>
+    <details><summary>8. Why do stop devices commonly use Normally Closed contacts?</summary><p>An open circuit (broken wire or pressed stop) removes the run command — this is a fail-safe design.</p></details>
+    <details><summary>9. In the Skill 5 circuit, what is Y's state with all buttons released?</summary><p>OFF — PB3 and PB1 are in series for Y, and PB1 (NO) is open at rest, breaking that branch.</p></details>
+    <details><summary>10. In the Skill 5 circuit, what is G's state with all buttons released?</summary><p>ON — PB3 and PB2 are both closed (NC, unactuated) and provide continuity.</p></details>
+    <details><summary>11. In the Skill 5 circuit, why does pressing PB3 turn off both Y and G?</summary><p>PB3 is the shared upstream contact for both branches; opening it removes the common path before the branch split, so neither rung can be complete.</p></details>
+    <details><summary>12. What is the first wire in converting a STOP→START→coil M rung to point-to-point wiring?</summary><p>L1 to the STOP input.</p></details>
+    <details><summary>13. In voltage tracing, what does it mean when voltage is present before a contact but not after it?</summary><p>That contact (or its associated wiring/connection) is the open point blocking the rung.</p></details>
+    <details><summary>14. With START released, what is the approximate voltage at the node before START?</summary><p>About 120 VAC (fed through the closed STOP contact).</p></details>
+    <details><summary>15. With START released, what is the approximate voltage at the node after START?</summary><p>Near 0 V (neutral potential) until START closes.</p></details>
+    <details><summary>16. What is the difference between "the symbol is Normally Open" and "the contact is currently open"?</summary><p>Normally Open describes the contact's normal, unactuated design state. Currently open describes its actual state at the moment being analyzed — an NO contact becomes closed when actuated.</p></details>
+    <details><summary>17. What must every conductor do on a correctly drawn ladder diagram?</summary><p>Visibly terminate on the intended electrical symbol (clear gap for NO, proper diagonal mark for NC).</p></details>
+    <details><summary>18. PB1 pressed, PB2 released in an AND circuit. Is the lamp on or off?</summary><p>OFF — AND logic requires both to be pressed; PB2 is still open.</p></details>
+    <details><summary>19. PB1 released, PB2 pressed in an OR circuit. Is the lamp on or off?</summary><p>ON — OR logic only needs one closed branch.</p></details>
+    <details><summary>20. What three things should you be able to do with an unfamiliar rung before the lab?</summary><p>Mark every contact open/closed for the stated condition, trace whether a complete path exists from L1 to neutral, and predict the voltage at each node and the output state.</p></details>
+    <details><summary>21. What does Class 5 add to this week's ladder logic?</summary><p>Control relays, contactors, overload protection, and the seal-in circuit that lets a momentary START keep a motor starter energized.</p></details>
+    <details><summary>22. Why is the selector switch (SS1) in Lab 4 Part B different from the pushbuttons in Part A?</summary><p>SS1 is maintained — it stays in the selected position instead of springing back when released, like a pushbutton does.</p></details>
+    <details><summary>23. In Lab 4 Part C, why is the ladder analyzed on paper instead of wired?</summary><p>To test whether you can read ladder logic and predict output states after completing the guided physical wiring exercises, without the pictorial as a crutch.</p></details>
+    <details><summary>24. A rung reads 120 V at L1, 120 V after the first contact, and 0 V after the second contact — but the output should be energized. What should you inspect first?</summary><p>The second contact or its wiring — voltage is present before it but missing after it, so that's the first point where the expected voltage disappears.</p></details>
+    <details><summary>25. Garage door safety photo-eye sensors are wired NC in series. What happens if a wire breaks?</summary><p>The circuit opens (fail-safe), just as if the beam were blocked — the door stops rather than continuing to run with a false "safe" signal.</p></details>
+  </section>
+
+  <section class="content-block">
+    <h2>Before the next class</h2>
+    <ul>
+      <li>Be able to trace an unfamiliar rung and state every contact's condition before naming the output state — don't answer from memory.</li>
+      <li>Memorize the AND/OR/NOT mapping: series = AND, parallel = OR, NC-stop = NOT/fail-safe.</li>
+      <li>Practice converting a ladder rung into a point-to-point wiring sequence, left to right.</li>
+      <li>Review the Skill 5 two-rung worked example until you can explain, without looking, why pressing the shared stop contact affects both rungs.</li>
+      <li>A common exam trap: confusing a contact's drawn symbol (normal state) with its actual state during a specific condition — always re-derive the state, don't assume.</li>
+    </ul>
+  </section>
+</main>
+
+<footer class="site-footer">
+  ELE 146 — Electric Motor Control · Personal study site
+</footer>
+</body>
+</html>

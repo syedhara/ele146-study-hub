@@ -21,7 +21,7 @@
 <main>
   <div class="breadcrumb"><a href="/index.html">Home</a> / <a href="/study/index.html">Study Materials</a> / Week 3</div>
   <h1>Week 3 — Control Transformers</h1>
-  <p><strong>Sources:</strong> Class 3 PRE-slides, Amatrol Module 3 control-transformer lab</p>
+  <p><strong>Sources:</strong> Class 3 PRE/POST slides, Class 3 homework &amp; answer key, Lab 3 (Amatrol Module 3 control-transformer lab)</p>
   <p><em>Lab target: wire the trainer control transformer and measure about 120 VAC across secondary terminals 2 and 5.</em></p>
 
   <section class="content-block">
@@ -32,6 +32,8 @@
       <li>The trainer's primary tap must match the supply voltage (208, 277, or 380 VAC); the lab uses the 208 VAC tap.</li>
       <li>Secondary windings connected in parallel give 120 VAC; connected in series they give 240 VAC. This lab needs parallel.</li>
       <li>Terminal 5 on the secondary is grounded, giving the control circuit a stable reference &mdash; expect ~120 VAC across 2&ndash;5, ~0 VAC from 5 to ground, and ~120 VAC from 2 to ground.</li>
+      <li>Secondary windings can be combined series-aiding (voltages add, current stays the same) or parallel with matching polarity (voltage stays the same, current adds) &mdash; polarity dots must match before paralleling.</li>
+      <li>A transformer must be sized for brief inrush VA demand (e.g., contactor coil pickup), not just steady-state VA, or control voltage can sag.</li>
     </ol>
   </section>
 
@@ -142,7 +144,51 @@
   </section>
 
   <section class="content-block">
-    <h2>12. Trainer transformer wiring</h2>
+    <h2>12. More worked examples: multiple secondaries &amp; solving for primary voltage</h2>
+    <p><strong>Multiple secondaries:</strong> primary turns = 300, primary voltage = 120 VAC; three secondaries with 150, 100, and 30 turns.</p>
+    <ul>
+      <li>V1: TR = 300 &divide; 150 = 2 &rarr; V1 = 120 &divide; 2 = <strong>60 VAC</strong></li>
+      <li>V2: TR = 300 &divide; 100 = 3 &rarr; V2 = 120 &divide; 3 = <strong>40 VAC</strong></li>
+      <li>V3: TR = 300 &divide; 30 = 10 &rarr; V3 = 120 &divide; 10 = <strong>12 VAC</strong></li>
+    </ul>
+    <p>Each secondary is calculated independently with its own turns ratio against the same primary.</p>
+    <p><strong>Solving for primary voltage:</strong> secondary turns = 150, desired secondary voltage = 100 VAC, primary turns = 900.</p>
+    <ul>
+      <li>TR = 900 &divide; 150 = <strong>6</strong></li>
+      <li>Primary voltage = secondary voltage &times; TR = 100 &times; 6 = <strong>600 VAC</strong></li>
+    </ul>
+    <p>The secondary-voltage formula rearranges to <strong>primary voltage = secondary voltage &times; TR</strong> when the secondary side is the known value.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>13. Combining two identical secondary windings</h2>
+    <p>Two identical 60 VAC, 2 A secondary windings, with polarity (dot) markings identifying corresponding winding ends.</p>
+    <table>
+      <tr><th>Connection</th><th>Output voltage</th><th>Max current capacity</th></tr>
+      <tr><td>Series aiding (dot-to-non-dot)</td><td>60 + 60 = <strong>120 VAC</strong></td><td>Still <strong>2 A</strong> (same current flows through both windings)</td></tr>
+      <tr><td>Parallel, matching polarity (dot-to-dot)</td><td>Stays <strong>60 VAC</strong></td><td>2 + 2 = <strong>4 A</strong> (currents add)</td></tr>
+    </table>
+    <p><strong>Why polarity matching matters:</strong> matching polarity keeps the instantaneous voltages of the two windings in phase. If one winding is reversed, the windings oppose each other and can drive a very large circulating current &mdash; effectively a short circuit between the windings. Always check polarity dots before paralleling secondary windings.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>14. Resistance / continuity fault testing</h2>
+    <p>With the transformer de-energized, a multimeter on resistance/continuity can help identify a failed transformer:</p>
+    <table>
+      <tr><th>Measurement</th><th>Good transformer</th><th>Fault indicated</th></tr>
+      <tr><td>Across one winding (e.g., primary 2 to 3)</td><td>Finite resistance</td><td><strong>Infinite</strong> resistance &rarr; open winding or open connection</td></tr>
+      <tr><td>Primary to secondary (winding to winding)</td><td>Effectively infinite (windings are isolated)</td><td><strong>Low</strong> resistance &rarr; insulation failure / internal short &mdash; do not use the transformer</td></tr>
+    </table>
+  </section>
+
+  <section class="content-block">
+    <h2>15. Inrush VA sizing</h2>
+    <p>Control devices such as contactor coils can draw substantially more current during pickup (inrush) than after they are fully energized. The transformer must be sized to supply this brief inrush demand, not just steady-state VA.</p>
+    <p>Example: 120 VAC control load draws 4 A inrush &rarr; inrush VA = 120 &times; 4 = <strong>480 VA</strong>. If the transformer is undersized for inrush, control voltage can sag and devices can chatter or fail to pull in.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>16. Trainer transformer wiring</h2>
     <p>Primary taps: 208, 277, or 380 VAC. Secondary windings can be connected in series (240 VAC) or in parallel (120 VAC). H = high-side primary reference; X = low-side secondary reference.</p>
     <h3>Primary tap selection</h3>
     <table>
@@ -162,7 +208,7 @@
   </section>
 
   <section class="content-block">
-    <h2>13. Primary and secondary protection</h2>
+    <h2>17. Primary and secondary protection</h2>
     <ul>
       <li><strong>Primary-side protection:</strong> protects the transformer primary winding and upstream wiring from fault current.</li>
       <li><strong>Secondary-side protection:</strong> protects lower-voltage control conductors and devices from fault current.</li>
@@ -171,12 +217,12 @@
   </section>
 
   <section class="content-block">
-    <h2>14. Grounding one side of the secondary</h2>
+    <h2>18. Grounding one side of the secondary</h2>
     <p>In this lab, terminal 5 on the transformer secondary is connected to earth ground, giving one side of the control circuit a stable reference to ground. A fault from the ungrounded side to grounded metal becomes a high-current fault path, so protection can open. A floating secondary can create confusing voltage-to-ground readings.</p>
   </section>
 
   <section class="content-block">
-    <h2>15. Expected meter readings</h2>
+    <h2>19. Expected meter readings</h2>
     <table>
       <tr><th>Measurement</th><th>Expected reading</th><th>Why</th></tr>
       <tr><td>Secondary terminals 2 to 5</td><td>~120 VAC</td><td>Full secondary output</td></tr>
@@ -187,7 +233,7 @@
   </section>
 
   <section class="content-block">
-    <h2>16. Measuring control voltage &amp; Live-Dead-Live</h2>
+    <h2>20. Measuring control voltage &amp; Live-Dead-Live</h2>
     <p>Use the digital multimeter on AC voltage. Black lead goes to COM (common); red lead goes to volts/ohms. Measure across secondary terminals 2 and 5. Use one hand where practical and keep your body out of the current path &mdash; this reduces the chance that a shock path goes across your chest from one hand to the other.</p>
     <p><strong>Proving de-energized &mdash; Live-Dead-Live:</strong></p>
     <ol>
@@ -199,7 +245,7 @@
   </section>
 
   <section class="content-block">
-    <h2>17. Lab preview &amp; self-check</h2>
+    <h2>21. Lab preview &amp; self-check</h2>
     <p><strong>What you will wire:</strong> connect the primary for the 208 VAC tap; configure the secondary for 120 VAC (parallel); connect terminal 5 to earth ground; use the selector switch (SS1) to turn the yellow lamp on and off; measure the secondary output across terminals 2 and 5.</p>
     <p><strong>Team self-check before energizing:</strong></p>
     <ul>
@@ -212,7 +258,7 @@
   </section>
 
   <section class="content-block">
-    <h2>18. What correct operation looks like</h2>
+    <h2>22. What correct operation looks like</h2>
     <table>
       <tr><th>Switch position</th><th>Yellow lamp</th><th>Notes</th></tr>
       <tr><td>Center/off</td><td>Off</td><td>Circuit path is open</td></tr>
@@ -223,7 +269,7 @@
   </section>
 
   <section class="content-block">
-    <h2>19. Real-world / at-home examples</h2>
+    <h2>23. Real-world / at-home examples</h2>
     <table>
       <tr><th>Home / everyday example</th><th>Week 3 concept it demonstrates</th></tr>
       <tr><td>Laptop or phone charger brick</td><td>Step-down transformer/converter &mdash; steps 120 VAC down to a low DC control-level voltage</td></tr>
@@ -263,6 +309,14 @@
     <details><summary>23. Why should the selector switch be in center/off before power is applied?</summary><p>So the circuit starts in a known, safe state before energizing.</p></details>
     <details><summary>24. Primary = 24 VAC, secondary turns = 200, primary turns = 50. What is the secondary voltage?</summary><p>Turns ratio = 50 &divide; 200 = 0.25; secondary voltage = 24 &divide; 0.25 = 96 VAC.</p></details>
     <details><summary>25. What topic comes next after control transformers?</summary><p>Ladder logic &mdash; rails, rungs, normally open/closed contacts, coils, and device tags, powered by the control transformer studied this week.</p></details>
+    <details><summary>26. Primary turns = 300, primary voltage = 120 VAC, secondary turns = 100. What is that secondary's voltage?</summary><p>TR = 300 &divide; 100 = 3; secondary voltage = 120 &divide; 3 = 40 VAC.</p></details>
+    <details><summary>27. Secondary turns = 150, desired secondary voltage = 100 VAC, primary turns = 900. What primary voltage is required?</summary><p>TR = 900 &divide; 150 = 6; primary voltage = 100 &times; 6 = 600 VAC.</p></details>
+    <details><summary>28. Two identical 60 VAC, 2 A secondaries are connected series aiding. What output voltage and current capacity result?</summary><p>120 VAC output (60 + 60); current capacity stays 2 A because the same current flows through both windings.</p></details>
+    <details><summary>29. Two identical 60 VAC, 2 A secondaries are connected in parallel with matching polarity. What output voltage and current capacity result?</summary><p>60 VAC output (unchanged); current capacity becomes 4 A (2 + 2) because the currents add.</p></details>
+    <details><summary>30. Why is matching polarity essential when paralleling two secondary windings?</summary><p>Matching polarity keeps the windings in phase; a reversed winding opposes the other and can drive a very large circulating current &mdash; effectively a short circuit between the windings.</p></details>
+    <details><summary>31. A resistance test across a primary winding reads infinite. What does that indicate?</summary><p>An open winding or open connection in that part of the winding.</p></details>
+    <details><summary>32. A resistance test between the primary and secondary windings reads low instead of near-infinite. What does that indicate?</summary><p>Insulation failure or an internal short between windings &mdash; the transformer should not be used.</p></details>
+    <details><summary>33. A 120 VAC control load draws 4 A during inrush. What is the inrush VA, and why does it matter?</summary><p>Inrush VA = 120 &times; 4 = 480 VA. The transformer must be able to supply this brief higher demand (e.g., contactor coil pickup) or control voltage can sag and devices can chatter or fail to pull in.</p></details>
   </section>
 
   <section class="content-block">

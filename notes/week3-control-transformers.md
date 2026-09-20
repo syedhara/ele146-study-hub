@@ -81,6 +81,51 @@ Example: primary voltage = 120 VAC, TR = 2 → secondary voltage = 120 ÷ 2 = **
 - Secondary voltage = 24 ÷ 0.25 = **96 VAC**
 - **Step-up** (TR < 1 → secondary has more turns than primary → higher secondary voltage)
 
+## Worked Example 3 — Multiple secondaries
+
+Primary turns = 300, primary voltage = 120 VAC. Three secondaries with 150, 100, and 30 turns.
+
+- V1: TR = 300 ÷ 150 = 2 → V1 = 120 ÷ 2 = **60 VAC**
+- V2: TR = 300 ÷ 100 = 3 → V2 = 120 ÷ 3 = **40 VAC**
+- V3: TR = 300 ÷ 30 = 10 → V3 = 120 ÷ 10 = **12 VAC**
+
+Each secondary is calculated independently with its own turns ratio against the same primary.
+
+## Worked Example 4 — Solving for primary voltage
+
+Given secondary turns = 150, desired secondary voltage = 100 VAC, primary turns = 900.
+
+- TR = 900 ÷ 150 = **6**
+- Primary voltage = secondary voltage × TR = 100 × 6 = **600 VAC**
+
+The same formula (secondary voltage = primary voltage ÷ TR) rearranges to primary voltage = secondary voltage × TR when the secondary side is the known value.
+
+## Combining two identical secondary windings
+
+Two identical 60 VAC, 2 A secondary windings, with polarity (dot) markings identifying corresponding winding ends.
+
+| Connection | Output voltage | Max current capacity |
+|---|---|---|
+| Series aiding (dot-to-non-dot) | 60 + 60 = **120 VAC** | Still **2 A** (same current flows through both windings) |
+| Parallel, matching polarity (dot-to-dot) | Stays **60 VAC** | 2 + 2 = **4 A** (currents add) |
+
+**Why polarity matching matters:** matching polarity keeps the instantaneous voltages of the two windings in phase. If one winding is reversed, the windings oppose each other and can drive a very large circulating current — effectively a short circuit between the windings. Always check polarity dots before paralleling secondary windings.
+
+## Resistance / continuity fault testing
+
+With the transformer de-energized, a multimeter on resistance/continuity can help identify a failed transformer:
+
+| Measurement | Good transformer | Fault indicated |
+|---|---|---|
+| Across one winding (e.g., primary 2 to 3) | Finite resistance | **Infinite** resistance → open winding or open connection |
+| Primary to secondary (winding to winding) | Effectively infinite (windings are isolated) | **Low** resistance → insulation failure / internal short — do not use the transformer |
+
+## Inrush VA sizing
+
+Control devices such as contactor coils can draw substantially more current during pickup (inrush) than after they are fully energized. The transformer must be sized to supply this brief inrush demand, not just steady-state VA.
+
+Example: 120 VAC control load draws 4 A inrush → inrush VA = 120 × 4 = **480 VA**. If the transformer is undersized for inrush, control voltage can sag and devices can chatter or fail to pull in.
+
 ## Trainer transformer wiring
 
 - **Primary taps:** 208, 277, or 380 VAC.

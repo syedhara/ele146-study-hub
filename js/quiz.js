@@ -394,6 +394,79 @@ const quizData = {
         ],
         correct: 1,
         explanation: "VA is apparent power capacity (V × I). Undersizing it can cause control voltage sag, contactor chatter, or overheating."
+      },
+      {
+        q: "A transformer has one primary (300 turns, 120 VAC) and a secondary with 100 turns. What is that secondary's voltage?",
+        options: ["360 VAC", "40 VAC", "12 VAC", "300 VAC"],
+        correct: 1,
+        explanation: "TR = 300 ÷ 100 = 3; secondary voltage = 120 ÷ 3 = 40 VAC."
+      },
+      {
+        q: "You need 100 VAC from a 150-turn secondary, and the primary has 900 turns. What primary voltage is required?",
+        options: ["600 VAC", "16.7 VAC", "100 VAC", "150 VAC"],
+        correct: 0,
+        explanation: "TR = 900 ÷ 150 = 6; primary voltage = secondary voltage × TR = 100 × 6 = 600 VAC."
+      },
+      {
+        q: "Two identical 60 VAC, 2 A secondary windings are connected series aiding. What is the output voltage and current capacity?",
+        options: [
+          "60 VAC, 4 A",
+          "120 VAC, 2 A",
+          "120 VAC, 4 A",
+          "60 VAC, 2 A"
+        ],
+        correct: 1,
+        explanation: "Series aiding adds the voltages (60 + 60 = 120 VAC); current capacity stays 2 A since the same current flows through both windings in series."
+      },
+      {
+        q: "Two identical 60 VAC, 2 A secondary windings are connected in parallel with matching polarity. What is the output voltage and current capacity?",
+        options: [
+          "120 VAC, 2 A",
+          "60 VAC, 4 A",
+          "60 VAC, 2 A",
+          "120 VAC, 4 A"
+        ],
+        correct: 1,
+        explanation: "Parallel windings keep the same voltage (60 VAC) while their current capacities add (2 + 2 = 4 A)."
+      },
+      {
+        q: "Why is matching polarity essential when paralleling two transformer secondary windings?",
+        options: [
+          "It isn't essential, polarity doesn't matter in AC circuits",
+          "Mismatched polarity can drive a large circulating current between the windings, effectively a short circuit",
+          "It only affects the current rating, never the voltage",
+          "Matching polarity increases the output voltage"
+        ],
+        correct: 1,
+        explanation: "Reversed polarity puts the windings out of phase; they oppose each other and can drive a very large circulating current between them."
+      },
+      {
+        q: "A resistance test across a primary winding reads infinite instead of a finite value. What does this indicate?",
+        options: [
+          "The transformer is working normally",
+          "An open winding or open connection",
+          "A short circuit between primary and secondary",
+          "The transformer is oversized"
+        ],
+        correct: 1,
+        explanation: "A good winding shows finite resistance; infinite resistance means the winding or its connection is open."
+      },
+      {
+        q: "A resistance test between the primary and secondary windings reads low instead of near-infinite. What does this indicate?",
+        options: [
+          "Normal operation — primary and secondary are supposed to be connected",
+          "Insulation failure or an internal short between windings — do not use the transformer",
+          "The transformer is a step-up type",
+          "The secondary is properly grounded"
+        ],
+        correct: 1,
+        explanation: "Primary and secondary should be electrically isolated. Low resistance between them indicates a winding-to-winding short/insulation failure."
+      },
+      {
+        q: "A 120 VAC control load draws 4 A during inrush (coil pickup). What inrush VA must the transformer be able to supply?",
+        options: ["30 VA", "480 VA", "4 VA", "124 VA"],
+        correct: 1,
+        explanation: "Inrush VA = V × I = 120 × 4 = 480 VA. Undersizing for inrush can cause voltage sag and contactor chatter."
       }
     ],
     flashcards: [
@@ -416,7 +489,223 @@ const quizData = {
       { front: "VA (volt-amperes)", back: "Apparent power capacity: VA = V × I. Undersizing causes voltage sag, contactor chatter, or overheating." },
       { front: "Why not run all control devices on line voltage?", back: "Line voltage may exceed device ratings; a standard control voltage keeps wiring/troubleshooting consistent — but is not automatically 'safe.'" },
       { front: "Primary-side vs. secondary-side protection", back: "Primary-side protects the transformer's primary winding and upstream wiring; secondary-side protects the lower-voltage control conductors/devices." },
-      { front: "If lamp works but voltage reading is wrong", back: "Don't skip the measurement — the lamp only proves circuit action, not correct transformer output." }
+      { front: "If lamp works but voltage reading is wrong", back: "Don't skip the measurement — the lamp only proves circuit action, not correct transformer output." },
+      { front: "Multiple secondaries — same formula", back: "Each secondary uses its own turns ratio against the same primary: V = primary voltage ÷ (primary turns ÷ that secondary's turns)." },
+      { front: "Solving for primary voltage", back: "Primary voltage = secondary voltage × turns ratio (rearranged formula, used when the secondary side is known)." },
+      { front: "Series aiding secondaries", back: "Voltages add (e.g., 60 + 60 = 120 VAC); current capacity stays the same (same current flows through both windings)." },
+      { front: "Parallel secondaries, matching polarity", back: "Voltage stays the same (e.g., 60 VAC); current capacities add (e.g., 2 + 2 = 4 A)." },
+      { front: "Mismatched polarity when paralleling secondaries", back: "Windings oppose each other and can drive a large circulating current — effectively a short circuit." },
+      { front: "Infinite resistance across a winding", back: "Indicates an open winding or open connection." },
+      { front: "Low resistance between primary and secondary", back: "Indicates insulation failure / internal short — do not use the transformer." },
+      { front: "Inrush VA", back: "VA = V × I using the brief inrush current (e.g., contactor coil pickup), not just steady-state current — transformer must be sized for it." }
+    ]
+  },
+  week4: {
+    label: "Week 4 — Control Ladder Logic",
+    mc: [
+      {
+        q: "What is a 'rung' in a ladder diagram?",
+        options: [
+          "One of the two vertical power rails",
+          "A horizontal path between the rails that, when complete, energizes an output",
+          "A synonym for a Normally Closed contact",
+          "The device tag printed next to a coil"
+        ],
+        correct: 1,
+        explanation: "Each horizontal path between the rails is a rung; a complete electrical path across it energizes the rung's output."
+      },
+      {
+        q: "Why should each independent output be placed on its own rung?",
+        options: [
+          "It is required by the rails",
+          "It keeps the logic readable and testable instead of mixing two outputs' logic on one rung",
+          "It reduces the number of rails needed",
+          "It has no real benefit, it's just convention"
+        ],
+        correct: 1,
+        explanation: "One output per rung keeps each rung's logic simple to trace and test independently."
+      },
+      {
+        q: "What is the normal (unactuated) state of a Normally Open (NO) contact?",
+        options: ["Closed", "Open", "It depends on the device", "Always energized"],
+        correct: 1,
+        explanation: "NO contacts are open at rest; actuating the device closes the path."
+      },
+      {
+        q: "What is the normal (unactuated) state of a Normally Closed (NC) contact?",
+        options: ["Open", "Closed", "It depends on the device", "Always de-energized"],
+        correct: 1,
+        explanation: "NC contacts are closed at rest; actuating the device opens the path."
+      },
+      {
+        q: "Two NO pushbuttons are wired in series to a lamp. What logic function does this implement?",
+        options: ["OR", "AND", "NOT", "NOR"],
+        correct: 1,
+        explanation: "Series contacts implement AND logic — every contact in the path must provide continuity for the lamp to energize."
+      },
+      {
+        q: "Two NO pushbuttons are wired in parallel to a lamp. What logic function does this implement?",
+        options: ["AND", "OR", "NOT", "NAND"],
+        correct: 1,
+        explanation: "Parallel contacts implement OR logic — only one branch needs to be complete to energize the lamp."
+      },
+      {
+        q: "Why do stop devices commonly use Normally Closed contacts instead of Normally Open?",
+        options: [
+          "NC contacts are cheaper",
+          "An open circuit (pressed stop or broken wire) removes the run command — a fail-safe design",
+          "NC contacts carry more current",
+          "NO contacts cannot be used in series"
+        ],
+        correct: 1,
+        explanation: "With an NC stop contact, both pressing STOP and a broken conductor open the circuit, removing the run command rather than creating a false run signal."
+      },
+      {
+        q: "In the Skill 5 two-rung circuit, PB3 (NC, shared/upstream) feeds branch A (PB1, NO → Y) and branch B (PB2, NC → G). With all buttons released, what are Y and G?",
+        options: [
+          "Y ON, G OFF",
+          "Y OFF, G ON",
+          "Y ON, G ON",
+          "Y OFF, G OFF"
+        ],
+        correct: 1,
+        explanation: "PB1 (NO) is open at rest, breaking Y's branch — Y is OFF. PB3 and PB2 (both NC) are closed at rest, so G is ON."
+      },
+      {
+        q: "In that same Skill 5 circuit, why does holding PB3 turn OFF both Y and G, even if PB1 is pressed?",
+        options: [
+          "PB3 has no effect on either rung",
+          "PB3 is the shared upstream contact; opening it removes the common path before the branch split, so neither rung can be complete",
+          "Pressing PB3 always short-circuits the transformer",
+          "PB1 overrides PB3 when both are actuated"
+        ],
+        correct: 1,
+        explanation: "PB3 sits upstream of both branches. Opening it (by actuating the NC contact) removes the shared path feeding both Y and G."
+      },
+      {
+        q: "When converting a STOP → START → coil M rung into point-to-point wiring, what is the correct first wire?",
+        options: [
+          "Coil M return to neutral",
+          "L1 to the STOP input",
+          "START output to coil M",
+          "STOP output to START input"
+        ],
+        correct: 1,
+        explanation: "Reading the rung left to right, the first wire runs from L1 to the STOP contact's input."
+      },
+      {
+        q: "In voltage tracing, what does it mean if voltage is present before a contact but missing after it?",
+        options: [
+          "The transformer has failed",
+          "That contact (or its wiring/connection) is the first open point blocking the rung",
+          "The rung has too many outputs",
+          "The meter is set to the wrong function"
+        ],
+        correct: 1,
+        explanation: "Troubleshooting rule: measure left to right; the first point where expected voltage disappears identifies the open contact or connection."
+      },
+      {
+        q: "With START released (open) in a STOP-START-coil M rung, what is the approximate voltage at the node right after START (toward the coil)?",
+        options: ["About 120 VAC", "Near 0 V", "Exactly half of 120 VAC", "It cannot be determined"],
+        correct: 1,
+        explanation: "The node after the open START contact is near neutral potential until START closes and completes the path."
+      },
+      {
+        q: "What is the difference between 'the symbol is Normally Open' and 'the contact is currently open'?",
+        options: [
+          "There is no difference, they mean the same thing",
+          "Normally Open describes the contact's normal, unactuated design state; currently open describes its actual state at the moment being analyzed",
+          "Normally Open only applies to relays, not pushbuttons",
+          "Currently open means the contact is broken"
+        ],
+        correct: 1,
+        explanation: "The NO/NC symbol shows the contact's normal (unactuated) state. Its actual state at any moment depends on whether its associated device is actuated."
+      },
+      {
+        q: "PB1 pressed, PB2 released in a series (AND) lamp circuit. Is the lamp on or off?",
+        options: ["On", "Off", "Flickering", "Cannot be determined"],
+        correct: 1,
+        explanation: "AND logic requires both contacts closed; PB2 is still open, so the lamp is off."
+      },
+      {
+        q: "PB1 released, PB2 pressed in a parallel (OR) lamp circuit. Is the lamp on or off?",
+        options: ["On", "Off", "Flickering", "Cannot be determined"],
+        correct: 0,
+        explanation: "OR logic only needs one closed branch; PB2 being pressed provides a complete path."
+      },
+      {
+        q: "What must every conductor do on a correctly drawn ladder diagram, per the drawing standard discussed in class?",
+        options: [
+          "Cross over other conductors without a junction dot",
+          "Visibly terminate on the intended electrical symbol (clear gap for NO, proper diagonal mark for NC)",
+          "Always run parallel to the rails",
+          "Be labeled with a resistance value"
+        ],
+        correct: 1,
+        explanation: "Every conductor must clearly terminate on its intended symbol, with NO showing a clear gap and NC showing the proper diagonal contact mark."
+      },
+      {
+        q: "Why is the selector switch (SS1) in Lab 4 Part B different from the pushbuttons used in Part A?",
+        options: [
+          "SS1 is Normally Closed only",
+          "SS1 is maintained — it stays in the selected position instead of springing back like a pushbutton",
+          "SS1 cannot control a lamp",
+          "SS1 requires a separate transformer"
+        ],
+        correct: 1,
+        explanation: "A selector switch is a maintained device; it holds its position until manually moved again, unlike a momentary pushbutton."
+      },
+      {
+        q: "In Lab 4 Part C, why is the ladder analyzed on paper instead of being wired?",
+        options: [
+          "The trainer does not support that circuit",
+          "To test whether you can read ladder logic and predict output states without the pictorial as a crutch",
+          "It is too dangerous to wire",
+          "It requires a different trainer module entirely"
+        ],
+        correct: 1,
+        explanation: "Removing the pictorial and requiring paper analysis tests whether the reading/prediction skill has actually been learned."
+      },
+      {
+        q: "A rung should energize its output. You measure 120 V at L1, 120 V after the first contact, and 0 V after the second contact. What should you inspect first?",
+        options: [
+          "The output device only",
+          "The second contact or its associated wiring",
+          "The L1 power rail",
+          "The first contact"
+        ],
+        correct: 1,
+        explanation: "Voltage is present before the second contact but missing after it — that's the first point where the expected voltage disappears."
+      },
+      {
+        q: "What does Class 5 add on top of this week's ladder logic concepts?",
+        options: [
+          "Transformer turns-ratio calculations",
+          "Control relays, contactors, overload protection, and the seal-in circuit",
+          "AC vs. DC motor theory",
+          "NEC grounding requirements"
+        ],
+        correct: 1,
+        explanation: "Class 5 introduces control relays, contactors, overload protection, and the seal-in circuit that keeps a motor starter energized after a momentary START."
+      }
+    ],
+    flashcards: [
+      { front: "Rail vs. rung", back: "Rails are the two vertical power lines; a rung is a horizontal path between them that energizes an output when complete." },
+      { front: "One output per rung", back: "Keeps logic readable/testable — separate independent outputs onto separate rungs." },
+      { front: "Normally Open (NO) contact", back: "Open at rest; closes when actuated." },
+      { front: "Normally Closed (NC) contact", back: "Closed at rest; opens when actuated." },
+      { front: "Series contacts = ?", back: "AND logic — every contact must provide continuity." },
+      { front: "Parallel contacts = ?", back: "OR logic — only one branch needs to be complete." },
+      { front: "NC stop contact = ?", back: "NOT/fail-safe logic — an open circuit (pressed stop or broken wire) removes the run command." },
+      { front: "Skill 5: all buttons released", back: "Y (via NO PB1) is OFF; G (via NC PB3+PB2) is ON." },
+      { front: "Skill 5: PB3 held (shared upstream NC)", back: "Both Y and G go OFF — PB3 removes the common path feeding both branches." },
+      { front: "Ladder → point-to-point wiring order", back: "Read left to right: L1 → STOP input, STOP output → START input, START output → coil M, coil M return → neutral." },
+      { front: "Voltage-tracing troubleshooting rule", back: "Measure left to right; the first point where expected voltage disappears is the open contact/connection." },
+      { front: "'Normally Open' vs. 'currently open'", back: "Normally Open = the symbol's unactuated design state. Currently open = the contact's actual state right now." },
+      { front: "Ladder drawing standard", back: "Every conductor must visibly terminate on its symbol — clear gap for NO, proper diagonal mark for NC." },
+      { front: "Maintained vs. momentary device", back: "A selector switch (maintained) stays in its selected position; a pushbutton (momentary) springs back when released." },
+      { front: "Why analyze Lab 4 Part C on paper only", back: "Tests whether you can read ladder logic and predict outputs without the pictorial as a crutch." },
+      { front: "What Class 5 adds", back: "Control relays, contactors, overload protection, and the seal-in circuit for motor starters." }
     ]
   }
 };
