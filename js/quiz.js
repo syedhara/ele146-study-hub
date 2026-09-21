@@ -725,6 +725,27 @@ function renderWeekOptions() {
   select.value = state.week;
 }
 
+// Fisher-Yates shuffle
+function shuffle(array) {
+  const result = array.slice();
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+}
+
+// Randomizes option order per question so the correct answer's position can't be memorized
+function shuffleQuestion(item) {
+  const order = shuffle(item.options.map((_, i) => i));
+  return {
+    q: item.q,
+    options: order.map((i) => item.options[i]),
+    correct: order.indexOf(item.correct),
+    explanation: item.explanation
+  };
+}
+
 function renderMC() {
   const container = document.getElementById("mc-container");
   container.innerHTML = "";
@@ -732,7 +753,8 @@ function renderMC() {
   state.correctCount = 0;
   updateScoreBar();
 
-  const questions = quizData[state.week].mc;
+  const questions = quizData[state.week].mc.map(shuffleQuestion);
+  state.currentQuestions = questions;
   questions.forEach((item, qIndex) => {
     const card = document.createElement("div");
     card.className = "quiz-question";
