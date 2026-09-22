@@ -85,6 +85,25 @@
       <li><strong>Secondary winding</strong> &mdash; supplies the control circuit.</li>
     </ul>
     <p>The primary and secondary are magnetically coupled &mdash; they are not meant to be one continuous conductor. That separation (isolation) is a key reason control transformers are useful in control panels.</p>
+    <figure class="diagram">
+      <svg viewBox="0 0 460 230" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Transformer magnetic coupling diagram">
+        <rect x="80" y="55" width="50" height="110" rx="8" fill="none" stroke="#4fd1c5" stroke-width="3"/>
+        <rect x="300" y="55" width="50" height="110" rx="8" fill="none" stroke="#f6ad55" stroke-width="3"/>
+        <line x1="195" y1="45" x2="195" y2="175" stroke="#e7ecf5" stroke-width="4"/>
+        <line x1="215" y1="45" x2="215" y2="175" stroke="#e7ecf5" stroke-width="4"/>
+        <line x1="105" y1="55" x2="105" y2="28" stroke="#e7ecf5" stroke-width="2"/>
+        <line x1="325" y1="55" x2="325" y2="28" stroke="#e7ecf5" stroke-width="2"/>
+        <line x1="105" y1="165" x2="105" y2="192" stroke="#e7ecf5" stroke-width="2"/>
+        <line x1="325" y1="165" x2="325" y2="192" stroke="#e7ecf5" stroke-width="2"/>
+        <text x="105" y="20" text-anchor="middle" fill="#9fb0c9" font-size="10">Primary voltage (source)</text>
+        <text x="325" y="20" text-anchor="middle" fill="#9fb0c9" font-size="10">Secondary voltage (control)</text>
+        <text x="105" y="207" text-anchor="middle" fill="#4fd1c5" font-size="13" font-weight="700">Primary</text>
+        <text x="325" y="207" text-anchor="middle" fill="#f6ad55" font-size="13" font-weight="700">Secondary</text>
+        <text x="205" y="38" text-anchor="middle" fill="#e7ecf5" font-size="11">Iron core</text>
+        <text x="230" y="222" text-anchor="middle" fill="#9fb0c9" font-size="9">(magnetic coupling, not a direct wire)</text>
+      </svg>
+      <figcaption>Primary and secondary windings share no conductor — energy crosses the iron core magnetically.</figcaption>
+    </figure>
   </section>
 
   <section class="content-block">
@@ -198,6 +217,25 @@
       <tr><td>380 VAC</td><td>2 and 6</td></tr>
     </table>
     <p>The primary tap must match the supply voltage &mdash; using the wrong tap can produce the wrong secondary voltage and can overheat or damage the transformer. <strong>Class 3 lab uses the 208 VAC primary tap.</strong></p>
+    <figure class="diagram">
+      <svg viewBox="0 0 460 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Primary tap selection diagram">
+        <rect x="190" y="30" width="60" height="160" rx="8" fill="none" stroke="#4fd1c5" stroke-width="3"/>
+        <text x="220" y="205" text-anchor="middle" fill="#4fd1c5" font-size="13" font-weight="700">Primary winding</text>
+        <circle cx="190" cy="50" r="5" fill="#e7ecf5"/>
+        <circle cx="190" cy="90" r="5" fill="#e7ecf5"/>
+        <circle cx="190" cy="130" r="5" fill="#e7ecf5"/>
+        <circle cx="190" cy="170" r="5" fill="#e7ecf5"/>
+        <text x="170" y="54" text-anchor="end" fill="#e7ecf5" font-size="13">2</text>
+        <text x="170" y="94" text-anchor="end" fill="#e7ecf5" font-size="13">3</text>
+        <text x="170" y="134" text-anchor="end" fill="#e7ecf5" font-size="13">4</text>
+        <text x="170" y="174" text-anchor="end" fill="#e7ecf5" font-size="13">6</text>
+        <rect x="290" y="50" width="150" height="110" rx="6" fill="#161d2e" stroke="#2a3450" stroke-width="1.5"/>
+        <text x="300" y="75" fill="#e7ecf5" font-size="12">208 VAC → terminals 2 &amp; 3</text>
+        <text x="300" y="105" fill="#e7ecf5" font-size="12">277 VAC → terminals 2 &amp; 4</text>
+        <text x="300" y="135" fill="#e7ecf5" font-size="12">380 VAC → terminals 2 &amp; 6</text>
+      </svg>
+      <figcaption>Primary tap selection: terminal 2 is common; pairing it with 3, 4, or 6 selects 208, 277, or 380 VAC.</figcaption>
+    </figure>
     <h3>Secondary connections: series vs. parallel</h3>
     <table>
       <tr><th>Connection</th><th>Links</th><th>Output across 2&ndash;5</th></tr>
@@ -205,6 +243,62 @@
       <tr><td>Parallel</td><td>Link terminal 2 to 3, and terminal 4 to 5</td><td>120 VAC</td></tr>
     </table>
     <p>Lab needs about 120 VAC control power, so the secondary windings must be connected <strong>in parallel</strong>. The links decide whether the two secondary windings add voltage or share current &mdash; the wrong link pattern produces the wrong output voltage. Always confirm link placement before energizing; do not wire from memory.</p>
+    <div class="diagram-row">
+      <figure class="diagram">
+        <svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Series secondary wiring diagram, 240 VAC">
+          <rect x="30" y="60" width="100" height="25" rx="4" fill="none" stroke="#4fd1c5" stroke-width="2"/>
+          <rect x="170" y="60" width="100" height="25" rx="4" fill="none" stroke="#f6ad55" stroke-width="2"/>
+          <text x="80" y="52" text-anchor="middle" fill="#4fd1c5" font-size="10">Winding A</text>
+          <text x="220" y="52" text-anchor="middle" fill="#f6ad55" font-size="10">Winding B</text>
+          <line x1="40" y1="85" x2="40" y2="100" stroke="#e7ecf5" stroke-width="2"/>
+          <line x1="120" y1="85" x2="120" y2="100" stroke="#e7ecf5" stroke-width="2"/>
+          <line x1="180" y1="85" x2="180" y2="100" stroke="#e7ecf5" stroke-width="2"/>
+          <line x1="260" y1="85" x2="260" y2="100" stroke="#e7ecf5" stroke-width="2"/>
+          <circle cx="40" cy="100" r="5" fill="#e7ecf5"/>
+          <circle cx="120" cy="100" r="5" fill="#e7ecf5"/>
+          <circle cx="180" cy="100" r="5" fill="#e7ecf5"/>
+          <circle cx="260" cy="100" r="5" fill="#e7ecf5"/>
+          <text x="40" y="120" text-anchor="middle" fill="#9fb0c9" font-size="11">2</text>
+          <text x="120" y="120" text-anchor="middle" fill="#9fb0c9" font-size="11">3</text>
+          <text x="180" y="120" text-anchor="middle" fill="#9fb0c9" font-size="11">4</text>
+          <text x="260" y="120" text-anchor="middle" fill="#9fb0c9" font-size="11">5</text>
+          <line x1="120" y1="100" x2="180" y2="100" stroke="#e7ecf5" stroke-width="5"/>
+          <text x="150" y="90" text-anchor="middle" fill="#9fb0c9" font-size="9">JUMPER</text>
+          <line x1="40" y1="100" x2="40" y2="130" stroke="#e7ecf5" stroke-width="2"/>
+          <line x1="260" y1="100" x2="260" y2="130" stroke="#e7ecf5" stroke-width="2"/>
+          <line x1="40" y1="130" x2="260" y2="130" stroke="#9fb0c9" stroke-width="1.5" stroke-dasharray="4,4"/>
+          <text x="150" y="148" text-anchor="middle" fill="#e7ecf5" font-size="13" font-weight="700">240 VAC</text>
+        </svg>
+        <figcaption>Series: link 3 to 4, output across 2 and 5 = 240 VAC.</figcaption>
+      </figure>
+      <figure class="diagram">
+        <svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Parallel secondary wiring diagram, 120 VAC">
+          <rect x="30" y="60" width="100" height="25" rx="4" fill="none" stroke="#4fd1c5" stroke-width="2"/>
+          <rect x="170" y="60" width="100" height="25" rx="4" fill="none" stroke="#f6ad55" stroke-width="2"/>
+          <text x="80" y="52" text-anchor="middle" fill="#4fd1c5" font-size="10">Winding A</text>
+          <text x="220" y="52" text-anchor="middle" fill="#f6ad55" font-size="10">Winding B</text>
+          <line x1="40" y1="85" x2="40" y2="100" stroke="#e7ecf5" stroke-width="2"/>
+          <line x1="120" y1="85" x2="120" y2="100" stroke="#e7ecf5" stroke-width="2"/>
+          <line x1="180" y1="85" x2="180" y2="100" stroke="#e7ecf5" stroke-width="2"/>
+          <line x1="260" y1="85" x2="260" y2="100" stroke="#e7ecf5" stroke-width="2"/>
+          <circle cx="40" cy="100" r="5" fill="#e7ecf5"/>
+          <circle cx="120" cy="100" r="5" fill="#e7ecf5"/>
+          <circle cx="180" cy="100" r="5" fill="#e7ecf5"/>
+          <circle cx="260" cy="100" r="5" fill="#e7ecf5"/>
+          <text x="40" y="120" text-anchor="middle" fill="#9fb0c9" font-size="11">2</text>
+          <text x="120" y="120" text-anchor="middle" fill="#9fb0c9" font-size="11">3</text>
+          <text x="180" y="120" text-anchor="middle" fill="#9fb0c9" font-size="11">4</text>
+          <text x="260" y="120" text-anchor="middle" fill="#9fb0c9" font-size="11">5</text>
+          <line x1="40" y1="100" x2="120" y2="100" stroke="#e7ecf5" stroke-width="5"/>
+          <line x1="180" y1="100" x2="260" y2="100" stroke="#e7ecf5" stroke-width="5"/>
+          <line x1="40" y1="100" x2="40" y2="130" stroke="#e7ecf5" stroke-width="2"/>
+          <line x1="260" y1="100" x2="260" y2="130" stroke="#e7ecf5" stroke-width="2"/>
+          <line x1="40" y1="130" x2="260" y2="130" stroke="#9fb0c9" stroke-width="1.5" stroke-dasharray="4,4"/>
+          <text x="150" y="148" text-anchor="middle" fill="#e7ecf5" font-size="13" font-weight="700">120 VAC</text>
+        </svg>
+        <figcaption>Parallel: link 2 to 3, and 4 to 5, output across 2 and 5 = 120 VAC.</figcaption>
+      </figure>
+    </div>
   </section>
 
   <section class="content-block">
@@ -230,6 +324,27 @@
       <tr><td>Terminal 2 to ground</td><td>~120 VAC</td><td>Terminal 2 is the ungrounded side</td></tr>
     </table>
     <p>If 2-to-5 is not near 120 VAC, do not assume the transformer is bad. First check the primary tap, secondary links, fuse path, and meter setting.</p>
+    <figure class="diagram">
+      <svg viewBox="0 0 360 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Grounding and meter reading diagram">
+        <circle cx="80" cy="60" r="6" fill="#e7ecf5"/>
+        <circle cx="280" cy="60" r="6" fill="#e7ecf5"/>
+        <text x="80" y="38" text-anchor="middle" fill="#e7ecf5" font-size="13">2</text>
+        <text x="280" y="38" text-anchor="middle" fill="#e7ecf5" font-size="13">5</text>
+        <line x1="106" y1="60" x2="154" y2="60" stroke="#9fb0c9" stroke-width="2" stroke-dasharray="5,3"/>
+        <line x1="206" y1="60" x2="254" y2="60" stroke="#9fb0c9" stroke-width="2" stroke-dasharray="5,3"/>
+        <circle cx="180" cy="60" r="26" fill="none" stroke="#f6ad55" stroke-width="3"/>
+        <text x="180" y="66" text-anchor="middle" fill="#f6ad55" font-size="14" font-weight="700">V~</text>
+        <text x="180" y="18" text-anchor="middle" fill="#e7ecf5" font-size="12">Expect ~120 VAC</text>
+        <line x1="280" y1="66" x2="280" y2="120" stroke="#e7ecf5" stroke-width="2"/>
+        <line x1="265" y1="130" x2="295" y2="130" stroke="#e7ecf5" stroke-width="3"/>
+        <line x1="270" y1="138" x2="290" y2="138" stroke="#e7ecf5" stroke-width="3"/>
+        <line x1="275" y1="146" x2="285" y2="146" stroke="#e7ecf5" stroke-width="3"/>
+        <text x="280" y="165" text-anchor="middle" fill="#9fb0c9" font-size="11">Earth ground (terminal 5)</text>
+        <text x="180" y="195" text-anchor="middle" fill="#9fb0c9" font-size="11">Terminal 2 to ground ≈ 120 VAC</text>
+        <text x="180" y="210" text-anchor="middle" fill="#9fb0c9" font-size="11">Terminal 5 to ground ≈ 0 VAC</text>
+      </svg>
+      <figcaption>Terminal 5 is tied to earth ground, so only terminal 2 reads voltage-to-ground.</figcaption>
+    </figure>
   </section>
 
   <section class="content-block">

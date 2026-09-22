@@ -372,3 +372,37 @@ footer.site-footer {
   transform: rotateY(180deg);
   color: var(--accent);
 }
+
+/* Diagrams */
+.diagram {
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  margin: 1rem 0;
+  text-align: center;
+}
+
+.diagram svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.diagram figcaption {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin-top: 0.6rem;
+}
+
+.diagram-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.diagram-row .diagram {
+  flex: 1 1 260px;
+  margin: 0;
+}
+
