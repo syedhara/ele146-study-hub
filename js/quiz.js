@@ -292,7 +292,8 @@ const quizData = {
           "Convert single-phase to three-phase power"
         ],
         correct: 1,
-        explanation: "A control transformer steps voltage, provides isolation via magnetic coupling, and gives a known point to measure control voltage."
+        explanation: "A control transformer steps voltage, provides isolation via magnetic coupling, and gives a known point to measure control voltage.",
+        diagram: "transformerCoupling"
       },
       {
         q: "Primary turns = 100, secondary turns = 50. What is the turns ratio?",
@@ -332,7 +333,8 @@ const quizData = {
         q: "On the trainer, which primary terminals are used for a 208 VAC supply?",
         options: ["2 and 3", "2 and 4", "2 and 6", "3 and 4"],
         correct: 0,
-        explanation: "208 VAC → terminals 2 and 3. (277 VAC → 2 and 4; 380 VAC → 2 and 6.)"
+        explanation: "208 VAC → terminals 2 and 3. (277 VAC → 2 and 4; 380 VAC → 2 and 6.)",
+        diagram: "primaryTap"
       },
       {
         q: "Which secondary link pattern gives 120 VAC across terminals 2 and 5?",
@@ -343,7 +345,8 @@ const quizData = {
           "No links are required"
         ],
         correct: 1,
-        explanation: "Parallel secondary connection (2-3 linked, 4-5 linked) gives 120 VAC; series (3-4 linked) gives 240 VAC."
+        explanation: "Parallel secondary connection (2-3 linked, 4-5 linked) gives 120 VAC; series (3-4 linked) gives 240 VAC.",
+        diagram: "secondaryLinks"
       },
       {
         q: "Why is terminal 5 on the secondary connected to earth ground in this lab?",
@@ -354,7 +357,8 @@ const quizData = {
           "To reduce the transformer's VA rating"
         ],
         correct: 1,
-        explanation: "Grounding one side of the secondary gives a stable reference; a fault to ground becomes a high-current path that can trip protection."
+        explanation: "Grounding one side of the secondary gives a stable reference; a fault to ground becomes a high-current path that can trip protection.",
+        diagram: "grounding"
       },
       {
         q: "What should you expect when measuring from terminal 5 to ground?",
@@ -512,7 +516,8 @@ const quizData = {
           "The device tag printed next to a coil"
         ],
         correct: 1,
-        explanation: "Each horizontal path between the rails is a rung; a complete electrical path across it energizes the rung's output."
+        explanation: "Each horizontal path between the rails is a rung; a complete electrical path across it energizes the rung's output.",
+        diagram: "ladderAnatomy"
       },
       {
         q: "Why should each independent output be placed on its own rung?",
@@ -529,7 +534,8 @@ const quizData = {
         q: "What is the normal (unactuated) state of a Normally Open (NO) contact?",
         options: ["Closed", "Open", "It depends on the device", "Always energized"],
         correct: 1,
-        explanation: "NO contacts are open at rest; actuating the device closes the path."
+        explanation: "NO contacts are open at rest; actuating the device closes the path.",
+        diagram: "contactSymbols"
       },
       {
         q: "What is the normal (unactuated) state of a Normally Closed (NC) contact?",
@@ -541,13 +547,15 @@ const quizData = {
         q: "Two NO pushbuttons are wired in series to a lamp. What logic function does this implement?",
         options: ["OR", "AND", "NOT", "NOR"],
         correct: 1,
-        explanation: "Series contacts implement AND logic — every contact in the path must provide continuity for the lamp to energize."
+        explanation: "Series contacts implement AND logic — every contact in the path must provide continuity for the lamp to energize.",
+        diagram: "seriesAnd"
       },
       {
         q: "Two NO pushbuttons are wired in parallel to a lamp. What logic function does this implement?",
         options: ["AND", "OR", "NOT", "NAND"],
         correct: 1,
-        explanation: "Parallel contacts implement OR logic — only one branch needs to be complete to energize the lamp."
+        explanation: "Parallel contacts implement OR logic — only one branch needs to be complete to energize the lamp.",
+        diagram: "parallelOr"
       },
       {
         q: "Why do stop devices commonly use Normally Closed contacts instead of Normally Open?",
@@ -558,7 +566,8 @@ const quizData = {
           "NO contacts cannot be used in series"
         ],
         correct: 1,
-        explanation: "With an NC stop contact, both pressing STOP and a broken conductor open the circuit, removing the run command rather than creating a false run signal."
+        explanation: "With an NC stop contact, both pressing STOP and a broken conductor open the circuit, removing the run command rather than creating a false run signal.",
+        diagram: "ncStop"
       },
       {
         q: "In the Skill 5 two-rung circuit, PB3 (NC, shared/upstream) feeds branch A (PB1, NO → Y) and branch B (PB2, NC → G). With all buttons released, what are Y and G?",
@@ -569,7 +578,8 @@ const quizData = {
           "Y OFF, G OFF"
         ],
         correct: 1,
-        explanation: "PB1 (NO) is open at rest, breaking Y's branch — Y is OFF. PB3 and PB2 (both NC) are closed at rest, so G is ON."
+        explanation: "PB1 (NO) is open at rest, breaking Y's branch — Y is OFF. PB3 and PB2 (both NC) are closed at rest, so G is ON.",
+        diagram: "skill5"
       },
       {
         q: "In that same Skill 5 circuit, why does holding PB3 turn OFF both Y and G, even if PB1 is pressed?",
@@ -591,7 +601,8 @@ const quizData = {
           "STOP output to START input"
         ],
         correct: 1,
-        explanation: "Reading the rung left to right, the first wire runs from L1 to the STOP contact's input."
+        explanation: "Reading the rung left to right, the first wire runs from L1 to the STOP contact's input.",
+        diagram: "wiring"
       },
       {
         q: "In voltage tracing, what does it mean if voltage is present before a contact but missing after it?",
@@ -608,7 +619,8 @@ const quizData = {
         q: "With START released (open) in a STOP-START-coil M rung, what is the approximate voltage at the node right after START (toward the coil)?",
         options: ["About 120 VAC", "Near 0 V", "Exactly half of 120 VAC", "It cannot be determined"],
         correct: 1,
-        explanation: "The node after the open START contact is near neutral potential until START closes and completes the path."
+        explanation: "The node after the open START contact is near neutral potential until START closes and completes the path.",
+        diagram: "voltageTrace"
       },
       {
         q: "What is the difference between 'the symbol is Normally Open' and 'the contact is currently open'?",
@@ -742,9 +754,301 @@ function shuffleQuestion(item) {
     q: item.q,
     options: order.map((i) => item.options[i]),
     correct: order.indexOf(item.correct),
-    explanation: item.explanation
+    explanation: item.explanation,
+    diagram: item.diagram
   };
 }
+
+// Named SVG diagram blocks reused across quiz questions (same visual grammar as the study pages)
+const diagramLibrary = {
+  ladderAnatomy: `<figure class="diagram">
+      <svg viewBox="0 0 460 160" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ladder anatomy diagram">
+        <line x1="40" y1="20" x2="40" y2="140" stroke="#e7ecf5" stroke-width="4"/>
+        <line x1="420" y1="20" x2="420" y2="140" stroke="#e7ecf5" stroke-width="4"/>
+        <text x="40" y="14" text-anchor="middle" fill="#9fb0c9" font-size="13">L1</text>
+        <text x="420" y="14" text-anchor="middle" fill="#9fb0c9" font-size="13">N</text>
+        <line x1="40" y1="80" x2="152" y2="80" stroke="#e7ecf5" stroke-width="3"/>
+        <line x1="162" y1="65" x2="162" y2="95" stroke="#4fd1c5" stroke-width="3"/>
+        <line x1="178" y1="65" x2="178" y2="95" stroke="#4fd1c5" stroke-width="3"/>
+        <line x1="188" y1="80" x2="302" y2="80" stroke="#e7ecf5" stroke-width="3"/>
+        <circle cx="320" cy="80" r="18" fill="none" stroke="#f6ad55" stroke-width="3"/>
+        <text x="320" y="85" text-anchor="middle" fill="#f6ad55" font-size="13" font-weight="700">OUT</text>
+        <line x1="338" y1="80" x2="420" y2="80" stroke="#e7ecf5" stroke-width="3"/>
+        <text x="170" y="50" text-anchor="middle" fill="#e7ecf5" font-size="13">Input contact</text>
+        <text x="320" y="50" text-anchor="middle" fill="#e7ecf5" font-size="13">Output</text>
+      </svg>
+      <figcaption>Ladder anatomy: two rails joined by a rung containing an input contact and one output.</figcaption>
+    </figure>`,
+  contactSymbols: `<div class="diagram-row">
+      <figure class="diagram">
+        <svg viewBox="0 0 260 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Normally open contact symbol">
+          <line x1="20" y1="70" x2="112" y2="70" stroke="#e7ecf5" stroke-width="3"/>
+          <line x1="122" y1="55" x2="122" y2="85" stroke="#4fd1c5" stroke-width="3"/>
+          <line x1="138" y1="55" x2="138" y2="85" stroke="#4fd1c5" stroke-width="3"/>
+          <line x1="148" y1="70" x2="240" y2="70" stroke="#e7ecf5" stroke-width="3"/>
+          <text x="130" y="30" text-anchor="middle" fill="#e7ecf5" font-size="14" font-weight="700">Normally Open (NO)</text>
+          <text x="130" y="115" text-anchor="middle" fill="#9fb0c9" font-size="12">Open at rest — closes when actuated</text>
+        </svg>
+        <figcaption>NO contact: a gap at rest.</figcaption>
+      </figure>
+      <figure class="diagram">
+        <svg viewBox="0 0 260 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Normally closed contact symbol">
+          <line x1="20" y1="70" x2="112" y2="70" stroke="#e7ecf5" stroke-width="3"/>
+          <line x1="122" y1="55" x2="122" y2="85" stroke="#4fd1c5" stroke-width="3"/>
+          <line x1="138" y1="55" x2="138" y2="85" stroke="#4fd1c5" stroke-width="3"/>
+          <line x1="118" y1="85" x2="142" y2="55" stroke="#4fd1c5" stroke-width="3"/>
+          <line x1="148" y1="70" x2="240" y2="70" stroke="#e7ecf5" stroke-width="3"/>
+          <text x="130" y="30" text-anchor="middle" fill="#e7ecf5" font-size="14" font-weight="700">Normally Closed (NC)</text>
+          <text x="130" y="115" text-anchor="middle" fill="#9fb0c9" font-size="12">Closed at rest — opens when actuated</text>
+        </svg>
+        <figcaption>NC contact: same symbol plus a diagonal bridge.</figcaption>
+      </figure>
+    </div>`,
+  seriesAnd: `<figure class="diagram">
+      <svg viewBox="0 0 460 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Series AND circuit diagram">
+        <line x1="30" y1="20" x2="30" y2="120" stroke="#e7ecf5" stroke-width="4"/>
+        <line x1="430" y1="20" x2="430" y2="120" stroke="#e7ecf5" stroke-width="4"/>
+        <text x="30" y="14" text-anchor="middle" fill="#9fb0c9" font-size="13">L1</text>
+        <text x="430" y="14" text-anchor="middle" fill="#9fb0c9" font-size="13">N</text>
+        <line x1="30" y1="80" x2="142" y2="80" stroke="#e7ecf5" stroke-width="3"/>
+        <line x1="152" y1="65" x2="152" y2="95" stroke="#4fd1c5" stroke-width="3"/>
+        <line x1="168" y1="65" x2="168" y2="95" stroke="#4fd1c5" stroke-width="3"/>
+        <line x1="178" y1="80" x2="252" y2="80" stroke="#e7ecf5" stroke-width="3"/>
+        <line x1="262" y1="65" x2="262" y2="95" stroke="#4fd1c5" stroke-width="3"/>
+        <line x1="278" y1="65" x2="278" y2="95" stroke="#4fd1c5" stroke-width="3"/>
+        <line x1="288" y1="80" x2="342" y2="80" stroke="#e7ecf5" stroke-width="3"/>
+        <circle cx="360" cy="80" r="18" fill="none" stroke="#f6ad55" stroke-width="3"/>
+        <text x="360" y="85" text-anchor="middle" fill="#f6ad55" font-size="14" font-weight="700">Y</text>
+        <line x1="378" y1="80" x2="430" y2="80" stroke="#e7ecf5" stroke-width="3"/>
+        <text x="160" y="45" text-anchor="middle" fill="#e7ecf5" font-size="13">PB1 (NO)</text>
+        <text x="270" y="45" text-anchor="middle" fill="#e7ecf5" font-size="13">PB2 (NO)</text>
+      </svg>
+      <figcaption>Series = AND: both PB1 and PB2 must be pressed to light Y.</figcaption>
+    </figure>`,
+  parallelOr: `<figure class="diagram">
+      <svg viewBox="0 0 460 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Parallel OR circuit diagram">
+        <line x1="30" y1="20" x2="30" y2="180" stroke="#e7ecf5" stroke-width="4"/>
+        <line x1="430" y1="20" x2="430" y2="180" stroke="#e7ecf5" stroke-width="4"/>
+        <text x="30" y="14" text-anchor="middle" fill="#9fb0c9" font-size="13">L1</text>
+        <text x="430" y="14" text-anchor="middle" fill="#9fb0c9" font-size="13">N</text>
+        <line x1="30" y1="60" x2="142" y2="60" stroke="#e7ecf5" stroke-width="3"/>
+        <line x1="152" y1="45" x2="152" y2="75" stroke="#4fd1c5" stroke-width="3"/>
+        <line x1="168" y1="45" x2="168" y2="75" stroke="#4fd1c5" stroke-width="3"/>
+        <line x1="178" y1="60" x2="300" y2="60" stroke="#e7ecf5" stroke-width="3"/>
+        <text x="160" y="30" text-anchor="middle" fill="#e7ecf5" font-size="13">PB1 (NO)</text>
+        <line x1="30" y1="140" x2="142" y2="140" stroke="#e7ecf5" stroke-width="3"/>
+        <line x1="152" y1="125" x2="152" y2="155" stroke="#4fd1c5" stroke-width="3"/>
+        <line x1="168" y1="125" x2="168" y2="155" stroke="#4fd1c5" stroke-width="3"/>
+        <line x1="178" y1="140" x2="300" y2="140" stroke="#e7ecf5" stroke-width="3"/>
+        <text x="160" y="175" text-anchor="middle" fill="#e7ecf5" font-size="13">PB2 (NO)</text>
+        <line x1="300" y1="60" x2="300" y2="140" stroke="#e7ecf5" stroke-width="3"/>
+        <line x1="300" y1="100" x2="342" y2="100" stroke="#e7ecf5" stroke-width="3"/>
+        <circle cx="360" cy="100" r="18" fill="none" stroke="#f6ad55" stroke-width="3"/>
+        <text x="360" y="105" text-anchor="middle" fill="#f6ad55" font-size="14" font-weight="700">Y</text>
+        <line x1="378" y1="100" x2="430" y2="100" stroke="#e7ecf5" stroke-width="3"/>
+      </svg>
+      <figcaption>Parallel = OR: either PB1 or PB2 (or both) lights Y.</figcaption>
+    </figure>`,
+  ncStop: `<figure class="diagram">
+      <svg viewBox="0 0 460 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="NC stop circuit diagram">
+        <line x1="30" y1="20" x2="30" y2="120" stroke="#e7ecf5" stroke-width="4"/>
+        <line x1="430" y1="20" x2="430" y2="120" stroke="#e7ecf5" stroke-width="4"/>
+        <text x="30" y="14" text-anchor="middle" fill="#9fb0c9" font-size="13">L1</text>
+        <text x="430" y="14" text-anchor="middle" fill="#9fb0c9" font-size="13">N</text>
+        <line x1="30" y1="80" x2="192" y2="80" stroke="#e7ecf5" stroke-width="3"/>
+        <line x1="202" y1="65" x2="202" y2="95" stroke="#4fd1c5" stroke-width="3"/>
+        <line x1="218" y1="65" x2="218" y2="95" stroke="#4fd1c5" stroke-width="3"/>
+        <line x1="198" y1="95" x2="222" y2="65" stroke="#4fd1c5" stroke-width="3"/>
+        <line x1="228" y1="80" x2="342" y2="80" stroke="#e7ecf5" stroke-width="3"/>
+        <circle cx="360" cy="80" r="18" fill="none" stroke="#f6ad55" stroke-width="3"/>
+        <text x="360" y="85" text-anchor="middle" fill="#f6ad55" font-size="14" font-weight="700">Y</text>
+        <line x1="378" y1="80" x2="430" y2="80" stroke="#e7ecf5" stroke-width="3"/>
+        <text x="210" y="45" text-anchor="middle" fill="#e7ecf5" font-size="13">PB3 (NC) — stop</text>
+      </svg>
+      <figcaption>NC-as-stop = NOT: the rung is complete until PB3 is pressed.</figcaption>
+    </figure>`,
+  skill5: `<figure class="diagram">
+      <svg viewBox="0 0 460 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Skill 5 two-rung circuit diagram">
+        <line x1="30" y1="20" x2="30" y2="200" stroke="#e7ecf5" stroke-width="4"/>
+        <line x1="430" y1="20" x2="430" y2="200" stroke="#e7ecf5" stroke-width="4"/>
+        <text x="30" y="14" text-anchor="middle" fill="#9fb0c9" font-size="13">L1</text>
+        <text x="430" y="14" text-anchor="middle" fill="#9fb0c9" font-size="13">N</text>
+        <line x1="30" y1="110" x2="122" y2="110" stroke="#e7ecf5" stroke-width="3"/>
+        <line x1="132" y1="95" x2="132" y2="125" stroke="#4fd1c5" stroke-width="3"/>
+        <line x1="148" y1="95" x2="148" y2="125" stroke="#4fd1c5" stroke-width="3"/>
+        <line x1="128" y1="125" x2="152" y2="95" stroke="#4fd1c5" stroke-width="3"/>
+        <line x1="158" y1="110" x2="200" y2="110" stroke="#e7ecf5" stroke-width="3"/>
+        <text x="140" y="75" text-anchor="middle" fill="#e7ecf5" font-size="12">PB3 (NC) — shared stop</text>
+        <line x1="200" y1="60" x2="200" y2="160" stroke="#e7ecf5" stroke-width="3"/>
+        <circle cx="200" cy="110" r="3" fill="#e7ecf5"/>
+        <line x1="200" y1="60" x2="252" y2="60" stroke="#e7ecf5" stroke-width="3"/>
+        <line x1="262" y1="45" x2="262" y2="75" stroke="#4fd1c5" stroke-width="3"/>
+        <line x1="278" y1="45" x2="278" y2="75" stroke="#4fd1c5" stroke-width="3"/>
+        <line x1="288" y1="60" x2="342" y2="60" stroke="#e7ecf5" stroke-width="3"/>
+        <circle cx="360" cy="60" r="18" fill="none" stroke="#f6ad55" stroke-width="3"/>
+        <text x="360" y="65" text-anchor="middle" fill="#f6ad55" font-size="14" font-weight="700">Y</text>
+        <line x1="378" y1="60" x2="430" y2="60" stroke="#e7ecf5" stroke-width="3"/>
+        <text x="270" y="35" text-anchor="middle" fill="#e7ecf5" font-size="12">PB1 (NO)</text>
+        <line x1="200" y1="160" x2="252" y2="160" stroke="#e7ecf5" stroke-width="3"/>
+        <line x1="262" y1="145" x2="262" y2="175" stroke="#4fd1c5" stroke-width="3"/>
+        <line x1="278" y1="145" x2="278" y2="175" stroke="#4fd1c5" stroke-width="3"/>
+        <line x1="258" y1="175" x2="282" y2="145" stroke="#4fd1c5" stroke-width="3"/>
+        <line x1="288" y1="160" x2="342" y2="160" stroke="#e7ecf5" stroke-width="3"/>
+        <circle cx="360" cy="160" r="18" fill="none" stroke="#f6ad55" stroke-width="3"/>
+        <text x="360" y="165" text-anchor="middle" fill="#f6ad55" font-size="14" font-weight="700">G</text>
+        <line x1="378" y1="160" x2="430" y2="160" stroke="#e7ecf5" stroke-width="3"/>
+        <text x="270" y="200" text-anchor="middle" fill="#e7ecf5" font-size="12">PB2 (NC)</text>
+      </svg>
+      <figcaption>Skill 5: PB3 (NC) is shared upstream of both rungs.</figcaption>
+    </figure>`,
+  wiring: `<figure class="diagram">
+      <svg viewBox="0 0 460 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="STOP-START-coil M wiring diagram">
+        <line x1="30" y1="20" x2="30" y2="120" stroke="#e7ecf5" stroke-width="4"/>
+        <line x1="430" y1="20" x2="430" y2="120" stroke="#e7ecf5" stroke-width="4"/>
+        <text x="30" y="14" text-anchor="middle" fill="#9fb0c9" font-size="13">L1</text>
+        <text x="430" y="14" text-anchor="middle" fill="#9fb0c9" font-size="13">N</text>
+        <line x1="30" y1="80" x2="122" y2="80" stroke="#e7ecf5" stroke-width="3"/>
+        <line x1="132" y1="65" x2="132" y2="95" stroke="#4fd1c5" stroke-width="3"/>
+        <line x1="148" y1="65" x2="148" y2="95" stroke="#4fd1c5" stroke-width="3"/>
+        <line x1="128" y1="95" x2="152" y2="65" stroke="#4fd1c5" stroke-width="3"/>
+        <line x1="158" y1="80" x2="232" y2="80" stroke="#e7ecf5" stroke-width="3"/>
+        <line x1="242" y1="65" x2="242" y2="95" stroke="#4fd1c5" stroke-width="3"/>
+        <line x1="258" y1="65" x2="258" y2="95" stroke="#4fd1c5" stroke-width="3"/>
+        <line x1="268" y1="80" x2="332" y2="80" stroke="#e7ecf5" stroke-width="3"/>
+        <circle cx="350" cy="80" r="18" fill="none" stroke="#f6ad55" stroke-width="3"/>
+        <text x="350" y="85" text-anchor="middle" fill="#f6ad55" font-size="14" font-weight="700">M</text>
+        <line x1="368" y1="80" x2="430" y2="80" stroke="#e7ecf5" stroke-width="3"/>
+        <text x="140" y="45" text-anchor="middle" fill="#e7ecf5" font-size="12">STOP (NC)</text>
+        <text x="250" y="45" text-anchor="middle" fill="#e7ecf5" font-size="12">START (NO)</text>
+        <text x="350" y="45" text-anchor="middle" fill="#e7ecf5" font-size="12">Coil M</text>
+      </svg>
+      <figcaption>Rung read left to right: L1 → STOP → START → coil M → N.</figcaption>
+    </figure>`,
+  voltageTrace: `<figure class="diagram">
+      <svg viewBox="0 0 460 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Voltage tracing diagram with START released">
+        <line x1="30" y1="20" x2="30" y2="120" stroke="#e7ecf5" stroke-width="4"/>
+        <line x1="430" y1="20" x2="430" y2="120" stroke="#e7ecf5" stroke-width="4"/>
+        <text x="30" y="14" text-anchor="middle" fill="#9fb0c9" font-size="13">L1</text>
+        <text x="430" y="14" text-anchor="middle" fill="#9fb0c9" font-size="13">N</text>
+        <line x1="30" y1="80" x2="122" y2="80" stroke="#e7ecf5" stroke-width="3"/>
+        <line x1="132" y1="65" x2="132" y2="95" stroke="#4fd1c5" stroke-width="3"/>
+        <line x1="148" y1="65" x2="148" y2="95" stroke="#4fd1c5" stroke-width="3"/>
+        <line x1="128" y1="95" x2="152" y2="65" stroke="#4fd1c5" stroke-width="3"/>
+        <line x1="158" y1="80" x2="232" y2="80" stroke="#e7ecf5" stroke-width="3"/>
+        <line x1="242" y1="65" x2="242" y2="95" stroke="#4fd1c5" stroke-width="3"/>
+        <line x1="258" y1="65" x2="258" y2="95" stroke="#4fd1c5" stroke-width="3"/>
+        <line x1="268" y1="80" x2="332" y2="80" stroke="#e7ecf5" stroke-width="3"/>
+        <circle cx="350" cy="80" r="18" fill="none" stroke="#f6ad55" stroke-width="3"/>
+        <text x="350" y="85" text-anchor="middle" fill="#f6ad55" font-size="14" font-weight="700">M</text>
+        <line x1="368" y1="80" x2="430" y2="80" stroke="#e7ecf5" stroke-width="3"/>
+        <text x="140" y="45" text-anchor="middle" fill="#e7ecf5" font-size="12">STOP (NC, closed)</text>
+        <text x="250" y="45" text-anchor="middle" fill="#e7ecf5" font-size="12">START (NO, released)</text>
+        <text x="76" y="112" text-anchor="middle" fill="#48bb78" font-size="12">~120V</text>
+        <text x="195" y="112" text-anchor="middle" fill="#48bb78" font-size="12">~120V</text>
+        <text x="300" y="112" text-anchor="middle" fill="#f56565" font-size="12">~0V</text>
+        <text x="399" y="112" text-anchor="middle" fill="#f56565" font-size="12">~0V</text>
+        <text x="230" y="155" text-anchor="middle" fill="#9fb0c9" font-size="12">START is open, so voltage stops right after it</text>
+      </svg>
+      <figcaption>With START released, voltage is present up to the open contact but disappears beyond it.</figcaption>
+    </figure>`,
+  transformerCoupling: `<figure class="diagram">
+      <svg viewBox="0 0 460 230" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Transformer magnetic coupling diagram">
+        <rect x="80" y="55" width="50" height="110" rx="8" fill="none" stroke="#4fd1c5" stroke-width="3"/>
+        <rect x="300" y="55" width="50" height="110" rx="8" fill="none" stroke="#f6ad55" stroke-width="3"/>
+        <line x1="195" y1="45" x2="195" y2="175" stroke="#e7ecf5" stroke-width="4"/>
+        <line x1="215" y1="45" x2="215" y2="175" stroke="#e7ecf5" stroke-width="4"/>
+        <text x="105" y="207" text-anchor="middle" fill="#4fd1c5" font-size="13" font-weight="700">Primary</text>
+        <text x="325" y="207" text-anchor="middle" fill="#f6ad55" font-size="13" font-weight="700">Secondary</text>
+        <text x="205" y="38" text-anchor="middle" fill="#e7ecf5" font-size="11">Iron core</text>
+        <text x="230" y="222" text-anchor="middle" fill="#9fb0c9" font-size="9">(magnetic coupling, not a direct wire)</text>
+      </svg>
+      <figcaption>Primary and secondary windings share no conductor — energy crosses the iron core magnetically.</figcaption>
+    </figure>`,
+  primaryTap: `<figure class="diagram">
+      <svg viewBox="0 0 460 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Primary tap selection diagram">
+        <rect x="190" y="30" width="60" height="160" rx="8" fill="none" stroke="#4fd1c5" stroke-width="3"/>
+        <text x="220" y="205" text-anchor="middle" fill="#4fd1c5" font-size="13" font-weight="700">Primary winding</text>
+        <circle cx="190" cy="50" r="5" fill="#e7ecf5"/>
+        <circle cx="190" cy="90" r="5" fill="#e7ecf5"/>
+        <circle cx="190" cy="130" r="5" fill="#e7ecf5"/>
+        <circle cx="190" cy="170" r="5" fill="#e7ecf5"/>
+        <text x="170" y="54" text-anchor="end" fill="#e7ecf5" font-size="13">2</text>
+        <text x="170" y="94" text-anchor="end" fill="#e7ecf5" font-size="13">3</text>
+        <text x="170" y="134" text-anchor="end" fill="#e7ecf5" font-size="13">4</text>
+        <text x="170" y="174" text-anchor="end" fill="#e7ecf5" font-size="13">6</text>
+        <rect x="290" y="50" width="150" height="110" rx="6" fill="#161d2e" stroke="#2a3450" stroke-width="1.5"/>
+        <text x="300" y="75" fill="#e7ecf5" font-size="12">208 VAC → terminals 2 &amp; 3</text>
+        <text x="300" y="105" fill="#e7ecf5" font-size="12">277 VAC → terminals 2 &amp; 4</text>
+        <text x="300" y="135" fill="#e7ecf5" font-size="12">380 VAC → terminals 2 &amp; 6</text>
+      </svg>
+      <figcaption>Primary tap selection: terminal 2 is common; pairing it with 3, 4, or 6 selects 208, 277, or 380 VAC.</figcaption>
+    </figure>`,
+  secondaryLinks: `<div class="diagram-row">
+      <figure class="diagram">
+        <svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Series secondary wiring diagram, 240 VAC">
+          <rect x="30" y="60" width="100" height="25" rx="4" fill="none" stroke="#4fd1c5" stroke-width="2"/>
+          <rect x="170" y="60" width="100" height="25" rx="4" fill="none" stroke="#f6ad55" stroke-width="2"/>
+          <circle cx="40" cy="100" r="5" fill="#e7ecf5"/>
+          <circle cx="120" cy="100" r="5" fill="#e7ecf5"/>
+          <circle cx="180" cy="100" r="5" fill="#e7ecf5"/>
+          <circle cx="260" cy="100" r="5" fill="#e7ecf5"/>
+          <line x1="40" y1="85" x2="40" y2="100" stroke="#e7ecf5" stroke-width="2"/>
+          <line x1="120" y1="85" x2="120" y2="100" stroke="#e7ecf5" stroke-width="2"/>
+          <line x1="180" y1="85" x2="180" y2="100" stroke="#e7ecf5" stroke-width="2"/>
+          <line x1="260" y1="85" x2="260" y2="100" stroke="#e7ecf5" stroke-width="2"/>
+          <text x="40" y="120" text-anchor="middle" fill="#9fb0c9" font-size="11">2</text>
+          <text x="120" y="120" text-anchor="middle" fill="#9fb0c9" font-size="11">3</text>
+          <text x="180" y="120" text-anchor="middle" fill="#9fb0c9" font-size="11">4</text>
+          <text x="260" y="120" text-anchor="middle" fill="#9fb0c9" font-size="11">5</text>
+          <line x1="120" y1="100" x2="180" y2="100" stroke="#e7ecf5" stroke-width="5"/>
+          <text x="150" y="148" text-anchor="middle" fill="#e7ecf5" font-size="13" font-weight="700">240 VAC</text>
+        </svg>
+        <figcaption>Series: link 3 to 4, output across 2 and 5 = 240 VAC.</figcaption>
+      </figure>
+      <figure class="diagram">
+        <svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Parallel secondary wiring diagram, 120 VAC">
+          <rect x="30" y="60" width="100" height="25" rx="4" fill="none" stroke="#4fd1c5" stroke-width="2"/>
+          <rect x="170" y="60" width="100" height="25" rx="4" fill="none" stroke="#f6ad55" stroke-width="2"/>
+          <circle cx="40" cy="100" r="5" fill="#e7ecf5"/>
+          <circle cx="120" cy="100" r="5" fill="#e7ecf5"/>
+          <circle cx="180" cy="100" r="5" fill="#e7ecf5"/>
+          <circle cx="260" cy="100" r="5" fill="#e7ecf5"/>
+          <line x1="40" y1="85" x2="40" y2="100" stroke="#e7ecf5" stroke-width="2"/>
+          <line x1="120" y1="85" x2="120" y2="100" stroke="#e7ecf5" stroke-width="2"/>
+          <line x1="180" y1="85" x2="180" y2="100" stroke="#e7ecf5" stroke-width="2"/>
+          <line x1="260" y1="85" x2="260" y2="100" stroke="#e7ecf5" stroke-width="2"/>
+          <text x="40" y="120" text-anchor="middle" fill="#9fb0c9" font-size="11">2</text>
+          <text x="120" y="120" text-anchor="middle" fill="#9fb0c9" font-size="11">3</text>
+          <text x="180" y="120" text-anchor="middle" fill="#9fb0c9" font-size="11">4</text>
+          <text x="260" y="120" text-anchor="middle" fill="#9fb0c9" font-size="11">5</text>
+          <line x1="40" y1="100" x2="120" y2="100" stroke="#e7ecf5" stroke-width="5"/>
+          <line x1="180" y1="100" x2="260" y2="100" stroke="#e7ecf5" stroke-width="5"/>
+          <text x="150" y="148" text-anchor="middle" fill="#e7ecf5" font-size="13" font-weight="700">120 VAC</text>
+        </svg>
+        <figcaption>Parallel: link 2 to 3, and 4 to 5, output across 2 and 5 = 120 VAC.</figcaption>
+      </figure>
+    </div>`,
+  grounding: `<figure class="diagram">
+      <svg viewBox="0 0 360 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Grounding and meter reading diagram">
+        <circle cx="80" cy="60" r="6" fill="#e7ecf5"/>
+        <circle cx="280" cy="60" r="6" fill="#e7ecf5"/>
+        <text x="80" y="38" text-anchor="middle" fill="#e7ecf5" font-size="13">2</text>
+        <text x="280" y="38" text-anchor="middle" fill="#e7ecf5" font-size="13">5</text>
+        <line x1="106" y1="60" x2="154" y2="60" stroke="#9fb0c9" stroke-width="2" stroke-dasharray="5,3"/>
+        <line x1="206" y1="60" x2="254" y2="60" stroke="#9fb0c9" stroke-width="2" stroke-dasharray="5,3"/>
+        <circle cx="180" cy="60" r="26" fill="none" stroke="#f6ad55" stroke-width="3"/>
+        <text x="180" y="66" text-anchor="middle" fill="#f6ad55" font-size="14" font-weight="700">V~</text>
+        <line x1="280" y1="66" x2="280" y2="120" stroke="#e7ecf5" stroke-width="2"/>
+        <line x1="265" y1="130" x2="295" y2="130" stroke="#e7ecf5" stroke-width="3"/>
+        <line x1="270" y1="138" x2="290" y2="138" stroke="#e7ecf5" stroke-width="3"/>
+        <line x1="275" y1="146" x2="285" y2="146" stroke="#e7ecf5" stroke-width="3"/>
+        <text x="280" y="165" text-anchor="middle" fill="#9fb0c9" font-size="11">Earth ground (terminal 5)</text>
+        <text x="180" y="195" text-anchor="middle" fill="#9fb0c9" font-size="11">Terminal 2 to ground ≈ 120 VAC</text>
+        <text x="180" y="210" text-anchor="middle" fill="#9fb0c9" font-size="11">Terminal 5 to ground ≈ 0 VAC</text>
+      </svg>
+      <figcaption>Terminal 5 is tied to earth ground, so only terminal 2 reads voltage-to-ground.</figcaption>
+    </figure>`
+};
 
 function renderMC() {
   const container = document.getElementById("mc-container");
@@ -762,6 +1066,12 @@ function renderMC() {
     const title = document.createElement("h3");
     title.textContent = `${qIndex + 1}. ${item.q}`;
     card.appendChild(title);
+
+    if (item.diagram && diagramLibrary[item.diagram]) {
+      const diagramWrap = document.createElement("div");
+      diagramWrap.innerHTML = diagramLibrary[item.diagram];
+      card.appendChild(diagramWrap);
+    }
 
     const optionsWrap = document.createElement("div");
     optionsWrap.className = "options";
