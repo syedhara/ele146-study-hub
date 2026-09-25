@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Week 5: Control Relays and Motor Starters — ELE 146</title>
+<link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="site-header">
+  <nav class="nav">
+    <div class="brand">ELE 146 <span>Study Hub</span></div>
+    <div class="nav-links">
+      <a href="/index.html">Home</a>
+      <a href="/study/index.html" class="active">Study Materials</a>
+      <a href="/quiz/index.html">Quiz</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <div class="breadcrumb"><a href="/index.html">Home</a> / <a href="/study/index.html">Study Materials</a> / Week 5</div>
+  <h1>Week 5 — Control Relays and Motor Starters</h1>
+  <p><strong>Sources:</strong> Class 5 POST-slides, Class 5 homework &amp; answer key, Lab 5 (Amatrol Figure 5-2, three-wire motor starter)</p>
+  <p><em>Teaching focus: contactor action, overload protection, two-wire control, three-wire control, and seal-in operation.</em></p>
+
+  <section class="content-block">
+    <h2>Key takeaways</h2>
+    <ol>
+      <li>The control circuit gives permission; the power circuit carries the energy.</li>
+      <li>A control relay is a logic device; a contactor is a motor-duty power-switching device.</li>
+      <li>Two-wire control uses a maintained command. Three-wire control uses momentary START/STOP plus seal-in memory.</li>
+      <li>The seal-in sequence: START closes &rarr; coil energizes &rarr; F auxiliary closes &rarr; START can be released &rarr; STOP opens &rarr; coil drops out.</li>
+      <li>STOP (and the overload control contact) are in series with the entire START/seal-in branch, so either one always removes power from the coil &mdash; "stop dominance."</li>
+      <li>Overload elements (power side) sense current; the overload control contact (control side, NC) is what actually opens the coil circuit on a trip.</li>
+    </ol>
+  </section>
+
+  <section class="content-block">
+    <h2>1. What you must be able to do</h2>
+    <ul>
+      <li>Explain the difference between the power circuit and the control circuit in a motor starter.</li>
+      <li>Distinguish a control relay (logic device) from a contactor (motor-duty power-switching device).</li>
+      <li>Read Normally Open (NO) and Normally Closed (NC) contacts from their normal, unactuated state.</li>
+      <li>Explain two-wire (maintained) control vs. three-wire (momentary START/STOP + seal-in) control.</li>
+      <li>Trace the full seal-in sequence, step by step, without guessing.</li>
+      <li>Explain why three-wire control does not automatically restart the motor after a power loss.</li>
+      <li>Distinguish overload elements (power side) from the overload control contact (control side).</li>
+    </ul>
+  </section>
+
+  <section class="content-block">
+    <h2>2. Motor starter: two circuits working together</h2>
+    <ul>
+      <li><strong>Power circuit:</strong> carries three-phase current from the line, through the F main contacts and the overload elements, to the motor (T1, T2, T3).</li>
+      <li><strong>Control circuit:</strong> lower-current logic path &mdash; STOP, START, coil, auxiliary contact, and the overload control contact &mdash; that decides whether the power circuit should be closed.</li>
+    </ul>
+    <p><strong>Teaching point:</strong> the control circuit gives permission; the power circuit carries the energy.</p>
+    <figure class="diagram">
+      <svg viewBox="0 0 460 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Power circuit versus control circuit diagram">
+        <rect x="20" y="20" width="200" height="130" rx="8" fill="none" stroke="#f6ad55" stroke-width="3"/>
+        <text x="120" y="45" text-anchor="middle" fill="#f6ad55" font-size="14" font-weight="700">Power circuit</text>
+        <text x="120" y="70" text-anchor="middle" fill="#e7ecf5" font-size="12">L1, L2, L3 &rarr; F main</text>
+        <text x="120" y="90" text-anchor="middle" fill="#e7ecf5" font-size="12">contacts &rarr; O.L. elements</text>
+        <text x="120" y="110" text-anchor="middle" fill="#e7ecf5" font-size="12">&rarr; motor (T1, T2, T3)</text>
+        <text x="120" y="135" text-anchor="middle" fill="#9fb0c9" font-size="11">Carries the energy</text>
+        <rect x="240" y="20" width="200" height="130" rx="8" fill="none" stroke="#4fd1c5" stroke-width="3"/>
+        <text x="340" y="45" text-anchor="middle" fill="#4fd1c5" font-size="14" font-weight="700">Control circuit</text>
+        <text x="340" y="70" text-anchor="middle" fill="#e7ecf5" font-size="12">STOP &rarr; START &rarr; coil F</text>
+        <text x="340" y="90" text-anchor="middle" fill="#e7ecf5" font-size="12">(F auxiliary seal-in,</text>
+        <text x="340" y="110" text-anchor="middle" fill="#e7ecf5" font-size="12">overload control contact)</text>
+        <text x="340" y="135" text-anchor="middle" fill="#9fb0c9" font-size="11">Gives permission</text>
+      </svg>
+      <figcaption>The control circuit decides whether the contactor should close; the power circuit supplies the motor.</figcaption>
+    </figure>
+  </section>
+
+  <section class="content-block">
+    <h2>3. Contactors and control relays: same idea, different duty</h2>
+    <ul>
+      <li>A <strong>control relay</strong> is a logic device &mdash; it switches low-current control signals.</li>
+      <li>A <strong>contactor</strong> is a motor-duty power-switching device &mdash; built to make and break the higher current the motor draws.</li>
+    </ul>
+    <p><strong>Key distinction:</strong> relay = logic device; contactor = motor-duty power-switching device. A motor starter is a contactor plus overload protection.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>4. Normally Open and Normally Closed contacts (recap)</h2>
+    <ul>
+      <li><strong>Normally Open (NO):</strong> open in the normal, unactuated state.</li>
+      <li><strong>Normally Closed (NC):</strong> closed in the normal, unactuated state.</li>
+      <li>The symbol shows the normal state; actual state depends on whether the device is actuated.</li>
+    </ul>
+    <p><strong>Example:</strong> a Normally Closed STOP pushbutton is drawn closed. When the operator presses STOP, the physical contact opens and breaks the control path.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>5. What the coil does</h2>
+    <ul>
+      <li><strong>Coil de-energized:</strong> the F main contacts are open, and any F auxiliary contacts are in their normal state.</li>
+      <li><strong>Coil energized:</strong> the F main contacts close (motor power applied), and the F auxiliary contact(s) switch to their actuated state.</li>
+    </ul>
+    <p><strong>Why it matters:</strong> every contact labeled "F" &mdash; main or auxiliary &mdash; moves together whenever the F coil changes state. Trace the coil first, then every contact that shares its name.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>6. Two-wire control: maintained command</h2>
+    <ul>
+      <li>Two-wire control uses a <strong>maintained</strong> command &mdash; for example, a selector switch or float switch that stays in its actuated position.</li>
+      <li>As long as the maintained input is closed, the coil stays energized; no seal-in path is needed.</li>
+    </ul>
+    <p><strong>Classroom warning:</strong> two-wire control will restart the motor automatically as soon as the maintained input recloses &mdash; including after a power interruption.</p>
+    <p>Two-wire control uses a maintained command. Three-wire control uses momentary START/STOP plus seal-in memory.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>7. Three-wire control: momentary START and STOP</h2>
+    <p>Three-wire control uses momentary pushbuttons (they spring back when released) plus a seal-in auxiliary contact for memory:</p>
+    <ul>
+      <li><strong>STOP path:</strong> a Normally Closed pushbutton, wired first in the series path from L1.</li>
+      <li><strong>START path:</strong> a Normally Open pushbutton, wired after STOP, in parallel with the seal-in path.</li>
+      <li><strong>Seal-in path:</strong> the F auxiliary Normally Open contact, wired in parallel with START.</li>
+    </ul>
+    <figure class="diagram">
+      <svg viewBox="0 0 460 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three-wire seal-in circuit diagram">
+        <line x1="20" y1="20" x2="20" y2="200" stroke="#e7ecf5" stroke-width="4"/>
+        <line x1="440" y1="20" x2="440" y2="200" stroke="#e7ecf5" stroke-width="4"/>
+        <text x="20" y="14" text-anchor="middle" fill="#9fb0c9" font-size="13">L1</text>
+        <text x="440" y="14" text-anchor="middle" fill="#9fb0c9" font-size="13">N</text>
+        <line x1="20" y1="110" x2="112" y2="110" stroke="#e7ecf5" stroke-width="3"/>
+        <line x1="122" y1="95" x2="122" y2="125" stroke="#4fd1c5" stroke-width="3"/>
+        <line x1="138" y1="95" x2="138" y2="125" stroke="#4fd1c5" stroke-width="3"/>
+        <line x1="118" y1="125" x2="142" y2="95" stroke="#4fd1c5" stroke-width="3"/>
+        <line x1="148" y1="110" x2="190" y2="110" stroke="#e7ecf5" stroke-width="3"/>
+        <text x="130" y="75" text-anchor="middle" fill="#e7ecf5" font-size="12">STOP PB3 (NC)</text>
+        <line x1="190" y1="60" x2="190" y2="160" stroke="#e7ecf5" stroke-width="3"/>
+        <line x1="190" y1="60" x2="242" y2="60" stroke="#e7ecf5" stroke-width="3"/>
+        <line x1="252" y1="45" x2="252" y2="75" stroke="#4fd1c5" stroke-width="3"/>
+        <line x1="268" y1="45" x2="268" y2="75" stroke="#4fd1c5" stroke-width="3"/>
+        <line x1="278" y1="60" x2="330" y2="60" stroke="#e7ecf5" stroke-width="3"/>
+        <text x="260" y="35" text-anchor="middle" fill="#e7ecf5" font-size="12">START PB1 (NO)</text>
+        <line x1="190" y1="160" x2="242" y2="160" stroke="#e7ecf5" stroke-width="3"/>
+        <line x1="252" y1="145" x2="252" y2="175" stroke="#4fd1c5" stroke-width="3"/>
+        <line x1="268" y1="145" x2="268" y2="175" stroke="#4fd1c5" stroke-width="3"/>
+        <line x1="278" y1="160" x2="330" y2="160" stroke="#e7ecf5" stroke-width="3"/>
+        <text x="260" y="200" text-anchor="middle" fill="#e7ecf5" font-size="12">F aux (NO) &mdash; seal-in</text>
+        <line x1="330" y1="60" x2="330" y2="160" stroke="#e7ecf5" stroke-width="3"/>
+        <line x1="330" y1="110" x2="372" y2="110" stroke="#e7ecf5" stroke-width="3"/>
+        <circle cx="390" cy="110" r="18" fill="none" stroke="#f6ad55" stroke-width="3"/>
+        <text x="390" y="115" text-anchor="middle" fill="#f6ad55" font-size="13" font-weight="700">F</text>
+        <line x1="408" y1="110" x2="440" y2="110" stroke="#e7ecf5" stroke-width="3"/>
+      </svg>
+      <figcaption>Three-wire control: STOP (NC) in series, START (NO) parallel with F auxiliary (seal-in), feeding coil F.</figcaption>
+    </figure>
+  </section>
+
+  <section class="content-block">
+    <h2>8. Seal-in sequence: what you must be able to explain, step by step</h2>
+    <ol>
+      <li><strong>START is pressed.</strong> The START contact closes and energizes the F coil.</li>
+      <li><strong>F coil energizes.</strong> The F main contacts close and motor power is applied.</li>
+      <li><strong>F auxiliary closes.</strong> The auxiliary contact creates a parallel holding path around START.</li>
+      <li><strong>START is released.</strong> The motor keeps running because current flows through the F auxiliary contact instead of through START.</li>
+      <li><strong>STOP is pressed.</strong> The STOP contact opens; the F coil drops out and all F contacts (main and auxiliary) return to normal.</li>
+    </ol>
+    <p><strong>Reasoning pattern for any seal-in question:</strong> identify the relevant device, determine whether it opens or closes, then trace whether the coil can remain energized.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>9. Stop dominance and the overload contact</h2>
+    <ul>
+      <li><strong>Stop dominance:</strong> STOP is wired ahead of the START/seal-in parallel pair, in series with the entire rung. Pressing STOP always breaks the path to the coil, even if START is also being held.</li>
+      <li><strong>Overload control contact:</strong> also wired in series with the coil (alongside STOP), so an overload trip has the same fail-safe effect as pressing STOP.</li>
+    </ul>
+  </section>
+
+  <section class="content-block">
+    <h2>10. Power-loss behavior: why three-wire control is common</h2>
+    <ul>
+      <li><strong>During power loss:</strong> the F coil de-energizes and the F auxiliary seal-in contact opens (returns to normal/open).</li>
+      <li><strong>When power returns:</strong> START is no longer being pressed, and the auxiliary contact is open, so there is no complete path to the coil. The operator must press START again.</li>
+    </ul>
+    <p>This is the main safety advantage of three-wire control over two-wire (maintained) control: no automatic, unattended restart.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>11. Overload protection: power side and control side</h2>
+    <ul>
+      <li><strong>O.L.</strong> means overload element.</li>
+      <li>The overload elements are in the motor power path (one per phase) and sense motor current.</li>
+      <li>The overload relay also has a <strong>Normally Closed control contact</strong>, wired in the control circuit in series with the coil.</li>
+      <li>When the overload trips (sustained overcurrent), that control contact opens and de-energizes the coil.</li>
+      <li>The contactor opens (F main contacts open) and the motor stops.</li>
+    </ul>
+    <div class="diagram-row">
+      <figure class="diagram">
+        <svg viewBox="0 0 260 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Overload element in the power circuit">
+          <line x1="20" y1="70" x2="90" y2="70" stroke="#e7ecf5" stroke-width="3"/>
+          <rect x="90" y="55" width="30" height="30" fill="none" stroke="#f6ad55" stroke-width="3"/>
+          <line x1="120" y1="70" x2="190" y2="70" stroke="#e7ecf5" stroke-width="3"/>
+          <text x="105" y="40" text-anchor="middle" fill="#e7ecf5" font-size="12">O.L. element</text>
+          <text x="130" y="115" text-anchor="middle" fill="#9fb0c9" font-size="11">Senses motor current (power side)</text>
+        </svg>
+        <figcaption>Overload element: in the power path, senses current in each phase.</figcaption>
+      </figure>
+      <figure class="diagram">
+        <svg viewBox="0 0 260 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Overload control contact in the control circuit">
+          <line x1="20" y1="70" x2="112" y2="70" stroke="#e7ecf5" stroke-width="3"/>
+          <line x1="122" y1="55" x2="122" y2="85" stroke="#4fd1c5" stroke-width="3"/>
+          <line x1="138" y1="55" x2="138" y2="85" stroke="#4fd1c5" stroke-width="3"/>
+          <line x1="118" y1="85" x2="142" y2="55" stroke="#4fd1c5" stroke-width="3"/>
+          <line x1="148" y1="70" x2="240" y2="70" stroke="#e7ecf5" stroke-width="3"/>
+          <text x="130" y="30" text-anchor="middle" fill="#e7ecf5" font-size="13" font-weight="700">O.L. contact (NC)</text>
+          <text x="130" y="115" text-anchor="middle" fill="#9fb0c9" font-size="11">Series with coil (control side)</text>
+        </svg>
+        <figcaption>Overload control contact: NC, in series with the coil &mdash; opens on trip.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="content-block">
+    <h2>12. Amatrol Figure 5-2: wiring authority for the lab</h2>
+    <ul>
+      <li><strong>Top section:</strong> three-phase motor power path (F main contacts, overload elements, T1&ndash;T3).</li>
+      <li><strong>Middle:</strong> control transformer and fuse path (steps line voltage down to control voltage).</li>
+      <li><strong>Bottom:</strong> three-wire START/STOP control circuit (STOP, START, F auxiliary seal-in, overload control contact, coil).</li>
+      <li><strong>Panel grounds are required even when not shown in the ladder diagram</strong> &mdash; always verify grounding on the physical trainer, not just on paper.</li>
+    </ul>
+    <p>Class 5 retains the Class 2 power-side wiring on the 85-MT5SL trainer. The control circuit is changed to three-wire operation by adding STOP PB3 in series ahead of START PB1 and wiring the Forward (F) auxiliary Normally Open contact in parallel with START.</p>
+    <table>
+      <tr><th>Step</th><th>Connect</th><th>Purpose</th></tr>
+      <tr><td>1</td><td>Control transformer supply &rarr; STOP PB3 (NC)</td><td>STOP is in the common series path.</td></tr>
+      <tr><td>2</td><td>STOP output &rarr; START PB1 input AND F auxiliary terminal 13</td><td>Branch point before START.</td></tr>
+      <tr><td>3</td><td>START PB1 output AND F auxiliary terminal 14 &rarr; F coil A1</td><td>START and F auxiliary are parallel.</td></tr>
+      <tr><td>4</td><td>F coil A2 &rarr; overload contact 95-96</td><td>Overload trip opens the control circuit.</td></tr>
+      <tr><td>5</td><td>Remaining overload terminal &rarr; transformer return</td><td>Completes the 120 VAC control circuit.</td></tr>
+    </table>
+  </section>
+
+  <section class="content-block">
+    <h2>13. Lab strategy: do not just copy wires</h2>
+    <ul>
+      <li><strong>Before wiring:</strong> identify F main contacts and O.L. elements in the power circuit; identify START PB1, STOP PB3, the F auxiliary seal-in contact, and the overload control contact in the control circuit.</li>
+      <li><strong>While wiring:</strong> use Amatrol Figure 5-2 as the authoritative reference, not just the simplified teaching diagram.</li>
+      <li><strong>After wiring:</strong> predict the expected behavior before energizing, then verify.</li>
+    </ul>
+    <table>
+      <tr><th>Step</th><th>Action</th><th>Expected result</th></tr>
+      <tr><td>1</td><td>Turn control power on, with START released.</td><td>Motor should be off.</td></tr>
+      <tr><td>2</td><td>Press and release START.</td><td>Motor should start and continue running.</td></tr>
+      <tr><td>3</td><td>Press and release STOP.</td><td>Motor should stop.</td></tr>
+      <tr><td>4</td><td>Simulate or discuss loss of control power.</td><td>F coil drops out; restart requires START again.</td></tr>
+      <tr><td>5</td><td>Discuss overload trip behavior.</td><td>Overload control contact opens and drops out the coil.</td></tr>
+    </table>
+  </section>
+
+  <section class="content-block">
+    <h2>14. Common mistakes &mdash; and what makes them wrong</h2>
+    <ul>
+      <li><strong>Confusing the overload element with the overload control contact.</strong> The element senses current on the power side; the contact (NC, control side) is what actually opens the coil circuit.</li>
+      <li><strong>Forgetting stop dominance.</strong> STOP must be in series with the entire START/seal-in branch, not just in series with START alone &mdash; otherwise the seal-in path could bypass STOP.</li>
+      <li><strong>Assuming two-wire and three-wire control behave the same after a power loss.</strong> Two-wire (maintained) control restarts automatically; three-wire control requires START to be pressed again.</li>
+      <li><strong>Skipping the panel ground check</strong> because it is not drawn on the simplified ladder &mdash; Amatrol Figure 5-2 and real panels still require it.</li>
+    </ul>
+  </section>
+
+  <section class="content-block">
+    <h2>15. Apply it: predict before you energize</h2>
+    <ol>
+      <li>With START released and STOP released, should the F coil be energized? &rarr; <strong>No.</strong> Until START has been pressed at least once, the F auxiliary contact has never closed, and START itself is open.</li>
+      <li>When START is pressed, what path energizes the F coil? &rarr; Control transformer &rarr; STOP (NC, closed) &rarr; START (NO, now closed) &rarr; F coil &rarr; overload contact (NC, closed) &rarr; transformer return.</li>
+      <li>After START is released, what keeps the F coil energized? &rarr; The F auxiliary contact, now closed (sealed in) in parallel with START, keeps the current path complete.</li>
+      <li>What opens when STOP is pressed? &rarr; The STOP contact (NC) opens, breaking the series path to the coil regardless of the state of START or the F auxiliary contact.</li>
+    </ol>
+  </section>
+
+  <section class="content-block">
+    <h2>16. Exit-ticket reasoning questions</h2>
+    <ol>
+      <li>Why does the motor stay on after the START pushbutton is released?</li>
+      <li>What opens when STOP is pressed, and what happens to the coil?</li>
+      <li>Why does three-wire control avoid automatic restart after a power loss?</li>
+      <li>What is the difference between the overload elements and the overload control contact?</li>
+      <li>If the contactor pulls in but the motor does not run, would you first suspect the control circuit or the power circuit? Explain.</li>
+    </ol>
+    <p>Answer by tracing the circuit path, not by guessing component names.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>17. What's next: Class 6</h2>
+    <p>Class 6 builds on the three-wire starter with additional control functions (for example, jogging, multiple START/STOP stations, or interlocking) layered on top of the seal-in circuit covered this week.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>18. Real-world / at-home examples</h2>
+    <table>
+      <tr><th>Home / everyday example</th><th>Week 5 concept it demonstrates</th></tr>
+      <tr><td>Garage door opener wall button (momentary) vs. the door staying "running" until it hits a limit</td><td>Momentary START command plus a holding/seal-in-style path that keeps the motor running after the button is released</td></tr>
+      <tr><td>A latching relay used for a whole-house fan or sprinkler valve</td><td>Control relay logic (low-current switching) vs. a contactor's motor-duty power switching</td></tr>
+      <tr><td>Refrigerator or AC compressor with thermal/current overload protection that trips and needs a manual or automatic reset</td><td>Overload element sensing current + a control contact that removes power on a sustained overcurrent condition</td></tr>
+      <tr><td>A doorbell or elevator call button (momentary, does not need to be held)</td><td>Momentary input that only needs a brief press because a holding circuit (or equivalent logic) remembers the command</td></tr>
+      <tr><td>Portable generator or UPS: equipment does not silently restart on its own after a power blip</td><td>Same safety idea as three-wire control &mdash; no unattended automatic restart after a power interruption</td></tr>
+      <tr><td>Household GFCI/AFCI breaker tripping and needing to be manually reset</td><td>Similar concept to the overload control contact &mdash; a fault condition opens a control path rather than letting current keep flowing</td></tr>
+    </table>
+    <p><strong>Why this matters:</strong> the same power-vs-control separation, momentary-vs-maintained distinction, and fail-safe "stop always wins" logic from the trainer shows up in everyday momentary-button devices and protective equipment.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>Retrieval practice</h2>
+    <p>Try answering without looking, then reveal. For an interactive version, use the <a href="/quiz/index.html">Quiz page</a>.</p>
+    <details><summary>1. What does the control circuit do vs. the power circuit?</summary><p>The control circuit decides whether the contactor should close (gives permission); the power circuit carries the energy to the motor.</p></details>
+    <details><summary>2. What is the key distinction between a control relay and a contactor?</summary><p>A control relay is a logic device (low-current switching); a contactor is a motor-duty power-switching device built for higher current.</p></details>
+    <details><summary>3. What is the normal state of a Normally Closed STOP pushbutton?</summary><p>Closed &mdash; pressing STOP opens the physical contact and breaks the control path.</p></details>
+    <details><summary>4. When the F coil energizes, what happens to the F main contacts and F auxiliary contacts?</summary><p>They all move together: the F main contacts close (motor power applied) and the F auxiliary contact(s) switch to their actuated state.</p></details>
+    <details><summary>5. What kind of command does two-wire control use?</summary><p>A maintained command (e.g., a selector or float switch) that stays in its actuated position &mdash; no seal-in path is needed.</p></details>
+    <details><summary>6. What is the main safety drawback of two-wire (maintained) control?</summary><p>It restarts the motor automatically as soon as the maintained input recloses, including after a power interruption.</p></details>
+    <details><summary>7. In three-wire control, where is STOP wired relative to START and the seal-in contact?</summary><p>STOP (NC) is wired first, in series with the entire START/seal-in parallel pair.</p></details>
+    <details><summary>8. In three-wire control, what is wired in parallel with START?</summary><p>The F auxiliary Normally Open contact (the seal-in path).</p></details>
+    <details><summary>9. What is the first step in the seal-in sequence?</summary><p>START is pressed, closing the START contact and energizing the F coil.</p></details>
+    <details><summary>10. After START is pressed and the F coil energizes, what happens next in the sequence?</summary><p>The F main contacts close (motor power applied), and then the F auxiliary contact closes, creating a parallel holding path around START.</p></details>
+    <details><summary>11. Why does the motor keep running after START is released?</summary><p>Current flows through the now-closed F auxiliary (seal-in) contact instead of through START.</p></details>
+    <details><summary>12. What happens when STOP is pressed?</summary><p>The STOP contact opens, the F coil drops out, and all F contacts (main and auxiliary) return to normal.</p></details>
+    <details><summary>13. What is "stop dominance"?</summary><p>STOP is in series with the entire rung, so pressing STOP always breaks the path to the coil, even if START is being held at the same time.</p></details>
+    <details><summary>14. Where is the overload control contact wired, and what type of contact is it?</summary><p>In series with the coil (alongside STOP); it is Normally Closed.</p></details>
+    <details><summary>15. What happens to the F auxiliary contact during a power loss?</summary><p>The F coil de-energizes and the F auxiliary seal-in contact opens (returns to normal/open).</p></details>
+    <details><summary>16. Why doesn't the motor restart automatically when power returns after a loss, in three-wire control?</summary><p>START is no longer being pressed and the auxiliary contact is open, so there is no complete path to the coil &mdash; START must be pressed again.</p></details>
+    <details><summary>17. What is the difference between overload elements and the overload control contact?</summary><p>Overload elements are power-side current sensors (one per phase); the overload control contact is the control-side NC switch that opens the coil circuit when a trip is detected.</p></details>
+    <details><summary>18. What happens to the motor when the overload control contact opens on a trip?</summary><p>The coil de-energizes, the F main contacts open, and the motor stops.</p></details>
+    <details><summary>19. In Amatrol Figure 5-2, what does the top section of the diagram show?</summary><p>The three-phase motor power path: F main contacts, overload elements, and T1-T3.</p></details>
+    <details><summary>20. Why must panel grounds be verified even if not shown on the simplified ladder diagram?</summary><p>Panel grounds are still required on the physical trainer/real panel; the simplified ladder is a teaching aid, not the full wiring authority.</p></details>
+    <details><summary>21. With START and STOP both released, should the F coil be energized?</summary><p>No &mdash; START is open, and until START has been pressed at least once, the F auxiliary seal-in contact has never closed either.</p></details>
+    <details><summary>22. If the contactor pulls in but the motor does not run, should you first suspect the control circuit or the power circuit?</summary><p>The power circuit &mdash; the control circuit has already done its job (the coil pulled in), so the fault is more likely downstream, in the power path to the motor.</p></details>
+    <details><summary>23. What does Class 6 add on top of this week's three-wire starter concepts?</summary><p>Additional control functions, such as jogging, multiple START/STOP stations, or interlocking, layered on top of the seal-in circuit.</p></details>
+  </section>
+
+  <section class="content-block">
+    <h2>Before the next class</h2>
+    <ul>
+      <li>Be able to trace the full seal-in sequence from memory: START pressed &rarr; coil energizes &rarr; F auxiliary closes &rarr; START released &rarr; STOP pressed &rarr; coil drops out.</li>
+      <li>Memorize the distinction: overload elements (power side, sense current) vs. overload control contact (control side, NC, opens the coil circuit).</li>
+      <li>Be able to explain why three-wire control does not auto-restart after a power loss, but two-wire (maintained) control does.</li>
+      <li>Review the Amatrol Figure 5-2 point-to-point endpoint map until you can name each numbered connection without looking.</li>
+      <li>A common exam trap: assuming STOP is only in series with START, instead of in series with the entire START/seal-in parallel pair (stop dominance).</li>
+    </ul>
+  </section>
+</main>
+
+<footer class="site-footer">
+  ELE 146 — Electric Motor Control · Personal study site
+</footer>
+</body>
+</html>
