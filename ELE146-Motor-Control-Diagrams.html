@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ELE 146 Motor Control Diagrams</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+:root{
+  --ground:#EEF1EF; --panel:#FAFBFA; --ink:#17201D; --ink-2:#4F5C57; --rule:#C9D1CD;
+  --power:#1F2A26; --ctrl:#B3261E; --accent:#1E6B52; --grid:rgba(30,107,82,.08);
+  --display:"Barlow Condensed","Arial Narrow",sans-serif;
+  --body:"Source Sans 3","Segoe UI",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#111714; --panel:#18201C; --ink:#E3EAE6; --ink-2:#9BA9A3; --rule:#2F3B36;
+    --power:#E3EAE6; --ctrl:#F07662; --accent:#63C79F; --grid:rgba(99,199,159,.07);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#111714; --panel:#18201C; --ink:#E3EAE6; --ink-2:#9BA9A3; --rule:#2F3B36;
+  --power:#E3EAE6; --ctrl:#F07662; --accent:#63C79F; --grid:rgba(99,199,159,.07);
+}
+body{background:var(--ground);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;padding-inline:16px;padding-block:32px 64px}
+.wrap{max-width:980px;margin:0 auto;display:flex;flex-direction:column;gap:48px}
+header{display:flex;flex-direction:column;gap:10px;max-width:70ch}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(34px,6vw,52px);line-height:1;margin:0;text-wrap:balance;letter-spacing:.01em}
+h2{font-family:var(--display);font-weight:600;font-size:28px;line-height:1.1;margin:0;text-wrap:balance}
+h3{font-family:var(--display);font-weight:600;font-size:19px;margin:0;letter-spacing:.02em}
+p{margin:0;max-width:68ch}
+.lede{color:var(--ink-2);font-size:17px}
+.key{display:flex;flex-wrap:wrap;gap:18px;font-size:14px;color:var(--ink-2)}
+.key span{display:inline-flex;align-items:center;gap:8px}
+.key i{display:inline-block;width:28px;height:3px;border-radius:2px}
+section{display:flex;flex-direction:column;gap:16px}
+.sec-head{display:flex;flex-direction:column;gap:6px}
+.sec-head p{color:var(--ink-2)}
+.legend{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.sym{background:var(--panel);border:1px solid var(--rule);border-radius:6px;padding:12px;display:flex;flex-direction:column;gap:6px}
+.sym svg{width:100%;height:auto;display:block}
+.sym b{font-family:var(--display);font-weight:600;font-size:17px;letter-spacing:.02em}
+.sym small{color:var(--ink-2);font-size:13px;line-height:1.4}
+.sheet{background-color:var(--panel);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:20px 20px;border:1px solid var(--rule);border-radius:6px;overflow-x:auto}
+.sheet svg{display:block;min-width:560px;width:100%;height:auto}
+.tb{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;border-top:1px solid var(--rule);padding:8px 14px;font-family:var(--mono);font-size:11px;color:var(--ink-2);background:var(--panel);letter-spacing:.04em;text-transform:uppercase;min-width:560px}
+.two{display:grid;grid-template-columns:1fr;gap:16px}
+.notes{display:flex;flex-direction:column;gap:8px;font-size:15px}
+.notes li{margin-bottom:4px}
+.notes ul{margin:0;padding-left:20px}
+svg text{font-family:var(--mono);font-size:12px;fill:var(--ink-2)}
+svg .lbl{font-family:var(--display);font-size:15px;font-weight:600;fill:var(--ink)}
+svg .big{font-family:var(--display);font-size:16px;font-weight:700;fill:var(--ink)}
+svg .pw{stroke:var(--power);stroke-width:2.2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+svg .ct{stroke:var(--ctrl);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+svg .s{stroke:var(--ink);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+svg .dot{fill:var(--ctrl);stroke:none}
+svg .fillpanel{fill:var(--panel)}
+svg .dash{stroke:var(--ink-2);stroke-width:1.5;stroke-dasharray:5 5;fill:none}
+svg .acc{fill:var(--accent)}
+.tablewrap{overflow-x:auto;border:1px solid var(--rule);border-radius:6px;background:var(--panel)}
+table{border-collapse:collapse;width:100%;min-width:620px;font-size:15px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-family:var(--display);font-weight:600;font-size:15px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-2)}
+tr:last-child td{border-bottom:0}
+td:first-child{font-weight:600;white-space:nowrap}
+.tag{font-family:var(--mono);font-size:12px;color:var(--accent)}
+.callout{border-left:3px solid var(--accent);padding:4px 0 4px 14px;color:var(--ink-2);font-size:15px;max-width:72ch}
+a{color:var(--accent)}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.src{font-size:14px;color:var(--ink-2)}
+.src ul{margin:6px 0 0;padding-left:20px}
+@media (min-width:860px){.two{grid-template-columns:1.55fr 1fr;align-items:start}}
+</style>
+<style>*{box-sizing:border-box}body{margin:0}</style>
+</head>
+<body>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">NOVA · ELE 146 Electric Motor Control</div>
+  <h1>Motor control components &amp; basic circuits</h1>
+  <p class="lede">Symbols and wiring diagrams for the parts on an Amatrol-style motor control trainer (e.g. the 85-MT5): contactors, overloads, pushbuttons, timers, the control transformer and a 3-phase motor. Drawn in NEMA/JIC ladder style.</p>
+  <div class="key">
+    <span><i style="background:var(--power)"></i>Power circuit (motor current)</span>
+    <span><i style="background:var(--ctrl)"></i>Control circuit (coil current, e.g. 120 V from X1–X2)</span>
+  </div>
+</header>
+
+<!-- ============ SYMBOLS ============ -->
+<section>
+  <div class="sec-head">
+    <h2>Component symbols</h2>
+    <p>Contacts are always drawn in their <em>de-energized</em> (shelf) state. Every contact is labeled with the coil or device that operates it.</p>
+  </div>
+  <div class="legend">
+    <div class="sym">
+      <svg viewBox="0 0 120 80" role="img" aria-label="Normally open pushbutton">
+        <path class="s" d="M0 52H26M94 52H120M24 38H96M60 38V20M52 20H68"/><circle class="s" cx="30" cy="52" r="4"/><circle class="s" cx="90" cy="52" r="4"/>
+      </svg>
+      <b>Pushbutton, N.O.</b><small>Start button. Closes only while pressed.</small>
+    </div>
+    <div class="sym">
+      <svg viewBox="0 0 120 80" role="img" aria-label="Normally closed pushbutton">
+        <path class="s" d="M0 42H26M94 42H120M24 49H96M60 49V20M52 20H68"/><circle class="s" cx="30" cy="42" r="4"/><circle class="s" cx="90" cy="42" r="4"/>
+      </svg>
+      <b>Pushbutton, N.C.</b><small>Stop button. Opens while pressed.</small>
+    </div>
+    <div class="sym">
+      <svg viewBox="0 0 120 80" role="img" aria-label="Coil">
+        <path class="s" d="M0 40H44M76 40H120"/><circle class="s" cx="60" cy="40" r="16"/><text x="60" y="45" text-anchor="middle" class="big">M</text>
+      </svg>
+      <b>Coil (contactor / relay)</b><small>Letter names it: M, F, R, CR, TR.</small>
+    </div>
+    <div class="sym">
+      <svg viewBox="0 0 120 80" role="img" aria-label="Normally open contact">
+        <path class="s" d="M0 40H50M70 40H120M50 24V56M70 24V56"/>
+      </svg>
+      <b>Contact, N.O.</b><small>Closes when its coil is energized (seal-in / aux contact).</small>
+    </div>
+    <div class="sym">
+      <svg viewBox="0 0 120 80" role="img" aria-label="Normally closed contact">
+        <path class="s" d="M0 40H50M70 40H120M50 24V56M70 24V56M42 62L78 18"/>
+      </svg>
+      <b>Contact, N.C.</b><small>Opens when its coil is energized (interlocks).</small>
+    </div>
+    <div class="sym">
+      <svg viewBox="0 0 120 80" role="img" aria-label="Thermal overload heater">
+        <path class="s" d="M0 44H40V28H60V56H80V44H120"/>
+      </svg>
+      <b>Overload heater</b><small>In series with each motor lead. Heats up on overcurrent.</small>
+    </div>
+    <div class="sym">
+      <svg viewBox="0 0 120 80" role="img" aria-label="Overload normally closed contact">
+        <path class="s" d="M0 40H50M70 40H120M50 24V56M70 24V56M42 62L78 18"/><text x="60" y="76" text-anchor="middle">OL</text>
+      </svg>
+      <b>Overload contact, N.C.</b><small>In the control circuit. Trips open and drops out the coil.</small>
+    </div>
+    <div class="sym">
+      <svg viewBox="0 0 120 80" role="img" aria-label="Timed contact, normally open, timed closed">
+        <path class="s" d="M0 36H50M70 36H120M50 20V52M70 20V52M44 68Q60 52 76 68M60 60V52"/><text x="98" y="70" text-anchor="middle">NOTC</text>
+      </svg>
+      <b>Timer contact</b><small>On-delay: closes a set time after the TR coil energizes.</small>
+    </div>
+    <div class="sym">
+      <svg viewBox="0 0 120 80" role="img" aria-label="Limit switch normally open">
+        <path class="s" d="M0 50H30M90 50H120M37 47L84 32"/><path class="s" d="M58 41L67 38L64 48Z"/><circle class="s" cx="34" cy="50" r="4"/><circle class="s" cx="86" cy="50" r="4"/>
+      </svg>
+      <b>Limit switch, N.O.</b><small>Operated by a moving part (cam, door, carriage).</small>
+    </div>
+    <div class="sym">
+      <svg viewBox="0 0 120 80" role="img" aria-label="Pilot light">
+        <path class="s" d="M0 44H44M76 44H120M71 33L77 27M49 33L43 27M60 28V20"/><circle class="s" cx="60" cy="44" r="16"/><text x="60" y="49" text-anchor="middle" class="big">G</text>
+      </svg>
+      <b>Pilot light</b><small>Letter is the lens color: G = run, R = stopped/fault, A = amber.</small>
+    </div>
+    <div class="sym">
+      <svg viewBox="0 0 120 80" role="img" aria-label="Fuse">
+        <path class="s" d="M0 40H120"/><rect class="s" x="38" y="32" width="44" height="16" rx="2"/>
+      </svg>
+      <b>Fuse</b><small>Short-circuit protection for power lines and the control transformer.</small>
+    </div>
+    <div class="sym">
+      <svg viewBox="0 0 120 80" role="img" aria-label="Control transformer">
+        <path class="s" d="M30 12V28A7.5 7.5 0 0 0 45 28A7.5 7.5 0 0 0 60 28A7.5 7.5 0 0 0 75 28A7.5 7.5 0 0 0 90 28V12M30 68V54A7.5 7.5 0 0 1 45 54A7.5 7.5 0 0 1 60 54A7.5 7.5 0 0 1 75 54A7.5 7.5 0 0 1 90 54V68M26 39H94M26 43H94"/><text x="14" y="16">H1</text><text x="96" y="16">H4</text><text x="14" y="72">X1</text><text x="96" y="72">X2</text>
+      </svg>
+      <b>Control transformer</b><small>Steps line voltage (H side) down to control voltage (X side).</small>
+    </div>
+    <div class="sym">
+      <svg viewBox="0 0 120 80" role="img" aria-label="Three-phase motor">
+        <path class="s" d="M50 32L42 10M60 28V8M70 32L78 10"/><circle class="s" cx="60" cy="50" r="22"/><text x="60" y="55" text-anchor="middle" class="big">MTR</text><text x="30" y="12">T1</text><text x="64" y="10">T2</text><text x="82" y="16">T3</text>
+      </svg>
+      <b>3-phase motor</b><small>Squirrel-cage induction motor, leads T1–T3.</small>
+    </div>
+  </div>
+</section>
+
+<!-- ============ POWER CIRCUIT ============ -->
+<section>
+  <div class="sec-head">
+    <h2>1 · Power circuit (3-phase starter)</h2>
+    <p>This is the high-current path to the motor. The contactor’s main contacts (M) switch it; the control circuit below decides when.</p>
+  </div>
+  <div class="two">
+    <div class="sheet">
+      <svg viewBox="0 0 520 470" role="img" aria-label="Power circuit: L1 L2 L3 through disconnect, fuses, M contacts and overload heaters to motor T1 T2 T3">
+        <text class="lbl" x="150" y="24" text-anchor="middle">L1</text><text class="lbl" x="260" y="24" text-anchor="middle">L2</text><text class="lbl" x="370" y="24" text-anchor="middle">L3</text>
+        <path class="pw" d="M150 32V61M150 103V120M150 150V200M136 200H164M136 214H164M150 214V270V280H164V300H150V345"/>
+        <path class="pw" d="M260 32V61M260 103V120M260 150V200M246 200H274M246 214H274M260 214V270V280H274V300H260V345"/>
+        <path class="pw" d="M370 32V61M370 103V120M370 150V200M356 200H384M356 214H384M370 214V270V280H384V300H370V345"/>
+        <!-- disconnect -->
+        <g class="pw"><circle cx="150" cy="64" r="3"/><circle cx="150" cy="100" r="3"/><circle cx="260" cy="64" r="3"/><circle cx="260" cy="100" r="3"/><circle cx="370" cy="64" r="3"/><circle cx="370" cy="100" r="3"/>
+        <path d="M150 67L166 95M260 67L276 95M370 67L386 95"/></g>
+        <path class="dash" d="M158 81H378"/>
+        <!-- fuses -->
+        <rect class="pw" x="143" y="120" width="14" height="30" rx="2"/><rect class="pw" x="253" y="120" width="14" height="30" rx="2"/><rect class="pw" x="363" y="120" width="14" height="30" rx="2"/>
+        <text x="172" y="212">M</text><text x="282" y="212">M</text><text x="392" y="212">M</text>
+        <text x="172" y="294">OL</text><text x="282" y="294">OL</text><text x="392" y="294">OL</text>
+        <!-- to motor -->
+        <path class="pw" d="M150 345V360L236 382M260 345V372M370 345V360L284 382"/>
+        <circle class="pw" cx="260" cy="410" r="38"/>
+        <text class="big" x="260" y="408" text-anchor="middle">MOTOR</text><text x="260" y="425" text-anchor="middle">1/3 hp</text>
+        <text x="120" y="366">T1</text><text x="266" y="360">T2</text><text x="380" y="366">T3</text>
+        <!-- left labels -->
+        <g><text class="lbl" x="16" y="86">Disconnect</text><text class="lbl" x="16" y="140">Fuses</text><text class="lbl" x="16" y="212">Main contacts</text><text class="lbl" x="16" y="294">OL heaters</text><text class="lbl" x="16" y="414">Motor</text></g>
+      </svg>
+      <div class="tb"><span>Dwg 1 · Power circuit</span><span>Full-voltage, non-reversing</span></div>
+    </div>
+    <div class="notes">
+      <h3>How to read it</h3>
+      <ul>
+        <li><b>L1–L3</b> are the incoming phases (the 85-MT5 bench is fed 208 VAC, 3-phase).</li>
+        <li>The dashed line means the three disconnect blades move together.</li>
+        <li>All three <b>M</b> contacts close when the M coil (in the control circuit) is energized.</li>
+        <li>Each <b>OL heater</b> carries motor current. If it overheats, the <b>OL contact</b> in the control circuit opens.</li>
+        <li>Swapping any two leads (e.g. T1 and T3) reverses the motor. A reversing starter does that with a second contactor.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3-WIRE START STOP ============ -->
+<section>
+  <div class="sec-head">
+    <h2>2 · Control circuit: 3-wire start/stop with seal-in</h2>
+    <p>This is the core circuit of the course, and most other circuits build on it. It runs on the control transformer’s X1–X2 output.</p>
+  </div>
+  <div class="two">
+    <div class="sheet">
+      <svg viewBox="0 0 640 250" role="img" aria-label="Ladder: Stop NC, Start NO with M seal-in contact in parallel, M coil, OL contact; run light in parallel with coil">
+        <text class="lbl" x="40" y="24" text-anchor="middle">X1</text><text class="lbl" x="600" y="24" text-anchor="middle">X2</text>
+        <path class="ct" d="M40 32V232M600 32V232"/>
+        <!-- rung 1 -->
+        <path class="ct" d="M40 80H96M144 80H200M200 80H226M274 80H330M330 80H404M436 80H515M535 80H600"/>
+        <circle class="s" cx="100" cy="80" r="4"/><circle class="s" cx="140" cy="80" r="4"/><path class="s" d="M94 87H146M120 87V62M112 62H128"/>
+        <text class="lbl" x="120" y="52" text-anchor="middle">STOP</text>
+        <circle class="s" cx="230" cy="80" r="4"/><circle class="s" cx="270" cy="80" r="4"/><path class="s" d="M224 70H276M250 70V55M242 55H258"/>
+        <text class="lbl" x="250" y="45" text-anchor="middle">START</text>
+        <circle class="s" cx="420" cy="80" r="16"/><text class="big" x="420" y="85" text-anchor="middle">M</text>
+        <path class="s" d="M515 64V96M535 64V96M507 100L543 60"/><text class="lbl" x="525" y="52" text-anchor="middle">OL</text>
+        <!-- rung 2 seal in -->
+        <path class="ct" d="M200 80V150H255M275 150H330V80"/>
+        <path class="s" d="M255 134V166M275 134V166"/><text class="lbl" x="265" y="186" text-anchor="middle">M</text>
+        <!-- rung 3 run light -->
+        <path class="ct" d="M330 150V210H404M436 210H600"/>
+        <circle class="s" cx="420" cy="210" r="16"/><path class="s" d="M431 199L437 193M409 199L403 193M420 194V186"/><text class="big" x="420" y="215" text-anchor="middle">G</text>
+        <text x="460" y="204">RUN</text>
+        <circle class="dot" cx="200" cy="80" r="4"/><circle class="dot" cx="330" cy="80" r="4"/><circle class="dot" cx="330" cy="150" r="4"/>
+        <text x="62" y="74">1</text><text x="176" y="74">2</text><text x="300" y="74">3</text>
+      </svg>
+      <div class="tb"><span>Dwg 2 · 3-wire control</span><span>Wire nos. 1-2-3</span></div>
+    </div>
+    <div class="notes">
+      <h3>Sequence of operation</h3>
+      <ul>
+        <li>Press <b>START</b>: current flows 1→2→3 through the M coil. M pulls in and the motor runs.</li>
+        <li>The <b>M auxiliary contact</b> (rung 2) closes too and bypasses START. This is the <em>seal-in</em> (holding) contact, so the motor keeps running after you release START.</li>
+        <li>Press <b>STOP</b> or let the <b>OL</b> trip: the coil drops out, the seal-in opens, and the motor stays off until START is pressed again.</li>
+        <li>Wiring order that matches the drawing: X1 → Stop → Start → coil → OL → X2. Keep the coil next to X2.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ REVERSING ============ -->
+<section>
+  <div class="sec-head">
+    <h2>3 · Reversing control with interlocks</h2>
+    <p>The trainer has two reversing contactors, F (forward) and R (reverse). Each coil has a seal-in, and an N.C. contact from the opposite contactor keeps both from pulling in together.</p>
+  </div>
+  <div class="two">
+    <div class="sheet">
+      <svg viewBox="0 0 640 300" role="img" aria-label="Reversing ladder with forward and reverse pushbuttons, seal-ins, electrical interlocks and shared overload">
+        <text class="lbl" x="40" y="24" text-anchor="middle">X1</text><text class="lbl" x="600" y="24" text-anchor="middle">X2</text>
+        <path class="ct" d="M40 32V282M600 32V282"/>
+        <!-- rung 1 FWD -->
+        <path class="ct" d="M40 70H76M124 70H170H196M244 70H290H320M340 70H424M456 70H510H540M560 70H600"/>
+        <circle class="s" cx="80" cy="70" r="4"/><circle class="s" cx="120" cy="70" r="4"/><path class="s" d="M74 77H126M100 77V50M92 50H108"/><text class="lbl" x="100" y="40" text-anchor="middle">STOP</text>
+        <circle class="s" cx="200" cy="70" r="4"/><circle class="s" cx="240" cy="70" r="4"/><path class="s" d="M194 60H246M220 60V46M212 46H228"/><text class="lbl" x="220" y="36" text-anchor="middle">FWD</text>
+        <path class="s" d="M320 54V86M340 54V86M312 90L348 50"/><text class="lbl" x="330" y="106" text-anchor="middle">R</text>
+        <circle class="s" cx="440" cy="70" r="16"/><text class="big" x="440" y="75" text-anchor="middle">F</text>
+        <path class="s" d="M540 54V86M560 54V86M532 90L568 50"/><text class="lbl" x="550" y="106" text-anchor="middle">OL</text>
+        <!-- rung 2 F seal -->
+        <path class="ct" d="M170 70V130H210M230 130H290V70"/>
+        <path class="s" d="M210 114V146M230 114V146"/><text class="lbl" x="220" y="164" text-anchor="middle">F</text>
+        <!-- rung 3 REV -->
+        <path class="ct" d="M170 130V200H196M244 200H290H320M340 200H424M456 200H510V70"/>
+        <circle class="s" cx="200" cy="200" r="4"/><circle class="s" cx="240" cy="200" r="4"/><path class="s" d="M194 190H246M220 190V176M212 176H228"/><text class="lbl" x="250" y="178" text-anchor="start">REV</text>
+        <path class="s" d="M320 184V216M340 184V216M312 220L348 180"/><text class="lbl" x="330" y="236" text-anchor="middle">F</text>
+        <circle class="s" cx="440" cy="200" r="16"/><text class="big" x="440" y="205" text-anchor="middle">R</text>
+        <!-- rung 4 R seal -->
+        <path class="ct" d="M170 200V260H210M230 260H290V200"/>
+        <path class="s" d="M210 244V276M230 244V276"/><text class="lbl" x="220" y="294" text-anchor="middle">R</text>
+        <!-- mech interlock -->
+        <path class="dash" d="M440 88V182"/><text x="430" y="132" text-anchor="end">mechanical</text><text x="430" y="147" text-anchor="end">interlock</text>
+        <circle class="dot" cx="170" cy="70" r="4"/><circle class="dot" cx="170" cy="130" r="4"/><circle class="dot" cx="170" cy="200" r="4"/><circle class="dot" cx="290" cy="70" r="4"/><circle class="dot" cx="290" cy="200" r="4"/><circle class="dot" cx="510" cy="70" r="4"/>
+      </svg>
+      <div class="tb"><span>Dwg 3 · Reversing control</span><span>Electrical + mechanical interlock</span></div>
+    </div>
+    <div class="notes">
+      <h3>What to notice</h3>
+      <ul>
+        <li><b>Electrical interlock:</b> the N.C. <b>R</b> contact sits in the F rung and the N.C. <b>F</b> contact sits in the R rung. With F running, the R coil can’t energize.</li>
+        <li><b>Mechanical interlock</b> (dashed) is a physical bar between the two contactors that does the same job.</li>
+        <li>One set of <b>OL</b> contacts protects both directions.</li>
+        <li>In the power circuit, R’s main contacts are wired with two phases swapped (L1↔L3), which reverses rotation.</li>
+        <li>To change direction you press STOP first. If you add N.C. pushbutton interlocks, you can switch directly.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TIMER ============ -->
+<section>
+  <div class="sec-head">
+    <h2>4 · On-delay timer</h2>
+    <p>This uses the multi-function timer set to on-delay. Energize TR, and its timed contact closes after the preset time.</p>
+  </div>
+  <div class="two">
+    <div class="sheet">
+      <svg viewBox="0 0 640 180" role="img" aria-label="Timer ladder: selector switch energizes TR coil; TR timed contact energizes pilot light after delay">
+        <text class="lbl" x="40" y="24" text-anchor="middle">X1</text><text class="lbl" x="600" y="24" text-anchor="middle">X2</text>
+        <path class="ct" d="M40 32V162M600 32V162"/>
+        <path class="ct" d="M40 70H96M144 70H424M456 70H600"/>
+        <circle class="s" cx="100" cy="70" r="4"/><circle class="s" cx="140" cy="70" r="4"/><path class="s" d="M103 67L138 52"/><text class="lbl" x="120" y="40" text-anchor="middle">SS (off/on)</text>
+        <circle class="s" cx="440" cy="70" r="16"/><text class="big" x="440" y="75" text-anchor="middle">TR</text>
+        <path class="ct" d="M40 130H110M130 130H424M456 130H600"/>
+        <path class="s" d="M110 114V146M130 114V146M104 162Q120 146 136 162M120 154V146"/><text class="lbl" x="160" y="120">TR (NOTC, e.g. 5 s)</text>
+        <circle class="s" cx="440" cy="130" r="16"/><path class="s" d="M451 119L457 113M429 119L423 113M440 114V106"/><text class="big" x="440" y="135" text-anchor="middle">A</text>
+      </svg>
+      <div class="tb"><span>Dwg 4 · Timer control</span><span>On-delay (NOTC)</span></div>
+    </div>
+    <div class="notes">
+      <h3>Variations you’ll wire</h3>
+      <ul>
+        <li><b>On-delay (NOTC):</b> the contact closes <em>after</em> the coil has been on for the preset time.</li>
+        <li><b>Off-delay (NOTO):</b> the contact opens <em>after</em> the coil turns off. Good for cooling-fan run-on.</li>
+        <li>Swap the pilot light for a second contactor coil to build sequence starting (motor 2 starts X seconds after motor 1) or a timed stop.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COMPONENT TABLE ============ -->
+<section>
+  <div class="sec-head">
+    <h2>What’s on the trainer</h2>
+    <p>Components listed for Amatrol’s Electric Motor Control Learning System (85-MT5), with the job each one does in a circuit.</p>
+  </div>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Component</th><th>Job in the circuit</th><th>Appears in</th></tr></thead>
+      <tbody>
+        <tr><td>Control transformer <span class="tag">80 VA</span></td><td>Steps the supply down to a safer control voltage. Fused on the X1 side.</td><td>Supplies Dwg 2–4</td></tr>
+        <tr><td>Manual motor starter</td><td>Hand-operated switch with built-in overload. The simplest way to start a motor, with no coil or control circuit.</td><td>Stand-alone lab</td></tr>
+        <tr><td>Reversing contactors <span class="tag">×2</span></td><td>Magnetic switches (F and R) that close the motor’s power contacts when their coils energize.</td><td>Dwg 1, 3</td></tr>
+        <tr><td>Overload relay</td><td>Heaters in the power leads; its N.C. contact opens the control circuit on sustained overcurrent.</td><td>Dwg 1–3</td></tr>
+        <tr><td>Control relays <span class="tag">4-pole ×2</span></td><td>Low-current coils (CR) with several contacts, used for logic, interlocking and extra seal-ins.</td><td>Variations</td></tr>
+        <tr><td>Multi-function timer</td><td>On-delay, off-delay, interval, one-shot, repeat-cycle and pulse modes.</td><td>Dwg 4</td></tr>
+        <tr><td>Pushbuttons, selector switches, pilot lights</td><td>Operator inputs and status indicators.</td><td>Dwg 2–4</td></tr>
+        <tr><td>Limit, pressure &amp; liquid-level switches</td><td>Automatic inputs that start or stop the motor from a machine condition instead of an operator.</td><td>Automatic control labs</td></tr>
+        <tr><td>3-phase drum switch</td><td>Manual forward/off/reverse switch that swaps motor leads directly.</td><td>Manual reversing lab</td></tr>
+        <tr><td>Induction motor <span class="tag">1/3 hp, 3φ</span></td><td>Squirrel-cage load motor mounted on the motor workstation.</td><td>Dwg 1</td></tr>
+        <tr><td>Multimeter &amp; banana leads</td><td>Wiring (banana patch leads) and troubleshooting (continuity, voltage checks).</td><td>All labs</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="callout">These are generic textbook-style drawings, not Amatrol’s own. Your ELE 146 lab manual (Amatrol’s student curriculum) has the exact terminal numbers for your bench. Use those when you wire, and follow your instructor’s lockout/tagout procedure before touching the power circuit.</p>
+</section>
+
+<footer class="src">
+  <b>Sources</b>
+  <ul>
+    <li><a href="https://www.nvcc.edu/courses/ele/ele146.html">NOVA: ELE 146 Electric Motor Control course summary</a></li>
+    <li><a href="https://amatrol.com/product/electric-motors-training-system/">Amatrol: Electric Motor Control Learning System (85-MT5)</a></li>
+    <li><a href="https://buckeye-edu.com/wp-content/uploads/2017/07/85-MT5.pdf">85-MT5 specification sheet (PDF)</a></li>
+  </ul>
+</footer>
+</div>
+
+</body>
+</html>
