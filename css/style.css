@@ -388,10 +388,40 @@ footer.site-footer {
   height: auto;
 }
 
+.diagram img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+  display: block;
+  margin: 0 auto;
+}
+
 .diagram figcaption {
   color: var(--muted);
   font-size: 0.85rem;
   margin-top: 0.6rem;
+}
+
+.badge.correct {
+  background: rgba(72, 187, 120, 0.15);
+  color: var(--success);
+}
+
+.badge.wrong {
+  background: rgba(245, 101, 101, 0.15);
+  color: var(--danger);
+}
+
+.callout-card {
+  border-left: 4px solid var(--border);
+}
+
+.callout-card.is-correct {
+  border-left-color: var(--success);
+}
+
+.callout-card.is-wrong {
+  border-left-color: var(--danger);
 }
 
 .diagram-row {
