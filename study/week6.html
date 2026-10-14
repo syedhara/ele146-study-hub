@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Week 6: Systems Troubleshooting — ELE 146</title>
+<link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="site-header">
+  <nav class="nav">
+    <div class="brand">ELE 146 <span>Study Hub</span></div>
+    <div class="nav-links">
+      <a href="/index.html">Home</a>
+      <a href="/study/index.html" class="active">Study Materials</a>
+      <a href="/quiz/index.html">Quiz</a>
+      <a href="/lab/index.html">Lab</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <div class="breadcrumb"><a href="/index.html">Home</a> / <a href="/study/index.html">Study Materials</a> / Week 6</div>
+  <h1>Week 6 — Systems Troubleshooting</h1>
+  <p><strong>Sources:</strong> Class 7 POST-slides, Class 7 homework &amp; answer key, Lab 7 (Amatrol Module 7, Skill 11, Figure 11-1 &mdash; three-wire 1CR/F fault-plug system), Instructor Motor Control Wiring Reference</p>
+  <p><em>Teaching focus: moving from component testing to systematic control-circuit and power-circuit troubleshooting &mdash; meter choice, fault signatures, and four troubleshooting methods.</em></p>
+
+  <section class="content-block">
+    <h2>Key takeaways</h2>
+    <ol>
+      <li>Class 6 proved individual components; Class 7 uses circuit symptoms to isolate system faults &mdash; the bridge from building circuits to diagnosing why they fail.</li>
+      <li>The coil is the handoff: wrong coil state usually points to the control side; correct coil state with wrong motor behavior points to the power side.</li>
+      <li>Voltage checks are live-circuit questions; continuity and resistance checks are de-energized questions. Never mix them.</li>
+      <li>Four methods: symptom-and-cause, output-back, half-split, and shotgun (fallback only, never the default).</li>
+      <li>A reading only means something when you know what should be upstream and downstream of that point.</li>
+      <li>In the lab, only ONE fault is inserted at a time, and approved SHORT faults can cause an unexpected motor start.</li>
+    </ol>
+  </section>
+
+  <section class="content-block">
+    <h2>1. What you must be able to do</h2>
+    <ul>
+      <li>Separate a motor-control circuit into the control side and the power side, and explain what question each side answers.</li>
+      <li>Choose the correct meter mode (AC voltage vs. continuity vs. resistance) for a given troubleshooting question.</li>
+      <li>Read a labeled signal-testing diagram and state what a given point should read if the circuit is healthy.</li>
+      <li>Recognize common fault signatures from symptom + measurement patterns.</li>
+      <li>Apply symptom-and-cause, output-back, and half-split troubleshooting; explain when shotgun is an acceptable fallback.</li>
+      <li>Use Amatrol's three-wire 1CR/F wiring reference (Figure 11-1) to predict correct readings.</li>
+      <li>Follow the lab's fault-insertion and safety rules, including the unexpected-start assumption for approved SHORT faults.</li>
+    </ul>
+  </section>
+
+  <section class="content-block">
+    <h2>2. Where Class 7 fits in the course</h2>
+    <ul>
+      <li>Class 6 proved individual <strong>components</strong> with resistance and continuity tests (de-energized).</li>
+      <li>Class 7 uses circuit <strong>symptoms</strong>, voltage checks, and structured methods to isolate <strong>system</strong> faults.</li>
+      <li>This is the bridge from building circuits (Classes 4&ndash;5) to diagnosing why a built circuit fails.</li>
+    </ul>
+    <p><strong>On track:</strong> after Class 7, the same circuits from Classes 4 and 5 become troubleshooting systems, not just wiring exercises.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>3. Separate the control side from the power side</h2>
+    <ul>
+      <li><strong>Control side</strong> (STOP, START, coil, auxiliary/seal-in contact, overload control contact): answers &ldquo;should the coil energize?&rdquo;</li>
+      <li><strong>Power side</strong> (L1/L2/L3 &rarr; F main contacts &rarr; overload elements &rarr; T1/T2/T3 &rarr; motor): answers &ldquo;is motor power reaching the load?&rdquo;</li>
+    </ul>
+    <p><strong>The coil is the handoff:</strong> wrong coil state usually points to the control side; correct coil state with wrong motor behavior points to the power side.</p>
+    <figure class="diagram">
+      <svg viewBox="0 0 460 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Control side versus power side diagram">
+        <rect x="20" y="20" width="200" height="130" rx="8" fill="none" stroke="#4fd1c5" stroke-width="3"/>
+        <text x="120" y="45" text-anchor="middle" fill="#4fd1c5" font-size="14" font-weight="700">Control side</text>
+        <text x="120" y="70" text-anchor="middle" fill="#e7ecf5" font-size="12">STOP &rarr; START &rarr; coil</text>
+        <text x="120" y="90" text-anchor="middle" fill="#e7ecf5" font-size="12">&rarr; aux/seal-in &rarr;</text>
+        <text x="120" y="110" text-anchor="middle" fill="#e7ecf5" font-size="12">overload contact</text>
+        <text x="120" y="135" text-anchor="middle" fill="#9fb0c9" font-size="11">Should the coil energize?</text>
+        <rect x="240" y="20" width="200" height="130" rx="8" fill="none" stroke="#f6ad55" stroke-width="3"/>
+        <text x="340" y="45" text-anchor="middle" fill="#f6ad55" font-size="14" font-weight="700">Power side</text>
+        <text x="340" y="70" text-anchor="middle" fill="#e7ecf5" font-size="12">L1/L2/L3 &rarr; F main</text>
+        <text x="340" y="90" text-anchor="middle" fill="#e7ecf5" font-size="12">contacts &rarr; O.L. elements</text>
+        <text x="340" y="110" text-anchor="middle" fill="#e7ecf5" font-size="12">&rarr; T1/T2/T3 &rarr; motor</text>
+        <text x="340" y="135" text-anchor="middle" fill="#9fb0c9" font-size="11">Is power reaching the load?</text>
+      </svg>
+      <figcaption>The coil is the handoff between the two domains.</figcaption>
+    </figure>
+  </section>
+
+  <section class="content-block">
+    <h2>4. Meter choice: voltage vs. continuity vs. resistance</h2>
+    <table>
+      <tr><th>Question</th><th>Preferred test</th><th>Power state</th><th>What the result proves</th></tr>
+      <tr><td>Is control voltage present here?</td><td>AC voltage</td><td>Energized (after safe setup)</td><td>Whether source voltage reaches a point</td></tr>
+      <tr><td>Can this contact make a path?</td><td>Continuity or resistance</td><td>Power removed</td><td>Whether a contact or fuse is open/closed</td></tr>
+      <tr><td>Is this coil winding open?</td><td>Resistance</td><td>Power removed</td><td>Whether a winding path exists</td></tr>
+      <tr><td>Is motor power reaching the load?</td><td>Line-to-line AC voltage</td><td>Energized (after safe setup)</td><td>Whether the power path is complete</td></tr>
+    </table>
+    <p><strong>Rule:</strong> voltage checks are live-circuit questions. Continuity and resistance checks are de-energized questions. Do not mix them.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>5. Signal testing: label the path before measuring</h2>
+    <ul>
+      <li>Label every test point on the ladder (e.g., A, B, C, D, E, F) before picking up the meter.</li>
+      <li>Good troubleshooting compares <strong>expected</strong> voltage to <strong>actual</strong> voltage at each labeled point.</li>
+      <li>A reading is only useful when you know which device is upstream and which is downstream of that point.</li>
+    </ul>
+    <p>Example path: control hot &rarr; STOP (NC) &rarr; START (NO) / seal-in (parallel) &rarr; coil &rarr; overload contact (NC) &rarr; control return.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>6. Common fault signatures</h2>
+    <table>
+      <tr><th>Fault family</th><th>Evidence pattern</th></tr>
+      <tr><td>Open coil</td><td>Control voltage reaches coil terminals, but the device does not pull in.</td></tr>
+      <tr><td>Open STOP contact</td><td>Voltage is present before STOP, missing after STOP.</td></tr>
+      <tr><td>Failed seal-in path</td><td>Motor runs only while START is held.</td></tr>
+      <tr><td>Open overload contact</td><td>Power path may be healthy, but the coil path is interrupted at the overload contact.</td></tr>
+      <tr><td>Lost power leg</td><td>Motor hums or will not run correctly; one phase path is missing.</td></tr>
+      <tr><td>Open fuse</td><td>No voltage downstream of the fuse; continuity test (power removed) confirms the open fuse.</td></tr>
+    </table>
+  </section>
+
+  <section class="content-block">
+    <h2>7. Four troubleshooting methods</h2>
+    <ol>
+      <li>
+        <strong>Symptom-and-cause</strong> &mdash; best when the symptom is distinctive.
+        <ul>
+          <li>Start with a precise symptom, not a replacement part.</li>
+          <li>Ask what faults could logically create that symptom; list likely causes before measuring.</li>
+          <li>Use one measurement to eliminate several causes at once.</li>
+        </ul>
+        <p><em>Example:</em> motor runs only while START is held &rarr; the coil and motor power path must work (the motor runs) &rarr; suspect the holding path: auxiliary contact, branch wiring, or the connection back to the rung.</p>
+      </li>
+      <li>
+        <strong>Output-back</strong> &mdash; best when an output that should be ON is OFF.
+        <ul>
+          <li>Start at the failed output (e.g., coil) and test the point feeding it; keep moving upstream until &ldquo;good&rdquo; becomes &ldquo;bad.&rdquo;</li>
+          <li>Every step must be tied to the circuit path, not random probing.</li>
+        </ul>
+        <figure class="diagram">
+          <svg viewBox="0 0 460 90" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Output-back troubleshooting diagram">
+            <text x="20" y="20" fill="#9fb0c9" font-size="12">control</text>
+            <text x="400" y="20" fill="#9fb0c9" font-size="12">power</text>
+            <line x1="20" y1="50" x2="430" y2="50" stroke="#e7ecf5" stroke-width="3"/>
+            <text x="60" y="75" text-anchor="middle" fill="#e7ecf5" font-size="11">STOP</text>
+            <text x="150" y="75" text-anchor="middle" fill="#e7ecf5" font-size="11">START/seal-in</text>
+            <text x="260" y="75" text-anchor="middle" fill="#e7ecf5" font-size="11">overload</text>
+            <circle cx="390" cy="50" r="18" fill="none" stroke="#f6ad55" stroke-width="3"/>
+            <text x="390" y="55" text-anchor="middle" fill="#f6ad55" font-size="12" font-weight="700">M</text>
+            <path d="M 390 20 L 230 20" stroke="#4fd1c5" stroke-width="2" marker-end="url(#arrow6)"/>
+            <defs><marker id="arrow6" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#4fd1c5"/></marker></defs>
+            <text x="310" y="15" text-anchor="middle" fill="#4fd1c5" font-size="11">test upstream from output</text>
+          </svg>
+          <figcaption>Output-back: start at the failed output (coil M) and move upstream until good becomes bad.</figcaption>
+        </figure>
+      </li>
+      <li>
+        <strong>Half-split</strong> &mdash; best for a long series path.
+        <ul>
+          <li>Establish a known-good endpoint and a known-bad endpoint.</li>
+          <li>Test near the midpoint. If the midpoint is good, the fault is downstream; if bad, the fault is upstream.</li>
+          <li>Keep the half that contains the fault and repeat until one device remains.</li>
+        </ul>
+        <figure class="diagram">
+          <svg viewBox="0 0 460 90" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Half-split troubleshooting diagram">
+            <line x1="20" y1="50" x2="430" y2="50" stroke="#e7ecf5" stroke-width="3"/>
+            <circle cx="20" cy="50" r="7" fill="#4fd1c5"/>
+            <text x="20" y="75" text-anchor="middle" fill="#4fd1c5" font-size="11">known good</text>
+            <circle cx="225" cy="50" r="7" fill="#f6ad55"/>
+            <text x="225" y="25" text-anchor="middle" fill="#f6ad55" font-size="11">probe midpoint</text>
+            <circle cx="430" cy="50" r="7" fill="#e85c5c"/>
+            <text x="430" y="75" text-anchor="middle" fill="#e85c5c" font-size="11">known bad</text>
+          </svg>
+          <figcaption>Half-split: cut the search area in half, then repeat on the bad half.</figcaption>
+        </figure>
+      </li>
+      <li>
+        <strong>Shotgun</strong> (fallback only) &mdash; testing/replacing likely parts in a mostly random order.
+        <ul>
+          <li>Can work when only a few simple candidates remain.</li>
+          <li>Usually inefficient in ladder logic because it ignores the circuit path.</li>
+          <li>Use only after structured methods have reduced the problem to a short list &mdash; never as the default when a clear path and test points exist.</li>
+          <li>Final proof still requires a measurement or functional retest.</li>
+        </ul>
+      </li>
+    </ol>
+  </section>
+
+  <section class="content-block">
+    <h2>8. Choosing the method from the symptom</h2>
+    <table>
+      <tr><th>Method</th><th>Best when</th><th>First move</th><th>Watch-out</th></tr>
+      <tr><td>Symptom-and-cause</td><td>Symptom is distinctive</td><td>List likely causes</td><td>Needs a good mental model</td></tr>
+      <tr><td>Output-back</td><td>Output should be on but is off</td><td>Probe the failed output first</td><td>Do not ignore obvious symptom clues</td></tr>
+      <tr><td>Half-split</td><td>Long series path</td><td>Probe the midpoint</td><td>Needs known-good and known-bad regions</td></tr>
+      <tr><td>Shotgun</td><td>Very few suspects remain</td><td>Test a quick likely point</td><td>Often wastes tests</td></tr>
+    </table>
+    <p><strong>Practical rule:</strong> start structured. Use shotgun only as a controlled cleanup tactic, not as the default method.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>9. Worked examples</h2>
+    <ul>
+      <li><strong>Coil should be on, but it is off:</strong> use output-back &mdash; test coil M, then the overload contact, holding branch, START contact, STOP contact, and control power in that order. The first point where expected voltage disappears identifies the fault region.</li>
+      <li><strong>Motor stops when START is released:</strong> symptom is &ldquo;motor runs only while START is held.&rdquo; Reasoning: the coil and main contacts can operate (the motor starts), so suspect the seal-in branch, the auxiliary contact, or branch wiring. Best method: symptom-and-cause, then confirm with continuity or voltage checks.</li>
+      <li><strong>Class check:</strong> a long series control path has the coil off, but control voltage is confirmed present near the left rail. Most efficient method: <strong>half-split</strong> &mdash; you already have a known-good region (left rail) and a known-bad region (coil); test near the midpoint and repeat on the bad half.</li>
+    </ul>
+  </section>
+
+  <section class="content-block">
+    <h2>10. Amatrol wiring reference (Figure 11-1 authority)</h2>
+    <p>Three-wire 1CR/F circuit used for Lab 7:</p>
+    <ul>
+      <li><strong>Holding circuit:</strong> PB3 (STOP) is normally closed; PB1 (START) is normally open. The 1CR auxiliary contact at 13&ndash;14 is wired in parallel with PB1 and holds 1CR energized after START is released.</li>
+      <li><strong>Contactor circuit:</strong> a separate 1CR contact at 43&ndash;44 supplies the F contactor coil. The normally closed overload control contact is in series with F. Pressing STOP releases 1CR and F; an overload trip opens the F coil path.</li>
+      <li><strong>Motor power:</strong> trace all three phases &mdash; L1/L2/L3 through the F main contacts, then the overload elements, to T1/T2/T3 and the motor.</li>
+    </ul>
+    <table>
+      <tr><th>Step</th><th>Connect</th><th>Purpose</th></tr>
+      <tr><td>1</td><td>Control transformer secondary hot (terminal 2) &rarr; STOP PB3 (NC) input</td><td>Supplies the common series control path.</td></tr>
+      <tr><td>2</td><td>STOP PB3 output &rarr; START PB1 input AND 1CR auxiliary terminal 13</td><td>Creates the branch point before START/seal-in.</td></tr>
+      <tr><td>3</td><td>START PB1 output AND 1CR auxiliary terminal 14 &rarr; 1CR coil A1</td><td>PB1 and 1CR aux are parallel paths.</td></tr>
+      <tr><td>4</td><td>1CR coil A2 &rarr; grounded control return (terminal 5)</td><td>Completes the 1CR rung.</td></tr>
+      <tr><td>5</td><td>Control hot &rarr; 1CR N.O. terminal 43; terminal 44 &rarr; F coil A1</td><td>1CR 43&ndash;44 enables the contactor coil after 1CR energizes.</td></tr>
+      <tr><td>6</td><td>F coil A2 &rarr; overload N.C. control contact 95&ndash;96 &rarr; control return</td><td>An overload trip opens the F coil path.</td></tr>
+    </table>
+    <p><strong>Power-side point-to-point:</strong> three-phase safety-switch L1/L2/L3 &rarr; F line terminals L1/L2/L3 &rarr; F load terminals T1/T2/T3 &rarr; overload relay line terminals L1/L2/L3 &rarr; overload relay load terminals T1/T2/T3 &rarr; motor connection station/motor. Grounding (motor base and all station grounds) must remain connected &mdash; never daisy-chained or removed.</p>
+    <p><strong>Seal-in check:</strong> 1CR auxiliary contact 13&ndash;14 must be wired in parallel with START PB1. If the motor runs only while START is held, check this branch first.</p>
+    <p><strong>Overload check:</strong> terminals 95&ndash;96 are the NC overload control contact. A trip opens this path and drops out the F coil.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>11. Lab 7: wire, fault, diagnose, restore</h2>
+    <p><strong>Goal:</strong> wire and prove a working three-wire motor-control circuit (1CR holding relay + F contactor), then practice structured troubleshooting on one hidden manual fault at a time.</p>
+    <p><strong>Safety boundaries:</strong></p>
+    <ul>
+      <li>Use the course power-off/de-energization process before moving any wire or changing a fault plug (no lockout/tagout procedure is used in this lab).</li>
+      <li>Resistance/continuity checks only with power OFF; AC voltage checks only after the circuit is safe to energize.</li>
+      <li>Never remove or alter equipment grounding; terminal 5 (control-transformer secondary) stays grounded.</li>
+      <li>Only ONE fault may be inserted at a time, using only the approved fault terminals below.</li>
+      <li>Approved SHORT faults (6 and 31) can bypass normal START/holding logic and cause an immediate, unexpected motor start &mdash; treat every re-energization after a SHORT fault as an unexpected-start condition.</li>
+      <li>Before power is applied, everyone must be clear of the motor shaft, couplings, and panel wiring; one designated operator controls the safety switch/pushbuttons.</li>
+    </ul>
+    <p><strong>Baseline check (must pass before inserting any fault):</strong> power ON with START not pressed &rarr; motor OFF. Press START &rarr; 1CR energizes, seals in, F energizes, motor starts. Release START &rarr; motor keeps running (holding path). Press STOP &rarr; 1CR and F drop out, motor stops. Repeat once with the same result.</p>
+    <table>
+      <tr><th>Back of station</th><th>Fault terminal</th><th>Component fault</th><th>Plug</th><th>Student use</th></tr>
+      <tr><td>Control Transformer Station</td><td>3</td><td>Fuse</td><td>OPEN (1 dot)</td><td>Approved</td></tr>
+      <tr><td>Operator Station</td><td>6</td><td>PB1 N.O. contacts</td><td>SHORT (2 dots)</td><td>Approved &mdash; unexpected start possible</td></tr>
+      <tr><td>Operator Station</td><td>7</td><td>PB1 N.O. contacts</td><td>OPEN (1 dot)</td><td>Approved</td></tr>
+      <tr><td>Operator Station</td><td>9</td><td>PB3 N.C. contacts</td><td>OPEN (1 dot)</td><td>Approved</td></tr>
+      <tr><td>Reversing Contactor Station</td><td>11</td><td>Forward F coil</td><td>OPEN (1 dot)</td><td>Approved</td></tr>
+      <tr><td>Overload Relay Station</td><td>15</td><td>N.C. control contact</td><td>OPEN (1 dot)</td><td>Approved</td></tr>
+      <tr><td>Control Relay Station</td><td>19</td><td>1CR coil</td><td>OPEN (1 dot)</td><td>Approved</td></tr>
+      <tr><td>Reversing Contactor Station</td><td>27</td><td>Forward L1 main contact</td><td>OPEN (1 dot)</td><td>Approved</td></tr>
+      <tr><td>Overload Relay Station</td><td>28</td><td>L1 overload element</td><td>OPEN (1 dot)</td><td>Approved</td></tr>
+      <tr><td>Overload Relay Station</td><td>29</td><td>L2 overload element</td><td>OPEN (1 dot)</td><td>Approved</td></tr>
+      <tr><td>Control Relay Station</td><td>31</td><td>1CR N.O. contact 13&ndash;14</td><td>SHORT (2 dots)</td><td>Approved &mdash; unexpected start possible</td></tr>
+      <tr><td>Motor Connection Station</td><td>34</td><td>Winding T3&ndash;T6</td><td>OPEN (1 dot)</td><td>Approved</td></tr>
+      <tr><td>Motor Connection Station</td><td>35</td><td>Winding T1&ndash;T4</td><td>OPEN (1 dot)</td><td>Approved</td></tr>
+    </table>
+    <p><strong>Blind-fault rotation:</strong> one Fault Setter per round secretly inserts one approved fault while all Troubleshooters face away; only the Fault Setter may see the rear fault box until the team announces its diagnosis. After diagnosis, power OFF, reveal, verify, restore the standard jumper, and re-run the baseline check before the next round. Rotate the Fault Setter every round.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>12. Homework diagnostic reasoning (10 scenarios)</h2>
+    <p>Practice pattern for every scenario: <strong>state the fault domain (control / power / load-motor / control-power source), then cite the one measurement that proves it.</strong></p>
+    <table>
+      <tr><th>#</th><th>Symptom</th><th>Most likely fault</th><th>Domain</th><th>Key proof</th></tr>
+      <tr><td>1</td><td>START pressed, nothing happens</td><td>START PB1 N.O. contact open</td><td>Control</td><td>Voltage present up to PB1, disappears across PB1 even while pressed</td></tr>
+      <tr><td>2</td><td>Motor starts as soon as control power is applied</td><td>START PB1 N.O. contact shorted/stuck closed</td><td>Control</td><td>PB1 reads closed in both positions</td></tr>
+      <tr><td>3</td><td>Motor runs only while START is held</td><td>1CR seal-in contact 13&ndash;14 not closing</td><td>Control</td><td>Works through START, but the parallel holding contact stays open</td></tr>
+      <tr><td>4</td><td>1CR latches, F never pulls in</td><td>Forward F coil open</td><td>Control</td><td>Rated voltage reaches F coil, but coil resistance is infinite</td></tr>
+      <tr><td>5</td><td>1CR latches, contactor does not energize</td><td>Overload N.C. control contact open/tripped</td><td>Control</td><td>120 V across a contact that should read ~0 V when closed</td></tr>
+      <tr><td>6</td><td>Contactor pulls in, motor doesn't start normally</td><td>Forward L1 main power contact open</td><td>Power</td><td>Coil energized, but ~line voltage appears across one main contact instead of ~0 V</td></tr>
+      <tr><td>7</td><td>Main contactor good, one phase lost after it</td><td>L1 overload power element open</td><td>Power</td><td>Main contacts conducting, but full voltage drops across one overload element</td></tr>
+      <tr><td>8</td><td>No control voltage anywhere</td><td>Control-transformer fuse open</td><td>Control-power source</td><td>Energized primary + intact windings, but fuse open and no secondary voltage</td></tr>
+      <tr><td>9</td><td>Full motor voltage present, motor still won't run</td><td>Motor winding T1&ndash;T4 open</td><td>Load/motor</td><td>Proper voltage delivered, but one winding reads infinite resistance</td></tr>
+      <tr><td>10</td><td>Control voltage reaches STOP, goes no farther</td><td>STOP PB3 N.C. contact open</td><td>Control</td><td>Voltage disappears and continuity is open at PB3</td></tr>
+    </table>
+    <p><strong>Grading/reasoning emphasis:</strong> a correct diagnosis is consistent with the measurements and identifies the first point where the expected electrical state is lost.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>13. Common mistakes &mdash; and what makes them wrong</h2>
+    <ul>
+      <li><strong>Mixing live and de-energized checks.</strong> Voltage checks require the circuit to be safely energized; continuity/resistance checks require power OFF.</li>
+      <li><strong>Probing without labeling the path first.</strong> A voltage reading only means something if you know what should be upstream and downstream of that point.</li>
+      <li><strong>Defaulting to shotgun troubleshooting</strong> when the circuit has a clear path, known test points, and an output symptom &mdash; this wastes measurements instead of using circuit logic.</li>
+      <li><strong>Ignoring the coil as the domain handoff.</strong> Wrong coil state &rarr; control side; correct coil state but wrong motor behavior &rarr; power side.</li>
+      <li><strong>Inserting more than one fault at a time</strong>, or using a SHORT plug anywhere other than the two approved terminals (6 and 31) &mdash; this breaks the lab's safety assumptions.</li>
+    </ul>
+  </section>
+
+  <section class="content-block">
+    <h2>14. Exit-ticket reasoning questions</h2>
+    <ol>
+      <li>What question does the control side answer, and what question does the power side answer?</li>
+      <li>Why must voltage checks and continuity/resistance checks never be mixed?</li>
+      <li>A coil should be on but is off &mdash; which method starts at the output and moves upstream, and why is it efficient here?</li>
+      <li>When is half-split the most efficient method, and what two reference points does it require?</li>
+      <li>When (if ever) is shotgun troubleshooting acceptable, and why is it not a good default?</li>
+      <li>The motor runs only while START is held &mdash; what is the most likely fault, and why does this symptom rule out the F coil and main contacts?</li>
+      <li>What must the team assume before re-energizing after an approved SHORT fault, and what keeps everyone safe?</li>
+    </ol>
+    <p>Answer by tracing the circuit path and naming the proving measurement, not by guessing component names.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>15. What's next: Class 8</h2>
+    <p>Class 8 continues building on structured troubleshooting and the Amatrol three-wire 1CR/F system, extending diagnostic skill from a single hidden fault toward more complex or multi-step control circuits.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>16. Real-world / at-home examples</h2>
+    <table>
+      <tr><th>Home / everyday example</th><th>Week 6 concept it demonstrates</th></tr>
+      <tr><td>&ldquo;Is it plugged in? Is the outlet on?&rdquo; before assuming an appliance is broken</td><td>Meter-choice discipline: check for voltage present (control side) before assuming a component (load) is bad</td></tr>
+      <tr><td>Checking if a lamp works in a different outlet to isolate a bad outlet vs. a bad lamp</td><td>Output-back / half-split logic: move the known-good load to test an unknown point, narrowing the fault region</td></tr>
+      <tr><td>A car that cranks but won't start vs. a car that won't crank at all</td><td>Separating &ldquo;control side&rdquo; (ignition/starter signal) symptoms from &ldquo;power side&rdquo; (fuel/spark delivery) symptoms</td></tr>
+      <tr><td>A string of holiday lights where half the string is dark</td><td>Half-split troubleshooting: test the middle of the string to decide which half contains the open fault</td></tr>
+      <tr><td>A tripped circuit breaker that resets but trips again under load</td><td>Fault signature pattern: distinguishing a true overload/short from a one-time nuisance trip</td></tr>
+      <tr><td>Swapping a known-good remote-control battery into a non-working remote to test it</td><td>Known-good/known-bad comparison, the same reasoning half-split troubleshooting relies on</td></tr>
+    </table>
+    <p><strong>Why this matters:</strong> the same control-vs-power separation, &ldquo;test with the right tool for the question,&rdquo; and structured narrowing (half-split, output-back) show up anytime you diagnose why something electrical stopped working at home.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>Retrieval practice</h2>
+    <p>Try answering without looking, then reveal. For an interactive version, use the <a href="/quiz/index.html">Quiz page</a>.</p>
+    <details><summary>1. What question does the control side answer, and what question does the power side answer?</summary><p>Control side: should the coil energize? Power side: is motor power reaching the load?</p></details>
+    <details><summary>2. What is "the coil is the handoff" rule?</summary><p>Wrong coil state usually points to the control side; correct coil state with wrong motor behavior points to the power side.</p></details>
+    <details><summary>3. When should you use AC voltage checks vs. continuity/resistance checks?</summary><p>AC voltage checks answer live-circuit questions (energized); continuity/resistance checks answer de-energized questions (power removed). Never mix them.</p></details>
+    <details><summary>4. Why is labeling test points before measuring important?</summary><p>A voltage reading is only useful when you know which device is upstream and which is downstream of that point.</p></details>
+    <details><summary>5. What is the evidence pattern for an open coil?</summary><p>Control voltage reaches the coil terminals, but the device does not pull in.</p></details>
+    <details><summary>6. What is the evidence pattern for a failed seal-in path?</summary><p>The motor runs only while START is held.</p></details>
+    <details><summary>7. What is the evidence pattern for a lost power leg?</summary><p>The motor hums or will not run correctly; one phase path is missing.</p></details>
+    <details><summary>8. Describe the symptom-and-cause method.</summary><p>Start with a precise symptom, list the faults that could logically cause it, then use one measurement to eliminate several causes at once.</p></details>
+    <details><summary>9. Describe the output-back method.</summary><p>Start at the failed output and test the point feeding it, moving upstream until "good" becomes "bad."</p></details>
+    <details><summary>10. Describe the half-split method.</summary><p>Establish known-good and known-bad endpoints, test near the midpoint, keep the half containing the fault, and repeat until one device remains.</p></details>
+    <details><summary>11. When is shotgun troubleshooting acceptable?</summary><p>Only after structured methods have reduced the problem to a short list of suspects &mdash; never as the default when a clear circuit path and test points exist.</p></details>
+    <details><summary>12. A long series control path has the coil off, but voltage is confirmed near the left rail. Which method is most efficient?</summary><p>Half-split &mdash; you already have known-good (left rail) and known-bad (coil) regions; test the midpoint and repeat on the bad half.</p></details>
+    <details><summary>13. In the Amatrol 1CR/F circuit, what does the 1CR auxiliary contact at 13-14 do?</summary><p>Wired in parallel with START PB1, it holds (seals in) the 1CR relay after START is released.</p></details>
+    <details><summary>14. What does the 1CR contact at 43-44 do?</summary><p>It supplies the F contactor coil after 1CR has energized.</p></details>
+    <details><summary>15. Where is the overload N.C. control contact wired in the 1CR/F circuit?</summary><p>In series with the F coil (terminals 95-96); a trip opens this path and drops out F.</p></details>
+    <details><summary>16. How many faults may be inserted at a time during the Lab 7 fault rotation?</summary><p>Only ONE fault at a time, using only the approved fault terminals.</p></details>
+    <details><summary>17. Which two fault terminals are approved SHORT faults, and what must you assume before re-energizing after using them?</summary><p>Terminals 6 (PB1 N.O.) and 31 (1CR N.O. 13-14); assume the motor may start immediately/unexpectedly when power is restored.</p></details>
+    <details><summary>18. Homework scenario: START is pressed but nothing happens, and voltage disappears across PB1 even while pressed. What's the fault?</summary><p>START PB1 normally-open contact is open (control side).</p></details>
+    <details><summary>19. Homework scenario: 1CR latches, but the F contactor never pulls in, and F coil resistance reads infinite. What's the fault?</summary><p>Forward F coil is open (control side).</p></details>
+    <details><summary>20. Homework scenario: the contactor pulls in, but line voltage appears across one F main contact instead of ~0V. What's the fault, and which domain?</summary><p>Forward L1 main power contact is open &mdash; power side.</p></details>
+    <details><summary>21. Homework scenario: full motor voltage is present at the motor, but it still won't run, and one winding reads infinite resistance. What's the fault domain?</summary><p>Load/motor side &mdash; the winding (e.g., T1-T4) is open.</p></details>
+    <details><summary>22. What must always happen after a fault is diagnosed and revealed during the lab?</summary><p>The standard jumper is restored and the normal START/STOP baseline operation is re-tested before the next round.</p></details>
+    <details><summary>23. What does Class 8 add on top of this week's troubleshooting concepts?</summary><p>Continued structured troubleshooting practice on the Amatrol three-wire 1CR/F system, extending toward more complex or multi-step control circuits.</p></details>
+  </section>
+
+  <section class="content-block">
+    <h2>Before the next class</h2>
+    <ul>
+      <li>Be able to say, from memory, which side (control or power) a given symptom points to, using the coil as the handoff.</li>
+      <li>Memorize the four troubleshooting methods and when each one is the best first move.</li>
+      <li>Review the 1CR/F point-to-point map (Figure 11-1) until you can name each connection without looking.</li>
+      <li>Walk through all 10 homework scenarios and confirm you can state the domain and the proving measurement for each.</li>
+      <li>A common exam trap: picking shotgun troubleshooting first instead of using the circuit path that's already available.</li>
+    </ul>
+  </section>
+</main>
+
+<footer class="site-footer">
+  ELE 146 — Electric Motor Control · Personal study site
+</footer>
+</body>
+</html>

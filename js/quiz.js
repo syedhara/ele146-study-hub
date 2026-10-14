@@ -963,6 +963,283 @@ const quizData = {
       { front: "Contactor pulls in but motor doesn't run — suspect what first?", back: "The power circuit — the control circuit already succeeded in pulling in the coil." },
       { front: "What Class 6 adds", back: "Additional control functions (jogging, multiple START/STOP stations, interlocking) layered on the seal-in circuit." }
     ]
+  },
+  week6: {
+    label: "Week 6 — Systems Troubleshooting",
+    mc: [
+      {
+        q: "What is the key difference between what Class 6 and Class 7 taught?",
+        options: [
+          "Class 6 proved individual components; Class 7 uses circuit symptoms to isolate system faults",
+          "There is no difference, they cover the same material",
+          "Class 7 only covers power-side wiring",
+          "Class 6 was entirely about troubleshooting methods"
+        ],
+        correct: 0,
+        explanation: "Class 6 proved individual components with resistance/continuity tests. Class 7 is the bridge to diagnosing why a built circuit fails, using symptoms and structured methods."
+      },
+      {
+        q: "What question does the control side of a motor-control circuit answer?",
+        options: [
+          "Is motor power reaching the load?",
+          "Should the coil energize?",
+          "What is the motor's full-load current?",
+          "Is the overload element sized correctly?"
+        ],
+        correct: 1,
+        explanation: "The control side (STOP, START, coil, seal-in, overload contact) answers whether the coil should energize.",
+        diagram: "controlVsPower"
+      },
+      {
+        q: "What does 'the coil is the handoff' mean in troubleshooting?",
+        options: [
+          "The coil must always be replaced first",
+          "Wrong coil state usually points to the control side; correct coil state with wrong motor behavior points to the power side",
+          "The coil only matters in two-wire control",
+          "The coil determines the overload trip rating"
+        ],
+        correct: 1,
+        explanation: "The coil's state is the dividing line between the two domains: did the coil pull in correctly, or not?"
+      },
+      {
+        q: "Which test should be used to answer 'is control voltage present here?'",
+        options: [
+          "Resistance, with power removed",
+          "AC voltage, with the circuit energized after safe setup",
+          "Continuity, with power removed",
+          "Current clamp, with power removed"
+        ],
+        correct: 1,
+        explanation: "Voltage presence is a live-circuit question — it requires the circuit to be safely energized."
+      },
+      {
+        q: "Which test should be used to answer 'can this contact make a path?'",
+        options: [
+          "AC voltage, energized",
+          "Continuity or resistance, with power removed",
+          "Line-to-line AC voltage, energized",
+          "Frequency measurement"
+        ],
+        correct: 1,
+        explanation: "Whether a contact or fuse is open/closed is a de-energized question, answered with continuity or resistance."
+      },
+      {
+        q: "Why should voltage checks and continuity/resistance checks never be mixed?",
+        options: [
+          "They use the same meter setting, so it doesn't matter",
+          "Voltage checks are live-circuit questions; continuity/resistance checks are de-energized questions, so mixing them gives meaningless or unsafe readings",
+          "Continuity checks always read voltage anyway",
+          "Resistance checks require the circuit to be energized"
+        ],
+        correct: 1,
+        explanation: "Each test mode answers a different kind of question and requires a different power state."
+      },
+      {
+        q: "Why must you label the test points on a ladder diagram before measuring?",
+        options: [
+          "Labels are only for the instructor's convenience",
+          "A voltage reading is only useful when you know which device is upstream and downstream of that point",
+          "Labeling changes the expected voltage values",
+          "It isn't necessary if you know the circuit well"
+        ],
+        correct: 1,
+        explanation: "Good troubleshooting compares expected voltage to actual voltage at each labeled point — which requires knowing the path first."
+      },
+      {
+        q: "What is the evidence pattern for an open coil?",
+        options: [
+          "No voltage anywhere in the control circuit",
+          "Control voltage reaches the coil terminals, but the device does not pull in",
+          "The motor runs only while START is held",
+          "One phase path is missing at the motor"
+        ],
+        correct: 1,
+        explanation: "An open coil shows correct voltage at its terminals, but it still fails to pull in because the winding path is broken."
+      },
+      {
+        q: "What is the evidence pattern for a failed seal-in path?",
+        options: [
+          "The motor hums but never starts",
+          "The motor runs only while START is held",
+          "No voltage downstream of the fuse",
+          "Voltage is missing after STOP"
+        ],
+        correct: 1,
+        explanation: "If the holding (seal-in) contact isn't closing, the motor runs only while START is physically held."
+      },
+      {
+        q: "Which troubleshooting method is best when the symptom is distinctive and you can list likely causes before measuring?",
+        options: [
+          "Shotgun",
+          "Symptom-and-cause",
+          "Output-back",
+          "Half-split"
+        ],
+        correct: 1,
+        explanation: "Symptom-and-cause starts from a precise symptom, lists logical causes, then uses one measurement to eliminate several at once."
+      },
+      {
+        q: "Which troubleshooting method starts at the failed output and moves upstream until 'good' becomes 'bad'?",
+        options: [
+          "Half-split",
+          "Shotgun",
+          "Output-back",
+          "Symptom-and-cause"
+        ],
+        correct: 2,
+        explanation: "Output-back is efficient when an output that should be ON is OFF — you probe the output first, then move upstream.",
+        diagram: "outputBackDiagram"
+      },
+      {
+        q: "Which troubleshooting method requires a known-good endpoint and a known-bad endpoint, then probes the midpoint?",
+        options: [
+          "Half-split",
+          "Output-back",
+          "Symptom-and-cause",
+          "Shotgun"
+        ],
+        correct: 0,
+        explanation: "Half-split cuts the search area in half each time, keeping whichever half contains the fault.",
+        diagram: "halfSplitDiagram"
+      },
+      {
+        q: "When is shotgun troubleshooting an acceptable approach?",
+        options: [
+          "As the default method whenever a fault is suspected",
+          "Only after structured methods have reduced the problem to a short list of suspects",
+          "Whenever the circuit has a long series path",
+          "Only when the overload relay has tripped"
+        ],
+        correct: 1,
+        explanation: "Shotgun is usually inefficient because it ignores the circuit path; it's acceptable only as a controlled cleanup tactic after narrowing the list."
+      },
+      {
+        q: "A long series control path has the coil off, but control voltage is confirmed present near the left rail. Which method is most efficient?",
+        options: [
+          "Shotgun",
+          "Symptom-and-cause",
+          "Half-split",
+          "Output-back"
+        ],
+        correct: 2,
+        explanation: "You already have a known-good region (left rail) and a known-bad region (coil) — half-split narrows the fault fastest."
+      },
+      {
+        q: "In the Amatrol 1CR/F circuit, what is the purpose of the 1CR auxiliary contact at terminals 13-14?",
+        options: [
+          "It supplies the F contactor coil",
+          "It is wired in parallel with START PB1 and holds (seals in) 1CR after START is released",
+          "It is the overload control contact",
+          "It senses motor current"
+        ],
+        correct: 1,
+        explanation: "The 13-14 contact is the seal-in path, parallel with START PB1."
+      },
+      {
+        q: "In the Amatrol 1CR/F circuit, what does the 1CR contact at terminals 43-44 do?",
+        options: [
+          "Holds in the 1CR relay",
+          "Supplies the F contactor coil after 1CR has energized",
+          "Opens on an overload trip",
+          "Connects control transformer terminal 5 to ground"
+        ],
+        correct: 1,
+        explanation: "The separate 43-44 contact enables the F coil once 1CR is energized."
+      },
+      {
+        q: "Where is the overload N.C. control contact wired in the 1CR/F circuit, and what happens on a trip?",
+        options: [
+          "In parallel with 1CR; a trip has no effect on F",
+          "In series with the F coil (95-96); a trip opens this path and drops out F",
+          "In series with START PB1 only",
+          "In the power circuit in series with the motor"
+        ],
+        correct: 1,
+        explanation: "The NC overload control contact is in series with F coil; tripping opens the path and de-energizes F."
+      },
+      {
+        q: "According to the Lab 7 safety rules, how many faults may be inserted in the circuit at one time?",
+        options: [
+          "As many as needed to speed up the exercise",
+          "Only ONE fault at a time, using only the approved fault terminals",
+          "Two, as long as both are OPEN faults",
+          "Unlimited, as long as the Fault Setter tracks them"
+        ],
+        correct: 1,
+        explanation: "Only one approved fault may be inserted at a time; this keeps the diagnostic exercise valid and safe."
+      },
+      {
+        q: "Which two fault terminals are the approved SHORT faults, and what must the team assume before re-energizing after using them?",
+        options: [
+          "Terminals 3 and 15; assume the fuse is blown",
+          "Terminals 6 and 31; assume the motor may start immediately/unexpectedly when power is restored",
+          "Terminals 28 and 29; assume a phase is lost",
+          "Terminals 34 and 35; assume a winding is open"
+        ],
+        correct: 1,
+        explanation: "Terminals 6 (PB1 N.O.) and 31 (1CR N.O. 13-14) are the only approved SHORT faults, and both can bypass normal START/holding logic."
+      },
+      {
+        q: "Homework scenario: START is pressed, but voltage disappears across PB1 even while it's pressed, with 0V at the 1CR coil. What is the fault, and which domain?",
+        options: [
+          "START PB1 N.O. contact is shorted — power side",
+          "START PB1 N.O. contact is open — control side",
+          "The F coil is open — power side",
+          "A phase is lost — power side"
+        ],
+        correct: 1,
+        explanation: "Voltage present up to PB1 but gone across it, even while pressed, shows the PB1 N.O. contact is open — a control-side fault."
+      },
+      {
+        q: "Homework scenario: the contactor pulls in, but nearly full line voltage appears across one F main contact instead of ~0V. What is the fault, and which domain?",
+        options: [
+          "Forward L1 main power contact is open — power side",
+          "The F coil is open — control side",
+          "STOP PB3 is open — control side",
+          "The overload control contact is tripped — control side"
+        ],
+        correct: 0,
+        explanation: "A healthy closed main contact should read ~0V across it; full voltage across it with the coil energized means that contact is open — a power-side fault."
+      },
+      {
+        q: "Homework scenario: full motor voltage is present at the motor connection station, but the motor still won't run, and one winding reads infinite resistance. What is the fault domain?",
+        options: [
+          "Control side",
+          "Control-power source",
+          "Power side",
+          "Load/motor side"
+        ],
+        correct: 3,
+        explanation: "The power circuit delivered proper voltage, so the fault is in the load itself — an open motor winding."
+      },
+      {
+        q: "What must always happen immediately after a fault is diagnosed and revealed during the Lab 7 rotation?",
+        options: [
+          "The team moves directly to the next fault without restoring anything",
+          "The standard jumper is restored and the normal START/STOP baseline operation is re-tested",
+          "The Fault Setter becomes a permanent Troubleshooter",
+          "The overload relay is replaced"
+        ],
+        correct: 1,
+        explanation: "Restoring the standard jumper and re-running the baseline check confirms normal operation before the next round begins."
+      }
+    ],
+    flashcards: [
+      { front: "Class 6 vs. Class 7 focus", back: "Class 6 proved individual components (de-energized tests). Class 7 uses circuit symptoms and structured methods to isolate system faults." },
+      { front: "Control side question", back: "Should the coil energize? (STOP, START, coil, seal-in, overload contact)" },
+      { front: "Power side question", back: "Is motor power reaching the load? (L1/L2/L3 → F main contacts → O.L. elements → T1/T2/T3 → motor)" },
+      { front: "\"The coil is the handoff\"", back: "Wrong coil state → suspect control side. Correct coil state, wrong motor behavior → suspect power side." },
+      { front: "Voltage checks vs. continuity/resistance checks", back: "Voltage checks are live-circuit questions. Continuity/resistance checks are de-energized questions. Never mix them." },
+      { front: "Symptom-and-cause method", back: "Start with a precise symptom, list logical causes, use one measurement to eliminate several causes at once." },
+      { front: "Output-back method", back: "Start at the failed output and test the point feeding it; move upstream until good becomes bad." },
+      { front: "Half-split method", back: "Establish known-good and known-bad endpoints, test the midpoint, keep the bad half, repeat until one device remains." },
+      { front: "Shotgun troubleshooting", back: "Fallback only — acceptable after structured methods reduce the problem to a short list; otherwise wastes measurements." },
+      { front: "1CR contact 13-14", back: "Parallel with START PB1 — the seal-in (holding) path." },
+      { front: "1CR contact 43-44", back: "Supplies the F contactor coil once 1CR has energized." },
+      { front: "Overload N.C. control contact (95-96)", back: "In series with F coil; a trip opens this path and drops out F." },
+      { front: "Lab 7 fault rule", back: "Only ONE approved fault at a time; only terminals 6 and 31 are approved SHORT faults (unexpected-start risk)." },
+      { front: "After every fault round", back: "Restore the standard jumper and re-test the normal START/STOP baseline before the next round." }
+    ]
   }
 };
 
@@ -1363,7 +1640,52 @@ const diagramLibrary = {
         </svg>
         <figcaption>Overload control contact: NC, in series with the coil — opens on trip.</figcaption>
       </figure>
-    </div>`
+    </div>`,
+  controlVsPower: `<figure class="diagram">
+      <svg viewBox="0 0 460 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Control side versus power side diagram">
+        <rect x="20" y="20" width="200" height="130" rx="8" fill="none" stroke="#4fd1c5" stroke-width="3"/>
+        <text x="120" y="45" text-anchor="middle" fill="#4fd1c5" font-size="14" font-weight="700">Control side</text>
+        <text x="120" y="70" text-anchor="middle" fill="#e7ecf5" font-size="12">STOP → START → coil</text>
+        <text x="120" y="90" text-anchor="middle" fill="#e7ecf5" font-size="12">→ aux/seal-in →</text>
+        <text x="120" y="110" text-anchor="middle" fill="#e7ecf5" font-size="12">overload contact</text>
+        <text x="120" y="135" text-anchor="middle" fill="#9fb0c9" font-size="11">Should the coil energize?</text>
+        <rect x="240" y="20" width="200" height="130" rx="8" fill="none" stroke="#f6ad55" stroke-width="3"/>
+        <text x="340" y="45" text-anchor="middle" fill="#f6ad55" font-size="14" font-weight="700">Power side</text>
+        <text x="340" y="70" text-anchor="middle" fill="#e7ecf5" font-size="12">L1/L2/L3 → F main</text>
+        <text x="340" y="90" text-anchor="middle" fill="#e7ecf5" font-size="12">contacts → O.L. elements</text>
+        <text x="340" y="110" text-anchor="middle" fill="#e7ecf5" font-size="12">→ T1/T2/T3 → motor</text>
+        <text x="340" y="135" text-anchor="middle" fill="#9fb0c9" font-size="11">Is power reaching the load?</text>
+      </svg>
+      <figcaption>The coil is the handoff between the two domains.</figcaption>
+    </figure>`,
+  outputBackDiagram: `<figure class="diagram">
+      <svg viewBox="0 0 460 90" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Output-back troubleshooting diagram">
+        <text x="20" y="20" fill="#9fb0c9" font-size="12">control</text>
+        <text x="400" y="20" fill="#9fb0c9" font-size="12">power</text>
+        <line x1="20" y1="50" x2="430" y2="50" stroke="#e7ecf5" stroke-width="3"/>
+        <text x="60" y="75" text-anchor="middle" fill="#e7ecf5" font-size="11">STOP</text>
+        <text x="150" y="75" text-anchor="middle" fill="#e7ecf5" font-size="11">START/seal-in</text>
+        <text x="260" y="75" text-anchor="middle" fill="#e7ecf5" font-size="11">overload</text>
+        <circle cx="390" cy="50" r="18" fill="none" stroke="#f6ad55" stroke-width="3"/>
+        <text x="390" y="55" text-anchor="middle" fill="#f6ad55" font-size="12" font-weight="700">M</text>
+        <path d="M 390 20 L 230 20" stroke="#4fd1c5" stroke-width="2" marker-end="url(#arrowOutputBack)"/>
+        <defs><marker id="arrowOutputBack" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#4fd1c5"/></marker></defs>
+        <text x="310" y="15" text-anchor="middle" fill="#4fd1c5" font-size="11">test upstream from output</text>
+      </svg>
+      <figcaption>Output-back: start at the failed output (coil M) and move upstream until good becomes bad.</figcaption>
+    </figure>`,
+  halfSplitDiagram: `<figure class="diagram">
+      <svg viewBox="0 0 460 90" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Half-split troubleshooting diagram">
+        <line x1="20" y1="50" x2="430" y2="50" stroke="#e7ecf5" stroke-width="3"/>
+        <circle cx="20" cy="50" r="7" fill="#4fd1c5"/>
+        <text x="20" y="75" text-anchor="middle" fill="#4fd1c5" font-size="11">known good</text>
+        <circle cx="225" cy="50" r="7" fill="#f6ad55"/>
+        <text x="225" y="25" text-anchor="middle" fill="#f6ad55" font-size="11">probe midpoint</text>
+        <circle cx="430" cy="50" r="7" fill="#e85c5c"/>
+        <text x="430" y="75" text-anchor="middle" fill="#e85c5c" font-size="11">known bad</text>
+      </svg>
+      <figcaption>Half-split: cut the search area in half, then repeat on the bad half.</figcaption>
+    </figure>`
 };
 
 function renderMC() {
