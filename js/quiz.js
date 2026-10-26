@@ -1240,6 +1240,194 @@ const quizData = {
       { front: "Lab 7 fault rule", back: "Only ONE approved fault at a time; only terminals 6 and 31 are approved SHORT faults (unexpected-start risk)." },
       { front: "After every fault round", back: "Restore the standard jumper and re-test the normal START/STOP baseline before the next round." }
     ]
+  },
+  week8: {
+    label: "Week 8 — Reversing Motor Control",
+    mc: [
+      {
+        q: "What electrically changes to reverse a three-phase motor?",
+        options: [
+          "The supply voltage is lowered",
+          "Any two incoming line leads are swapped, reversing the phase sequence",
+          "The frequency is increased",
+          "The motor's grounding is changed"
+        ],
+        correct: 1,
+        explanation: "Swapping any two line leads reverses the phase sequence and the rotating magnetic field. Voltage and frequency do not need to change.",
+        diagram: "reversingPhaseSwap"
+      },
+      {
+        q: "A student says, \"To reverse the motor, we can just lower the voltage.\" What is wrong with this?",
+        options: [
+          "Nothing, this is correct",
+          "Changing voltage does not reverse a three-phase motor; reversing happens by changing phase sequence",
+          "You must raise the voltage, not lower it",
+          "Voltage must be set to zero first"
+        ],
+        correct: 1,
+        explanation: "The clean, correct statement is: swap any two line leads to reverse the motor. Voltage is unrelated to direction."
+      },
+      {
+        q: "Why is a reversing magnetic starter generally more appropriate than a drum switch for an industrial application needing overload protection and remote pushbuttons?",
+        options: [
+          "A drum switch cannot physically reverse phase sequence",
+          "A reversing magnetic starter uses contactor coils and a low-current control circuit, supporting remote controls, auxiliary contacts, interlocking, and overload protection",
+          "Drum switches are only rated for single-phase motors",
+          "A reversing starter requires no control circuit at all"
+        ],
+        correct: 1,
+        explanation: "A drum switch demonstrates phase reversal directly but is not, by itself, the complete protected magnetic-control solution used for this lab."
+      },
+      {
+        q: "What is the critical rule about the Forward (F) and Reverse (R) contactors?",
+        options: [
+          "They should both be closed briefly during switchover for a smooth transition",
+          "F and R must never be closed at the same time",
+          "Only F needs an interlock; R does not",
+          "They must always share the same coil"
+        ],
+        correct: 1,
+        explanation: "Closing both F and R together would connect two phases directly to each other through both contactors — a line-to-line fault."
+      },
+      {
+        q: "In the Skill 4 circuit, what is the job of the F auxiliary contact at terminals 13-14?",
+        options: [
+          "It is normally closed and blocks the Reverse coil",
+          "It is normally open and seals in (holds) the Forward coil after PB1 is released",
+          "It is the overload control contact",
+          "It directly carries motor current"
+        ],
+        correct: 1,
+        explanation: "F 13-14 is a normally open auxiliary contact that closes in parallel with PB1, becoming the seal-in path for the Forward coil."
+      },
+      {
+        q: "In the Skill 4 circuit, what is the job of the F auxiliary contact at terminals 21-22?",
+        options: [
+          "It seals in the Forward coil",
+          "It is normally closed, located in the Reverse rung, and opens when F energizes to block the Reverse coil",
+          "It directly energizes the Reverse coil",
+          "It is the common overload contact"
+        ],
+        correct: 1,
+        explanation: "F 21-22 is the electrical interlock contact — normally closed, wired in the opposite coil's rung, opening when F energizes.",
+        diagram: "sealInVsInterlock"
+      },
+      {
+        q: "A student says, \"F 13-14 and F 21-22 basically do the same thing because both belong to the Forward contactor.\" Why is this incorrect?",
+        options: [
+          "It is actually correct",
+          "They have opposite normal states and opposite jobs — 13-14 (N.O.) holds the Forward coil on; 21-22 (N.C.) opens to block the Reverse coil",
+          "21-22 only exists on the Reverse contactor",
+          "13-14 is normally closed, not open"
+        ],
+        correct: 1,
+        explanation: "One is a holding (seal-in) contact; the other is an interlock (blocking) contact — opposite normal states, opposite purposes."
+      },
+      {
+        q: "The motor is running Forward and the operator presses the Reverse pushbutton (PB2). What should happen?",
+        options: [
+          "The motor reverses immediately",
+          "No change — the F 21-22 interlock contact in the Reverse rung is open, blocking the R coil",
+          "Both F and R energize briefly",
+          "The overload trips"
+        ],
+        correct: 1,
+        explanation: "Electrical interlocking blocks the opposite coil from energizing while one direction is active."
+      },
+      {
+        q: "What is the difference between electrical interlocking and mechanical interlocking?",
+        options: [
+          "They are the same thing with different names",
+          "Electrical interlocking uses N.C. auxiliary contacts in the opposite coil circuits; mechanical interlocking physically prevents both contactors from closing together",
+          "Mechanical interlocking only works when power is on",
+          "Electrical interlocking requires no additional contacts"
+        ],
+        correct: 1,
+        explanation: "Both are used together — one protective layer in the control logic (electrical), one in the starter mechanism (mechanical)."
+      },
+      {
+        q: "When is the mechanical interlock test performed, and what does it prove?",
+        options: [
+          "With power ON — it proves the contactors switch quickly",
+          "With power OFF — pressing one contactor's manual override should physically block the other override from closing",
+          "During normal operation, by pressing both pushbuttons at once",
+          "Only during the overload trip test"
+        ],
+        correct: 1,
+        explanation: "The mechanical-interlock test is always performed with power OFF, using the manual overrides."
+      },
+      {
+        q: "What is the purpose of the normally closed overload control contact 95-96 in the reversing starter?",
+        options: [
+          "It only affects the Forward coil, not Reverse",
+          "It completes the common coil return; if the overload trips, it opens and drops out whichever direction coil is energized",
+          "It directly carries motor power",
+          "It seals in the active direction's coil"
+        ],
+        correct: 1,
+        explanation: "OL 95-96 is shared by both the Forward and Reverse coil circuits — a trip blocks both directions until the overload condition clears."
+      },
+      {
+        q: "Trace the Forward command: what must be true before PB1 can energize the F coil?",
+        options: [
+          "STOP must be open",
+          "STOP must be closed, and the R interlock (21-22) must be closed",
+          "The R coil must already be energized",
+          "The motor must already be running"
+        ],
+        correct: 1,
+        explanation: "Forward path: STOP closed → PB1 closes → R interlock (21-22) is closed → F coil energizes → F AUX 13-14 seals around PB1."
+      },
+      {
+        q: "If Reverse works correctly but pressing PB1 never energizes the Forward coil, what is most likely the fault?",
+        options: [
+          "The overload tripped",
+          "The Forward coil F is open",
+          "STOP PB3 is open",
+          "The R auxiliary 13-14 contact is open"
+        ],
+        correct: 1,
+        explanation: "Since the common path and the Reverse branch are proven to work, the fault is isolated to the Forward branch — most likely the F coil itself."
+      },
+      {
+        q: "If neither Forward nor Reverse will run, what should be checked first?",
+        options: [
+          "The individual F or R coil directly",
+          "The common control path — STOP PB3 and the overload N.C. contact (95-96)",
+          "The motor windings",
+          "The mechanical interlock"
+        ],
+        correct: 1,
+        explanation: "Both branches share STOP and the overload contact — check the common path before branching into Forward or Reverse."
+      },
+      {
+        q: "A reversing circuit is used for a conveyor that must back product out of a jam. What does this application primarily need?",
+        options: [
+          "Just a single-direction starter with no reverse",
+          "Controlled forward, stop, and reverse operation — best served by a reversing magnetic starter with overload protection and interlocking",
+          "A drum switch with no overload protection",
+          "Two separate, uninterlocked motors"
+        ],
+        correct: 1,
+        explanation: "The machine must move in the opposite direction on command, safely and with protection — the reversing magnetic starter's job."
+      }
+    ],
+    flashcards: [
+      { front: "How do you reverse a 3-phase motor?", back: "Swap any two incoming line leads — this reverses the phase sequence and the rotating magnetic field. Voltage and frequency don't change." },
+      { front: "Critical F/R rule", back: "F and R must never be closed at the same time — doing so causes a line-to-line fault." },
+      { front: "Drum switch limitation", back: "Teaches the reversing concept well, but does not provide overload protection by itself." },
+      { front: "Seal-in contact (13-14)", back: "Normally open; closes in parallel with its START button to keep its own coil energized after release." },
+      { front: "Interlock contact (21-22)", back: "Normally closed; opens when its contactor energizes, blocking the opposite direction's coil." },
+      { front: "Seal-in vs. interlock, one-liner", back: "Seal-in: \"keep MY coil on.\" Interlock: \"block the OTHER coil.\"" },
+      { front: "Electrical interlocking", back: "N.C. auxiliary contacts in the opposite coil circuits — F blocks R, R blocks F." },
+      { front: "Mechanical interlocking", back: "Physically prevents both contactors from closing together; tested with power OFF via manual overrides." },
+      { front: "Why use both interlocking layers?", back: "Electrical interlocking protects the control logic; mechanical interlocking protects the starter mechanism — two separate layers." },
+      { front: "OL 95-96 in reversing starter", back: "Common N.C. overload control contact; a trip opens it and drops out whichever direction coil is energized." },
+      { front: "Forward command trace", back: "STOP closed → PB1 closes → R interlock closed → F coil energizes → F AUX 13-14 seals around PB1." },
+      { front: "\"Lower the voltage to reverse\" — true or false?", back: "False. Reversing happens by changing phase sequence, not voltage." },
+      { front: "First troubleshooting check on a reversing starter", back: "Check the common control path first (STOP, overload contact) before branching into Forward or Reverse." },
+      { front: "Reverse works, Forward doesn't energize — likely fault?", back: "Forward coil F is open (common path and Reverse branch are proven good)." }
+    ]
   }
 };
 
@@ -1685,6 +1873,36 @@ const diagramLibrary = {
         <text x="430" y="75" text-anchor="middle" fill="#e85c5c" font-size="11">known bad</text>
       </svg>
       <figcaption>Half-split: cut the search area in half, then repeat on the bad half.</figcaption>
+    </figure>`,
+  reversingPhaseSwap: `<figure class="diagram">
+      <svg viewBox="0 0 460 190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Forward versus reverse phase swap diagram">
+        <rect x="20" y="20" width="200" height="150" rx="8" fill="none" stroke="#4fd1c5" stroke-width="3"/>
+        <text x="120" y="45" text-anchor="middle" fill="#4fd1c5" font-size="14" font-weight="700">Forward (F)</text>
+        <text x="120" y="68" text-anchor="middle" fill="#e7ecf5" font-size="12">L1 &#8594; T1</text>
+        <text x="120" y="88" text-anchor="middle" fill="#e7ecf5" font-size="12">L2 &#8594; T2</text>
+        <text x="120" y="108" text-anchor="middle" fill="#e7ecf5" font-size="12">L3 &#8594; T3</text>
+        <text x="120" y="135" text-anchor="middle" fill="#9fb0c9" font-size="11">normal phase order</text>
+        <rect x="240" y="20" width="200" height="150" rx="8" fill="none" stroke="#f6ad55" stroke-width="3"/>
+        <text x="340" y="45" text-anchor="middle" fill="#f6ad55" font-size="14" font-weight="700">Reverse (R)</text>
+        <text x="340" y="68" text-anchor="middle" fill="#e7ecf5" font-size="12">L1 &#8594; T3</text>
+        <text x="340" y="88" text-anchor="middle" fill="#e7ecf5" font-size="12">L2 &#8594; T2</text>
+        <text x="340" y="108" text-anchor="middle" fill="#e7ecf5" font-size="12">L3 &#8594; T1</text>
+        <text x="340" y="135" text-anchor="middle" fill="#9fb0c9" font-size="11">T1 &amp; T3 swapped</text>
+      </svg>
+      <figcaption>Swapping any two line leads reverses the rotating magnetic field.</figcaption>
+    </figure>`,
+  sealInVsInterlock: `<figure class="diagram">
+      <svg viewBox="0 0 460 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Seal-in contact versus interlock contact diagram">
+        <rect x="20" y="20" width="200" height="110" rx="8" fill="none" stroke="#4fd1c5" stroke-width="3"/>
+        <text x="120" y="45" text-anchor="middle" fill="#4fd1c5" font-size="13" font-weight="700">SEAL-IN CONTACT</text>
+        <text x="120" y="68" text-anchor="middle" fill="#e7ecf5" font-size="12">Normally open 13-14</text>
+        <text x="120" y="95" text-anchor="middle" fill="#9fb0c9" font-size="11">"keep MY coil on"</text>
+        <rect x="240" y="20" width="200" height="110" rx="8" fill="none" stroke="#f6ad55" stroke-width="3"/>
+        <text x="340" y="45" text-anchor="middle" fill="#f6ad55" font-size="13" font-weight="700">INTERLOCK CONTACT</text>
+        <text x="340" y="68" text-anchor="middle" fill="#e7ecf5" font-size="12">Normally closed 21-22</text>
+        <text x="340" y="95" text-anchor="middle" fill="#9fb0c9" font-size="11">"block the OTHER coil"</text>
+      </svg>
+      <figcaption>Same contactor, opposite normal states, opposite jobs.</figcaption>
     </figure>`
 };
 

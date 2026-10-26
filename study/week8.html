@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Week 8: Reversing Motor Control — ELE 146</title>
+<link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="site-header">
+  <nav class="nav">
+    <div class="brand">ELE 146 <span>Study Hub</span></div>
+    <div class="nav-links">
+      <a href="/index.html">Home</a>
+      <a href="/study/index.html" class="active">Study Materials</a>
+      <a href="/quiz/index.html">Quiz</a>
+      <a href="/lab/index.html">Lab</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <div class="breadcrumb"><a href="/index.html">Home</a> / <a href="/study/index.html">Study Materials</a> / Week 8</div>
+  <h1>Week 8 — Reversing Motor Control</h1>
+  <p><strong>Sources:</strong> Class 8 POST-slides, Class 8 homework &amp; answer key, Lab 8 (Amatrol Module 8, Skill 4 &mdash; reversing motor circuit with interlocks)</p>
+  <p><em>Teaching focus: reversing a three-phase motor by swapping phase sequence, the reversing magnetic starter (Forward/Reverse contactors), seal-in vs. interlock auxiliary contacts, and electrical + mechanical interlocking.</em></p>
+
+  <section class="content-block">
+    <h2>Key takeaways</h2>
+    <ol>
+      <li>Reversing a three-phase motor means changing the phase sequence &mdash; usually by swapping any two incoming line leads. Voltage and frequency do not change.</li>
+      <li>A drum switch teaches the reversing concept well but does not provide overload protection by itself.</li>
+      <li>A reversing magnetic motor starter is more practical because it combines Forward/Reverse contactors with overload protection.</li>
+      <li>Seal-in (13&ndash;14, N.O.) keeps <em>my</em> coil on; interlock (21&ndash;22, N.C.) blocks the <em>other</em> coil &mdash; same contactor, opposite jobs.</li>
+      <li>Electrical interlocking (N.C. aux contacts) and mechanical interlocking (physical block) are two separate protective layers used together.</li>
+      <li><strong>Critical rule: F and R must never be closed at the same time.</strong></li>
+    </ol>
+  </section>
+
+  <section class="content-block">
+    <h2>1. Why reversing control matters</h2>
+    <p>A reversing motor-control circuit is needed whenever a machine must move in two directions under control &mdash; not just &ldquo;make the motor spin backward,&rdquo; but <strong>controlled direction change with stopping, protection, and safe switching.</strong></p>
+    <table>
+      <tr><th>Example</th><th>Why reverse is needed</th></tr>
+      <tr><td>Conveyor backs product out of a jam</td><td>Reverse removes the jam without disassembling the machine; the motor must stop, then run opposite under control.</td></tr>
+      <tr><td>Hoist raises and lowers a load</td><td>One motor does both jobs, but the direction command must change safely &mdash; this is why Forward and Reverse are both part of the starter logic.</td></tr>
+      <tr><td>Gate operator opens and closes</td><td>&ldquo;Forward&rdquo; and &ldquo;reverse&rdquo; are just labels &mdash; what matters electrically is which phase sequence is sent to the motor.</td></tr>
+    </table>
+    <p>On the trainer, Forward produces counterclockwise rotation and Reverse produces clockwise rotation once the motor leads are switched.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>2. Core theory: reversing a three-phase motor</h2>
+    <p><strong>The single most important idea:</strong> reverse the phase sequence, and the motor reverses.</p>
+    <ul>
+      <li>The motor does <strong>not</strong> reverse because voltage becomes higher or lower.</li>
+      <li>It reverses because the phase sequence changes &mdash; <strong>swapping any two incoming line leads</strong> reverses the rotating magnetic field, and the shaft follows the new field direction.</li>
+      <li>Supply frequency and nominal line voltage do not need to change.</li>
+    </ul>
+    <p><strong>Common misconception to correct immediately:</strong> &ldquo;lower the voltage to reverse the motor&rdquo; is wrong. The clean statement is: <em>swap any two line leads to reverse the motor.</em></p>
+    <figure class="diagram">
+      <svg viewBox="0 0 460 190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Forward versus reverse phase swap diagram">
+        <rect x="20" y="20" width="200" height="150" rx="8" fill="none" stroke="#4fd1c5" stroke-width="3"/>
+        <text x="120" y="45" text-anchor="middle" fill="#4fd1c5" font-size="14" font-weight="700">Forward (F)</text>
+        <text x="120" y="68" text-anchor="middle" fill="#e7ecf5" font-size="12">L1 &rarr; T1</text>
+        <text x="120" y="88" text-anchor="middle" fill="#e7ecf5" font-size="12">L2 &rarr; T2</text>
+        <text x="120" y="108" text-anchor="middle" fill="#e7ecf5" font-size="12">L3 &rarr; T3</text>
+        <text x="120" y="135" text-anchor="middle" fill="#9fb0c9" font-size="11">normal phase order</text>
+        <text x="120" y="155" text-anchor="middle" fill="#9fb0c9" font-size="11">(same supply, same motor)</text>
+        <rect x="240" y="20" width="200" height="150" rx="8" fill="none" stroke="#f6ad55" stroke-width="3"/>
+        <text x="340" y="45" text-anchor="middle" fill="#f6ad55" font-size="14" font-weight="700">Reverse (R)</text>
+        <text x="340" y="68" text-anchor="middle" fill="#e7ecf5" font-size="12">L1 &rarr; T3</text>
+        <text x="340" y="88" text-anchor="middle" fill="#e7ecf5" font-size="12">L2 &rarr; T2</text>
+        <text x="340" y="108" text-anchor="middle" fill="#e7ecf5" font-size="12">L3 &rarr; T1</text>
+        <text x="340" y="135" text-anchor="middle" fill="#9fb0c9" font-size="11">T1 &amp; T3 swapped</text>
+        <text x="340" y="155" text-anchor="middle" fill="#9fb0c9" font-size="11">phase sequence reverses</text>
+      </svg>
+      <figcaption>Swapping any two line leads reverses the rotating magnetic field.</figcaption>
+    </figure>
+  </section>
+
+  <section class="content-block">
+    <h2>3. What changes in the power circuit</h2>
+    <p>Forward and Reverse use the same supply and the same motor &mdash; only the phase sequence changes.</p>
+    <ul>
+      <li><strong>Forward contactor F energized:</strong> L1&rarr;T1, L2&rarr;T2, L3&rarr;T3 (normal order).</li>
+      <li><strong>Reverse contactor R energized:</strong> L1&rarr;T3, L2&rarr;T2, L3&rarr;T1 (two lines crossed).</li>
+    </ul>
+    <p><strong>Critical rule: F and R must never be closed at the same time.</strong> Closing both together connects two phases directly to each other through both contactors &mdash; a line-to-line fault.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>4. Two ways this module reverses a motor</h2>
+    <table>
+      <tr><th>Method</th><th>How it works</th><th>Limitation / role</th></tr>
+      <tr><td>Drum switch</td><td>Physically changes which line leads connect to the motor.</td><td>Excellent for teaching the basic reversing idea, but does <strong>not</strong> provide overload protection by itself.</td></tr>
+      <tr><td>Reversing magnetic motor starter</td><td>Forward and Reverse contactors route three-phase power in opposite phase sequences.</td><td>The reversing contactor station + the overload relay station form the full reversing magnetic motor starter &mdash; closer to real industrial control.</td></tr>
+    </table>
+    <p><strong>Why a reversing starter over a drum switch:</strong> a reversing magnetic starter uses contactor coils and a low-current control circuit, so it supports remote START/STOP pushbuttons, auxiliary contacts, interlocking, and overload protection &mdash; the complete protected magnetic-control solution industrial applications need.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>5. Safety and protection are part of the theory</h2>
+    <ul>
+      <li>Use the course power-off / de-energization procedure before wiring or changing the circuit; do not change leads while energized.</li>
+      <li>Verify the circuit is safe before energizing; treat every energization as a possible unexpected-start condition.</li>
+      <li>Connect every station panel and the motor base to dedicated ground-bus terminals &mdash; never daisy-chain equipment grounds.</li>
+      <li>Connect control-transformer secondary terminal 5 to the grounded control return as shown in the reference circuit.</li>
+      <li>A drum switch alone does not provide overload protection &mdash; use overload protection whenever controlling a motor.</li>
+    </ul>
+  </section>
+
+  <section class="content-block">
+    <h2>6. Skill 4: reversing motor circuit with interlocking</h2>
+    <p>This is the key skill for seeing how Reverse works <strong>safely</strong> in a real control circuit.</p>
+    <p><strong>What students build:</strong> a reversing motor control circuit for a three-phase motor &mdash; PB1 commands Forward, PB2 commands Reverse, PB3 stops the motor. Both auxiliary-contact (electrical) interlocking and mechanical interlocking are used so Forward and Reverse coils can never be energized at the same time.</p>
+    <p><strong>What to point out on the diagram:</strong> power path at the top, control path at the bottom, Forward coil F and Reverse coil R, normally closed interlock contacts, and the overload contact in the control circuit.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>7. How the Skill 4 control circuit works</h2>
+    <table>
+      <tr><th>Step</th><th>Event</th><th>Detail</th></tr>
+      <tr><td>1</td><td>STOP PB3 and OL 95&ndash;96 must be closed</td><td>They form the common control path used by both directions.</td></tr>
+      <tr><td>2</td><td>Press PB1 &rarr; Forward coil F energizes</td><td>F closes its main contacts and applies the Forward phase sequence to the motor.</td></tr>
+      <tr><td>3</td><td>F auxiliary 13&ndash;14 closes in parallel with PB1</td><td>When PB1 is released, this seal-in path keeps F energized.</td></tr>
+      <tr><td>4</td><td>F auxiliary 21&ndash;22 opens in the Reverse rung</td><td>Blocks R from energizing while Forward is active. Reverse works the same way in the opposite direction.</td></tr>
+      <tr><td>5</td><td>The mechanical interlock adds a physical block</td><td>Even if the control logic failed, both contactors cannot close together.</td></tr>
+    </table>
+    <p><strong>Summary:</strong> Forward and Reverse are mirror-image branches. Each direction has its own START button, its own N.O. 13&ndash;14 seal-in contact, the opposite N.C. 21&ndash;22 interlock contact, and its own contactor coil. Both share STOP PB3 and OL 95&ndash;96.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>8. Seal-in contact vs. interlock contact</h2>
+    <p>They are both auxiliary contacts on the same contactor, but they perform <strong>completely different jobs</strong>.</p>
+    <table>
+      <tr><th></th><th>Seal-in contact</th><th>Interlock contact</th></tr>
+      <tr><td>Terminals</td><td>13&ndash;14</td><td>21&ndash;22</td></tr>
+      <tr><td>Normal state</td><td>Normally open (N.O.)</td><td>Normally closed (N.C.)</td></tr>
+      <tr><td>Job</td><td>&ldquo;Keep <strong>my</strong> coil on.&rdquo;</td><td>&ldquo;Block the <strong>other</strong> coil.&rdquo;</td></tr>
+    </table>
+    <p>Forward uses F seal-in + R interlock. Reverse uses R seal-in + F interlock.</p>
+    <figure class="diagram">
+      <svg viewBox="0 0 460 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Seal-in contact versus interlock contact diagram">
+        <rect x="20" y="20" width="200" height="110" rx="8" fill="none" stroke="#4fd1c5" stroke-width="3"/>
+        <text x="120" y="45" text-anchor="middle" fill="#4fd1c5" font-size="13" font-weight="700">SEAL-IN CONTACT</text>
+        <text x="120" y="68" text-anchor="middle" fill="#e7ecf5" font-size="12">Normally open 13&ndash;14</text>
+        <text x="120" y="95" text-anchor="middle" fill="#9fb0c9" font-size="11">&ldquo;keep MY coil on&rdquo;</text>
+        <rect x="240" y="20" width="200" height="110" rx="8" fill="none" stroke="#f6ad55" stroke-width="3"/>
+        <text x="340" y="45" text-anchor="middle" fill="#f6ad55" font-size="13" font-weight="700">INTERLOCK CONTACT</text>
+        <text x="340" y="68" text-anchor="middle" fill="#e7ecf5" font-size="12">Normally closed 21&ndash;22</text>
+        <text x="340" y="95" text-anchor="middle" fill="#9fb0c9" font-size="11">&ldquo;block the OTHER coil&rdquo;</text>
+      </svg>
+      <figcaption>Same contactor, opposite normal states, opposite jobs.</figcaption>
+    </figure>
+    <p><strong>Common exam trap:</strong> a student might say &ldquo;F 13&ndash;14 and F 21&ndash;22 basically do the same thing because both belong to the Forward contactor.&rdquo; This is <strong>incorrect</strong> &mdash; they have opposite normal states and opposite jobs. F 13&ndash;14 is N.O. and closes to keep the Forward coil energized after PB1 is released. F 21&ndash;22 is N.C. and opens when F energizes to block the Reverse coil. One is a holding contact; the other is an interlock.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>9. Trace the Forward and Reverse commands</h2>
+    <ul>
+      <li><strong>Forward path:</strong> STOP closed &rarr; PB1 closes &rarr; R interlock (21&ndash;22) is closed &rarr; F coil energizes &rarr; F AUX 13&ndash;14 seals around PB1.</li>
+      <li><strong>Reverse path:</strong> STOP closed &rarr; PB2 closes &rarr; F interlock (21&ndash;22) is closed &rarr; R coil energizes &rarr; R AUX 13&ndash;14 seals around PB2.</li>
+    </ul>
+    <p>The Reverse rung mirrors Forward exactly, but uses the opposite contactor's interlock contact.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>10. Interlocking: the key safety idea</h2>
+    <p><strong>Auxiliary contact (electrical) interlocking:</strong></p>
+    <ul>
+      <li>The normally closed Reverse interlock contact is wired in the Forward rung.</li>
+      <li>The normally closed Forward interlock contact is wired in the Reverse rung.</li>
+      <li>When one coil energizes, the opposite control path opens &mdash; this prevents the other coil from being energized electrically.</li>
+    </ul>
+    <p><strong>Why it matters:</strong> if both Forward and Reverse power paths closed together, the result can be a damaging line-to-line fault.</p>
+    <p><strong>Mechanical interlock between the two contactors:</strong> when one contactor is physically closed, the other is physically blocked from closing. Tested by pressing one manual override, then attempting to press the other &mdash; the second override cannot close. This test is performed with <strong>power OFF</strong>.</p>
+    <p><strong>Why both layers:</strong> electrical interlocking stops the opposite coil electrically through N.C. auxiliary contacts; mechanical interlocking blocks the opposite contactor physically. Using both protects the starter and motor from an unsafe simultaneous Forward-and-Reverse command &mdash; one layer in the control logic, one in the starter mechanism.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>11. Skill 4 operating sequence and expected results</h2>
+    <table>
+      <tr><th>Student action</th><th>Expected result</th><th>What it proves</th></tr>
+      <tr><td>Press PB1</td><td>Motor runs Forward.</td><td>Forward coil and forward power contacts work.</td></tr>
+      <tr><td>Press PB2 while Forward is running</td><td>No change in motor operation.</td><td>Electrical interlocking blocks the Reverse coil.</td></tr>
+      <tr><td>Press PB3</td><td>Motor stops.</td><td>The stop circuit opens the common control path.</td></tr>
+      <tr><td>Press PB2</td><td>Motor runs in Reverse.</td><td>Reverse coil and reverse power contacts work.</td></tr>
+      <tr><td>Press PB1 while Reverse is running</td><td>No change in motor operation.</td><td>Electrical interlocking blocks the Forward coil.</td></tr>
+      <tr><td>Power off; hold one manual override and try the other</td><td>The second override cannot close.</td><td>Mechanical interlock prevents both contactors from closing together.</td></tr>
+    </table>
+  </section>
+
+  <section class="content-block">
+    <h2>12. Lab 8: wire, prove, and interlock</h2>
+    <p><strong>Lab goal:</strong> build and prove a safe reversing magnetic motor-control circuit, then explain how the seal-in and interlocking functions prevent an unsafe simultaneous Forward/Reverse command.</p>
+    <table>
+      <tr><th>Device / contact</th><th>Normal state</th><th>Function</th></tr>
+      <tr><td>STOP PB3</td><td>N.C.</td><td>Common control path; pressing STOP removes both direction commands.</td></tr>
+      <tr><td>FWD PB1</td><td>N.O.</td><td>Momentarily energizes the Forward coil F.</td></tr>
+      <tr><td>F auxiliary 13&ndash;14</td><td>N.O.</td><td>Seal-in contact in parallel with PB1; keeps F energized after PB1 is released.</td></tr>
+      <tr><td>R auxiliary 21&ndash;22</td><td>N.C.</td><td>Electrical interlock in the Forward rung; opens when R energizes.</td></tr>
+      <tr><td>REV PB2</td><td>N.O.</td><td>Momentarily energizes the Reverse coil R.</td></tr>
+      <tr><td>R auxiliary 13&ndash;14</td><td>N.O.</td><td>Seal-in contact in parallel with PB2; keeps R energized after PB2 is released.</td></tr>
+      <tr><td>F auxiliary 21&ndash;22</td><td>N.C.</td><td>Electrical interlock in the Reverse rung; opens when F energizes.</td></tr>
+      <tr><td>OL 95&ndash;96</td><td>N.C.</td><td>Common overload control contact; opens the coil circuit if the overload trips.</td></tr>
+      <tr><td>Mechanical interlock</td><td>Internal</td><td>Physically prevents both contactors from closing at the same time.</td></tr>
+    </table>
+    <p><strong>Safety boundaries (required):</strong></p>
+    <ul>
+      <li>Use the course power-off/de-energization procedure before moving any wire; never change leads while energized.</li>
+      <li>Verify the trainer is safe before energizing; treat every energization as a possible unexpected-start condition.</li>
+      <li>Connect every station panel and the motor base to dedicated ground-bus terminals &mdash; never daisy-chain.</li>
+      <li>Connect control-transformer secondary terminal 5 to the grounded control return.</li>
+      <li>Do not energize until the instructor has checked the completed wiring &mdash; incorrect interlock wiring can damage the starter.</li>
+      <li>The mechanical-interlock test is performed with power OFF.</li>
+    </ul>
+    <p><strong>Wiring sequence (summary):</strong></p>
+    <ol>
+      <li>Arrange panels, connect dedicated equipment grounds, configure the motor connection station.</li>
+      <li>Wire the control transformer and grounded control return exactly as shown (terminal 5 is the grounded return).</li>
+      <li>Wire STOP PB3 N.C. as the common series device ahead of the Forward and Reverse branches.</li>
+      <li>Build the Forward branch: PB1 N.O. in parallel with F 13&ndash;14, then R 21&ndash;22 N.C., then coil F.</li>
+      <li>Build the Reverse branch: PB2 N.O. in parallel with R 13&ndash;14, then F 21&ndash;22 N.C., then coil R.</li>
+      <li>Connect both coil return paths through the N.C. overload control contact 95&ndash;96 to the control return.</li>
+      <li>Wire the three-phase power path exactly as the reference diagram shows &mdash; do not improvise the phase crossover used by the Reverse contactor.</li>
+      <li>With power still OFF, compare every connection to the reference diagram and correct any mismatch.</li>
+    </ol>
+    <p><strong>Instructor checkpoint &mdash; required before power:</strong> grounding verified; Forward and Reverse main-power wiring verified; F/R seal-in contacts verified; F/R opposite-direction 21&ndash;22 interlocks verified; OL 95&ndash;96 common return verified; no loose or floating leads.</p>
+    <p><strong>Part D &mdash; mechanical interlock test (power OFF):</strong> turn power OFF and verify the circuit is de-energized. Press and hold the Forward contactor manual override; while holding it, attempt to press the Reverse override. Repeat with Reverse held first. The second contactor should be physically blocked in either direction.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>13. Troubleshooting a reversing starter (ties back to Week 6 methods)</h2>
+    <p>A clean troubleshooting process: observe the symptom first (neither direction runs, only one direction runs, or the starter pulls in but the motor doesn't turn correctly) &rarr; decide control vs. power circuit &rarr; check common series devices first (safety switch, control transformer, STOP PB3, overload N.C. contact) &rarr; check the direction branch (PB1 or PB2, F or R coil, interlock contacts) &rarr; finally check power contacts, overload elements, and motor windings.</p>
+    <table>
+      <tr><th>Fault example</th><th>Evidence pattern</th></tr>
+      <tr><td>PB3 N.C. contact open</td><td>Neither direction starts &mdash; the common control path is open.</td></tr>
+      <tr><td>Forward coil F open</td><td>Reverse may work, but Forward will not energize.</td></tr>
+      <tr><td>R interlock contact open</td><td>Forward branch can be affected because the series interlock contact stays open.</td></tr>
+      <tr><td>Overload N.C. contact open</td><td>Both directions are blocked by the overload path.</td></tr>
+      <tr><td>Forward L1 power contact open</td><td>The starter may pick up, but the motor power path is incomplete.</td></tr>
+      <tr><td>Motor winding open</td><td>Control may look normal while motor operation is weak or missing.</td></tr>
+    </table>
+    <p><strong>Teaching line:</strong> start with the common path, then branch out.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>14. Homework reasoning (10 questions)</h2>
+    <table>
+      <tr><th>#</th><th>Question topic</th><th>Key answer</th></tr>
+      <tr><td>1</td><td>What changes to reverse a 3-phase motor?</td><td>Swap any two phase conductors feeding the motor &mdash; reverses phase sequence and the rotating field. Frequency and nominal line voltage do not change.</td></tr>
+      <tr><td>2</td><td>Reversing starter vs. drum switch</td><td>A reversing magnetic starter supports remote controls, aux contacts, interlocking, and overload protection; a drum switch alone lacks this.</td></tr>
+      <tr><td>3</td><td>PB1 press-to-release sequence</td><td>Current flows STOP &rarr; PB1 &rarr; R interlock (NC) &rarr; F coil &rarr; OL contact; F energizes and applies Forward sequence; F 13&ndash;14 closes in parallel with PB1; releasing PB1 leaves current flowing through F 13&ndash;14, so F stays energized.</td></tr>
+      <tr><td>4</td><td>Which contact holds Forward energized after release?</td><td>F 13&ndash;14 &mdash; a normally open auxiliary (seal-in) contact.</td></tr>
+      <tr><td>5</td><td>What happens to the Reverse rung when F energizes?</td><td>F 21&ndash;22 (N.C., in the Reverse rung) opens, breaking the R coil path so R cannot energize while Forward is active.</td></tr>
+      <tr><td>6</td><td>Motor running Forward, operator presses Reverse</td><td>No change &mdash; F 21&ndash;22 interlock in the Reverse rung is open, so pressing PB2 cannot energize R.</td></tr>
+      <tr><td>7</td><td>Electrical vs. mechanical interlocking</td><td>Electrical interlocking uses N.C. aux contacts (F blocks R, R blocks F); mechanical interlocking physically blocks the two contactors from closing together. Both are used for two separate protective layers.</td></tr>
+      <tr><td>8</td><td>Purpose of OL 95&ndash;96</td><td>Normally closed overload control contact completes the common coil return; a trip opens it, dropping out whichever coil is energized &mdash; neither direction can run until the overload condition is corrected.</td></tr>
+      <tr><td>9</td><td>&ldquo;F 13&ndash;14 and F 21&ndash;22 do the same thing&rdquo; &mdash; true or false?</td><td>False &mdash; opposite normal states and jobs. 13&ndash;14 (N.O.) is a holding contact; 21&ndash;22 (N.C.) is an interlock that blocks the opposite coil.</td></tr>
+      <tr><td>10</td><td>Logical sequence of a normal Forward start</td><td>PB1 pressed &rarr; F coil energizes &rarr; F main contacts and N.O. 13&ndash;14 close (same coil operation, no artificial timing order) &rarr; motor receives Forward sequence &rarr; PB1 released &rarr; motor keeps running because F 13&ndash;14 now provides the seal-in path, as long as STOP, R 21&ndash;22, and OL 95&ndash;96 remain closed.</td></tr>
+    </table>
+    <p><strong>Instructor emphasis:</strong> never accept &ldquo;reverse the polarity&rdquo; as the explanation for a three-phase induction motor &mdash; the key concept is reversing phase sequence by swapping any two phases. Students should distinguish 13&ndash;14 seal-in contacts from 21&ndash;22 interlock contacts. Pressing the opposite direction button while one direction is running should not reverse immediately in the Skill 4 circuit &mdash; the opposite coil is blocked. Mechanical interlocking is tested with power OFF.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>15. Common mistakes &mdash; and what makes them wrong</h2>
+    <ul>
+      <li><strong>Saying &ldquo;lower the voltage&rdquo; reverses a 3-phase motor.</strong> Wrong &mdash; reversing happens by swapping phase sequence (any two line leads), not by changing voltage.</li>
+      <li><strong>Treating 13&ndash;14 and 21&ndash;22 as the same thing because they're on the same contactor.</strong> Wrong &mdash; opposite normal states, opposite jobs (hold vs. block).</li>
+      <li><strong>Expecting Reverse to engage immediately when pressed while Forward is running.</strong> Wrong &mdash; electrical interlocking must block it; &ldquo;no change&rdquo; is the correct, safe result.</li>
+      <li><strong>Skipping the mechanical interlock test or doing it with power ON.</strong> The mechanical interlock test is always performed with power OFF.</li>
+      <li><strong>Improvising the phase crossover wiring for the Reverse contactor.</strong> Use the reference circuit as the wiring authority &mdash; do not improvise.</li>
+      <li><strong>Energizing before the instructor checks the wiring.</strong> Incorrect interlock wiring can damage the starter.</li>
+    </ul>
+  </section>
+
+  <section class="content-block">
+    <h2>16. Key takeaways (recap)</h2>
+    <ol>
+      <li>Reversing a three-phase motor means changing the phase sequence &mdash; usually by swapping any two incoming line leads.</li>
+      <li>A drum switch teaches the reversing concept well but does not provide overload protection by itself.</li>
+      <li>A reversing magnetic motor starter is more practical because it combines Forward/Reverse contactors with overload protection.</li>
+      <li>Skill 4 is the safest teaching skill in the module because students see electrical interlocking and mechanical interlocking working together.</li>
+      <li>Every device has a reason: stop path, overload path, Forward and Reverse coils, seal-in contacts, and interlocks.</li>
+      <li>Troubleshooting is easier when students check the common control path first, then move into the Forward or Reverse branch.</li>
+    </ol>
+    <p><strong>One-sentence close:</strong> A safe reversing circuit does more than change direction &mdash; it changes direction without ever letting Forward and Reverse be commanded together.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>17. Real-world / at-home examples</h2>
+    <table>
+      <tr><th>Home / everyday example</th><th>Week 8 concept it demonstrates</th></tr>
+      <tr><td>A garage door opener that only lets you go &ldquo;up&rdquo; after a full &ldquo;down&rdquo; (or vice versa), never both motors engaged at once</td><td>Electrical interlocking &mdash; the opposite direction command is blocked while one direction is active</td></tr>
+      <tr><td>A car's automatic transmission that physically won't let you shift from Drive to Reverse without passing through Park/Neutral at a stop</td><td>Mechanical interlock &mdash; a physical block preventing two conflicting states from engaging together</td></tr>
+      <tr><td>A washing machine lid switch that must be closed before the drum will spin, and stays interlocked during the cycle</td><td>Interlocking logic: one condition must be satisfied/blocked before another device can operate</td></tr>
+      <tr><td>Backing a car out of a driveway &mdash; you don't rewire the car, you just select Reverse and the same motor runs the opposite way</td><td>Reversing control: same motor, same power source, only the &ldquo;phase sequence&rdquo; (drive direction) changes</td></tr>
+      <tr><td>A power strip's physical lockout switch vs. just flipping a breaker</td><td>Two layers of protection (electrical + mechanical) doing the same protective job differently</td></tr>
+    </table>
+    <p><strong>Why this matters:</strong> the same &ldquo;block the opposite command two ways&rdquo; pattern &mdash; one electrical, one physical &mdash; shows up anywhere a machine must never be allowed to do two conflicting things at once.</p>
+  </section>
+
+  <section class="content-block">
+    <h2>Retrieval practice</h2>
+    <p>Try answering without looking, then reveal. For an interactive version, use the <a href="/quiz/index.html">Quiz page</a>.</p>
+    <details><summary>1. What electrically changes to reverse a three-phase motor?</summary><p>Swap any two incoming line leads, which reverses the phase sequence and the rotating magnetic field. Voltage and frequency do not change.</p></details>
+    <details><summary>2. Why is a reversing magnetic starter preferred over a drum switch for industrial use?</summary><p>It uses contactor coils and a low-current control circuit, supporting remote pushbuttons, auxiliary contacts, interlocking, and overload protection &mdash; a drum switch alone lacks these.</p></details>
+    <details><summary>3. What is the critical rule about F and R contactors?</summary><p>F and R must never be closed at the same time &mdash; closing both together causes a line-to-line fault.</p></details>
+    <details><summary>4. What is the job of the seal-in contact (13-14)?</summary><p>It is normally open and closes in parallel with the START button to keep its own coil energized after the button is released.</p></details>
+    <details><summary>5. What is the job of the interlock contact (21-22)?</summary><p>It is normally closed and opens when its contactor energizes, blocking the opposite direction's coil.</p></details>
+    <details><summary>6. The motor is running Forward and the operator presses REV. What happens, and why?</summary><p>No change &mdash; the F 21-22 interlock contact in the Reverse rung is open, blocking the R coil (electrical interlocking).</p></details>
+    <details><summary>7. What is the difference between electrical interlocking and mechanical interlocking?</summary><p>Electrical interlocking uses N.C. auxiliary contacts to block the opposite coil; mechanical interlocking physically blocks the opposite contactor from closing. Both layers are used together.</p></details>
+    <details><summary>8. What does the overload contact 95-96 do, and what happens if it trips?</summary><p>It's a normally closed contact completing the common coil return; if it trips, it opens and drops out whichever direction coil is energized &mdash; neither Forward nor Reverse can run.</p></details>
+    <details><summary>9. Why is it incorrect to say F 13-14 and F 21-22 "do the same thing"?</summary><p>They have opposite normal states and opposite jobs: 13-14 (N.O.) holds the Forward coil on; 21-22 (N.C.) opens to block the Reverse coil.</p></details>
+    <details><summary>10. When is the mechanical interlock test performed, and what does it prove?</summary><p>With power OFF &mdash; pressing one contactor's manual override should physically block the other override from closing.</p></details>
+    <details><summary>11. What is wrong with saying "lower the voltage to reverse the motor"?</summary><p>Reversing happens by changing phase sequence, not voltage. The correct statement is: swap any two line leads.</p></details>
+    <details><summary>12. In the Forward path trace, what must be closed before PB1 can energize F?</summary><p>STOP must be closed and the R interlock (21-22) must be closed (not energized).</p></details>
+    <details><summary>13. What is the first thing to check if neither Forward nor Reverse will run?</summary><p>The common control path first &mdash; STOP PB3 and the overload N.C. contact (95-96) &mdash; before checking either direction branch.</p></details>
+    <details><summary>14. What does it prove if Reverse works but Forward does not energize?</summary><p>Likely the Forward coil F is open, since the common path and Reverse branch are proven to work.</p></details>
+  </section>
+
+  <section class="content-block">
+    <h2>Before the next class</h2>
+    <ul>
+      <li>Be able to explain, from memory, why swapping two line leads (not changing voltage) reverses a three-phase motor.</li>
+      <li>Memorize which terminal numbers are seal-in (13&ndash;14, N.O.) vs. interlock (21&ndash;22, N.C.), and which job each one does.</li>
+      <li>Walk through the Forward and Reverse traces until you can state each step without looking.</li>
+      <li>Review all 10 homework scenarios and confirm you can state the key answer for each.</li>
+      <li>A common exam trap: treating F 13&ndash;14 and F 21&ndash;22 as the same because they're on the same contactor &mdash; know the difference cold.</li>
+    </ul>
+  </section>
+</main>
+
+<footer class="site-footer">
+  ELE 146 — Electric Motor Control · Personal study site
+</footer>
+</body>
+</html>

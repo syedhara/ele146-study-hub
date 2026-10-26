@@ -327,6 +327,24 @@
   </section>
 
   <section class="content-block">
+    <h2>17. Appendix: actual panel wiring reference &mdash; START/STOP with Forward auxiliary seal-in</h2>
+    <p>Instructor-amended reference supplied for Class 7, showing a simpler seal-in variant on the real Amatrol panel: the Forward contactor's own auxiliary N.O. contact (F AUX) serves as the seal-in device directly, instead of the Control Relay Station. All four pushbuttons on the operator station are retained.</p>
+    <figure class="diagram">
+      <img src="/study/img/week6/amatrol-start-stop-f-aux-seal-in.jpg" alt="Amatrol panel reference: START/STOP with Forward auxiliary seal-in, showing added blue leads and moved purple lead" style="max-width:100%; height:auto; border-radius:6px;" />
+      <figcaption>Blue = new leads to add. Purple = move the existing START-left lead into series with STOP. F AUX is the Forward contactor's fourth vertical contact pair (N.O. pair), immediately right of the three wired motor-power poles.</figcaption>
+    </figure>
+    <table>
+      <tr><th>Action</th><th>Connection</th></tr>
+      <tr><td>Add (blue)</td><td>START N.O. left &rarr; F AUX N.O. top</td></tr>
+      <tr><td>Add (blue)</td><td>START N.O. right &rarr; F AUX N.O. bottom</td></tr>
+      <tr><td>Move (purple)</td><td>Existing START-left lead &rarr; STOP N.C. right socket</td></tr>
+      <tr><td>Add jumper (purple)</td><td>STOP N.C. left &rarr; START N.O. left</td></tr>
+    </table>
+    <p><strong>Control function (ladder):</strong> control supply &rarr; START N.O. (with F AUX N.O. sealed in parallel) &rarr; STOP N.C. &rarr; F coil &rarr; OL N.C. &rarr; control return.</p>
+    <p><strong>Review note from the supplied reference:</strong> verify terminal identities and ratings before energizing &mdash; existing power wiring and grounding are not certified by this amendment.</p>
+  </section>
+
+  <section class="content-block">
     <h2>Retrieval practice</h2>
     <p>Try answering without looking, then reveal. For an interactive version, use the <a href="/quiz/index.html">Quiz page</a>.</p>
     <details><summary>1. What question does the control side answer, and what question does the power side answer?</summary><p>Control side: should the coil energize? Power side: is motor power reaching the load?</p></details>

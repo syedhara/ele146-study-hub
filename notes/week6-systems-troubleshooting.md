@@ -208,3 +208,19 @@ Class 8 continues building on structured troubleshooting and the Amatrol three-w
 | Swapping a known-good remote-control battery into a non-working remote to test it | Known-good/known-bad comparison, the same reasoning half-split troubleshooting relies on |
 
 **Why this matters:** the same control-vs-power separation, "test with the right tool for the question," and structured narrowing (half-split, output-back) show up anytime you diagnose why something electrical stopped working at home.
+
+## Appendix: actual panel wiring reference — START/STOP with Forward auxiliary seal-in
+
+Instructor-amended reference supplied for Class 7 (`ELE146_Motor_Control_Wiring_Reference.docx`), showing a simpler seal-in variant on the real Amatrol panel: the Forward contactor's own auxiliary N.O. contact (F AUX) serves as the seal-in device directly, instead of the Control Relay Station. All four pushbuttons on the operator station are retained. See the reference image at `study/img/week6/amatrol-start-stop-f-aux-seal-in.jpg`.
+
+| Action | Connection |
+|---|---|
+| Add (blue) | START N.O. left → F AUX N.O. top |
+| Add (blue) | START N.O. right → F AUX N.O. bottom |
+| Move (purple) | Existing START-left lead → STOP N.C. right socket |
+| Add jumper (purple) | STOP N.C. left → START N.O. left |
+
+**Control function (ladder):** control supply → START N.O. (with F AUX N.O. sealed in parallel) → STOP N.C. → F coil → OL N.C. → control return.
+
+**Review note from the supplied reference:** verify terminal identities and ratings before energizing — existing power wiring and grounding are not certified by this amendment.
+
